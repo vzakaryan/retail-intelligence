@@ -153,7 +153,14 @@ assumes automation they don't have.
   առաջարկներ (order suggestions), տ.կ. (percentage points).
   **Menu / page names approved by the user:** Ապրանքներ և պահանջարկ (group),
   Ապրանքի բացակայության ռիսկ, Պատվերների առաջարկներ, Պաշարների կարգավիճակ
-  (group), Ավելցուկային պաշարներ, Ժամկետանց ապրանքներ (Expiry & write-offs). Punctuation: «»
+  (group), Ավելցուկային պաշարներ, Ժամկետանց ապրանքներ (Expiry & write-offs).
+  **More user-approved terms:** Խանութի մենեջեր (store manager; «մենեջեր», not
+  «կառավարիչ»), Չիրացված վաճառք (lost sales; "(գնհ.)" = estimate), Ուշացումների
+  պատճառով կորուստներ (cost of late deliveries), Կատարված (completed online
+  orders), Բացակա ապրանքներ (missing items), Կարող են ունենալ բացակա ապրանքներ
+  (may be incomplete), Ապրանքներ ռիսկային գոտում (products at risk), Հանքային ջուր
+  (sparkling water), Եգիպտացորեն (cornflakes).
+  Open questions for a native speaker: `docs/translation-review.md`. Punctuation: «»
   quotes, «։» full stop, «՞» on the stressed vowel for questions. Variables are
   placed so they need no case endings (e.g. «{{supplier}}» մատակարարին,
   Լրացնել դարակը՝ {{product}}). "X of Y" is written «Y-ից X-ը».
@@ -420,3 +427,6 @@ top nav was replaced by a sidebar).
   page titles and related links/text (see "Menu / page names approved" above).
 - **Step 13c (2026-11-10):** Suppliers renamed to the user's chosen names (see
   Mock world). One-word names get a two-letter badge from their first letters.
+- **Step 13d (2026-11-10):** User's second round of Armenian corrections applied
+  everywhere the same term appears; 43 remaining uncertain phrases listed in
+  `docs/translation-review.md` for a native speaker to confirm.

@@ -221,7 +221,7 @@ function OftenMissing() {
         <div className="mt-0.5 text-[13px] text-muted">{t("online.often.subtitle")}</div>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[560px] border-collapse">
+        <table className="w-full min-w-[520px] border-collapse">
           <thead>
             <tr>
               <th className={th}>{t("online.often.col.product")}</th>
@@ -241,8 +241,8 @@ function OftenMissing() {
                     <div className="flex items-center gap-3">
                       <ProductThumb emoji={p.emoji} />
                       <div>
-                        <div className="whitespace-nowrap font-semibold">{loc(p.name)}</div>
-                        <div className="whitespace-nowrap text-xs text-muted">{t("online.often.missingIn", { count: o.orders })}</div>
+                        <div className="font-semibold">{loc(p.name)}</div>
+                        <div className="text-xs text-muted">{t("online.often.missingIn", { count: o.orders })}</div>
                       </div>
                     </div>
                   </td>

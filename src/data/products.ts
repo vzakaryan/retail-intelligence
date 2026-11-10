@@ -44,7 +44,7 @@ const HY: Record<string, string> = {
   cola15: "Կոլա (1,5 լ)",
   cola05: "Կոլա (0,5 լ)",
   water15: "Չգազավորված ջուր (1,5 լ)",
-  sparkling: "Գազավորված ջուր (1 լ)",
+  sparkling: "Հանքային ջուր (1 լ)",
   ojuice: "Նարնջի հյութ (1 լ)",
   ajuice: "Խնձորի հյութ (1 լ)",
   lemonade: "Լիմոնադ (1 լ)",
@@ -58,7 +58,7 @@ const HY: Record<string, string> = {
   buns: "Բուլկի (6 հատ)",
   olive: "Ձիթապտղի յուղ (1 լ)",
   coffee: "Սուրճ (250 գ)",
-  cornflakes: "Եգիպտացորենի փաթիլներ (500 գ)",
+  cornflakes: "Եգիպտացորեն (500 գ)",
   pasta: "Մակարոն (500 գ)",
   icecream: "Պաղպաղակ (1 լ)",
 };

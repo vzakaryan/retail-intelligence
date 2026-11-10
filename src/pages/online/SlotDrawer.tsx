@@ -36,8 +36,10 @@ export function SlotDrawer({ slot, day, onClose }: { slot?: Slot; day: OnlineDay
             <div className="min-w-0 flex-1">
               <div className="text-lg font-bold">{t("online.slot.title", { from: slot.from, to: slot.to })}</div>
               <div className="text-xs text-muted">{t("online.slot.meta", { count: slot.orders, time: slot.pickingAt })}</div>
+              <div className="mt-1.5">
+                {open.length ? <Pill tone="bad">{t("online.slot.mayBeIncomplete", { count: open.length })}</Pill> : <Pill tone="good">{t("online.slot.ready")}</Pill>}
+              </div>
             </div>
-            {open.length ? <Pill tone="bad">{t("online.slot.mayBeIncomplete", { count: open.length })}</Pill> : <Pill tone="good">{t("online.slot.ready")}</Pill>}
           </div>
         )
       }
