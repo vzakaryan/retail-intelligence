@@ -5,6 +5,7 @@ import { useDemo } from "@/app/DemoContext";
 import { useScope } from "@/app/useScope";
 import { HEAD_OFFICE, storeManager } from "@/data/world";
 import { ScopeSelector } from "./ScopeSelector";
+import { pick, initials } from "@/lib/names";
 
 export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
   const { t, i18n } = useTranslation();
@@ -49,9 +50,9 @@ export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
         </button>
 
         <div className="hidden items-center gap-2.5 sm:flex">
-          <div className="grid size-[38px] place-items-center rounded-full bg-primary-100 text-[13px] font-bold text-primary">{persona.initials}</div>
+          <div className="grid size-[38px] place-items-center rounded-full bg-primary-100 text-[13px] font-bold text-primary">{initials(persona.name)}</div>
           <div className="hidden xl:block">
-            <div className="text-[13.5px] font-semibold leading-tight">{persona.name}</div>
+            <div className="text-[13.5px] font-semibold leading-tight">{pick(persona.name)}</div>
             <div className="text-xs text-muted">{t(`roles.${persona.role}`)}</div>
           </div>
         </div>

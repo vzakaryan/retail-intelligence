@@ -93,9 +93,9 @@ function SidebarLink({ item, onNavigate }: { item: NavItem; onNavigate: () => vo
       }
     >
       <Icon className="size-[18px] shrink-0" />
-      <span className="truncate">{t(`nav.items.${item.id}`)}</span>
+      <span className="min-w-0 flex-1 leading-snug">{t(`nav.items.${item.id}`)}</span>
       {!!badge && (
-        <span className="ml-auto rounded-full bg-bad-bg px-2 py-px text-[11px] font-semibold text-bad">{badge}</span>
+        <span className="shrink-0 rounded-full bg-bad-bg px-2 py-px text-[11px] font-semibold text-bad">{badge}</span>
       )}
     </NavLink>
   );

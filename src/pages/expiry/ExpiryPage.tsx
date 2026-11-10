@@ -5,7 +5,6 @@ import { useDemo } from "@/app/DemoContext";
 import { atRiskValue, getExpiry, stockValue, type ExpiryGroup, type ExpiryRow } from "@/data/expiry";
 import { getProduct } from "@/data/products";
 import { getStoreDay } from "@/data/today";
-import { SUPPLIERS } from "@/data/world";
 import { BeforeAfterChart } from "@/components/ui/BeforeAfterChart";
 import { Card } from "@/components/ui/Card";
 import { HBar } from "@/components/ui/HBar";
@@ -20,6 +19,7 @@ import { useParamText } from "@/pages/stockouts/shared";
 import { useStepStatus } from "@/pages/overstock/useStepStatus";
 import { ExpiryDrawer } from "./ExpiryDrawer";
 import { useExpiresText } from "./shared";
+import { supplierName } from "@/lib/names";
 
 type Horizon = "3d" | "7d";
 const th = "whitespace-nowrap border-b border-line bg-subtle px-4 py-2.5 text-left text-xs font-semibold text-muted first:pl-5 last:pr-5";
@@ -181,7 +181,7 @@ function Row({ row, active, onOpen }: { row: ExpiryRow; active: boolean; onOpen:
           <ProductThumb emoji={p.emoji} />
           <div>
             <div className="whitespace-nowrap font-semibold">{loc(p.name)}</div>
-            <div className="text-xs text-muted">{SUPPLIERS.find((s) => s.id === p.supplierId)?.name}</div>
+            <div className="text-xs text-muted">{supplierName(p.supplierId)}</div>
           </div>
         </div>
       </td>

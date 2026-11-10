@@ -6,7 +6,6 @@ import { useTaskActions } from "@/app/useTaskActions";
 import { getProduct } from "@/data/products";
 import { getStockouts, type Horizon, type RiskGroup, type StockRow } from "@/data/stockouts";
 import { getStoreDay } from "@/data/today";
-import { SUPPLIERS } from "@/data/world";
 import { Card } from "@/components/ui/Card";
 import { KpiCard, deltaTone } from "@/components/ui/KpiCard";
 import { PageHeader } from "@/components/ui/PageHeader";
@@ -19,6 +18,7 @@ import { MissesCard } from "./MissesCard";
 import { ProductDrawer } from "./ProductDrawer";
 import { TrendCard } from "./TrendCard";
 import { stepRef, useParamText, useRunsOutText } from "./shared";
+import { supplierName } from "@/lib/names";
 
 const th = "whitespace-nowrap border-b border-line bg-subtle px-4 py-2.5 text-left text-xs font-semibold text-muted first:pl-5 last:pr-5";
 const td = "border-b border-line px-4 py-3 align-middle first:pl-5 last:pr-5";
@@ -136,7 +136,7 @@ function RiskRow({ row, horizon, active, onOpen }: { row: StockRow; horizon: Hor
   const { store } = useDemo();
   const actions = useTaskActions(store.id);
   const p = getProduct(row.productId);
-  const supplier = SUPPLIERS.find((s) => s.id === p.supplierId)?.name;
+  const supplier = supplierName(p.supplierId);
 
   // Status of the suggested steps on today's list
   const tasks = row.steps.map(stepRef).filter(Boolean).map((r) => actions.find(r!)).filter(Boolean);

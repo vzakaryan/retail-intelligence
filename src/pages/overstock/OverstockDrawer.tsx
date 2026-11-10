@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { daysOfStock, extraValue, type OverRow } from "@/data/overstock";
 import { getProduct } from "@/data/products";
-import { SUPPLIERS } from "@/data/world";
 import { Drawer } from "@/components/ui/Drawer";
 import { Pill } from "@/components/ui/Pill";
 import { ProductThumb } from "@/components/ui/ProductThumb";
@@ -12,6 +11,7 @@ import { fmtAmd, fmtDate, fmtNumber } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
 import { useParamText } from "@/pages/stockouts/shared";
 import { StepList, StepsFooter } from "@/pages/stockouts/StepList";
+import { supplierName } from "@/lib/names";
 
 export const overTone = (r: OverRow) => (daysOfStock(r) / r.target >= 2.5 ? "bad" : "warn");
 
@@ -33,7 +33,7 @@ export function OverstockDrawer({ row, onClose }: { row?: OverRow; onClose: () =
             <div className="min-w-0 flex-1">
               <div className="truncate text-lg font-bold">{loc(product.name)}</div>
               <div className="text-xs text-muted">
-                {product.sku} · {SUPPLIERS.find((s) => s.id === product.supplierId)?.name}
+                {product.sku} · {supplierName(product.supplierId)}
               </div>
             </div>
             <Pill tone={overTone(row)}>{t("overstock.days", { count: daysOfStock(row) })}</Pill>

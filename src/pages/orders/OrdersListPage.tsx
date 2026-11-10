@@ -12,6 +12,7 @@ import { Pill } from "@/components/ui/Pill";
 import { Progress } from "@/components/ui/Progress";
 import { useLocalized } from "@/lib/useLocalized";
 import { SupplierTile, hoursUntil, shortDate, useDayLabel } from "./shared";
+import { pick } from "@/lib/names";
 
 /** docs/design-references/approved/02-orders-to-place.png */
 export function OrdersListPage() {
@@ -98,7 +99,7 @@ function OrderRow({ view }: { view: OrderView }) {
       <div className="flex min-w-0 items-center gap-3">
         <SupplierTile supplier={supplier} />
         <div className="min-w-0">
-          <div className="font-semibold">{supplier.name}</div>
+          <div className="font-semibold">{pick(supplier.name)}</div>
           <div className="truncate text-xs text-muted">{meta}</div>
         </div>
       </div>

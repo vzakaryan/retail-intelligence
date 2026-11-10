@@ -5,7 +5,6 @@ import { useDemo } from "@/app/DemoContext";
 import { getOnline } from "@/data/online";
 import { getProduct } from "@/data/products";
 import type { StockRow } from "@/data/stockouts";
-import { SUPPLIERS } from "@/data/world";
 import { Drawer } from "@/components/ui/Drawer";
 import { Pill } from "@/components/ui/Pill";
 import { ProductThumb } from "@/components/ui/ProductThumb";
@@ -14,8 +13,8 @@ import { fmtDate, fmtNumber } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
 import { useRunsOutText } from "./shared";
 import { StepList, StepsFooter } from "./StepList";
+import { supplierName } from "@/lib/names";
 
-const supplierName = (id: string) => SUPPLIERS.find((s) => s.id === id)?.name ?? id;
 
 /** Product panel — docs/design-references/approved/08-stockout-product-drawer.png */
 export function ProductDrawer({ row, onClose }: { row?: StockRow; onClose: () => void }) {

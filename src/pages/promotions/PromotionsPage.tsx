@@ -14,7 +14,7 @@ import { PromoDrawer } from "./PromoDrawer";
 import { usePromoDates } from "./shared";
 import { usePromoReadiness } from "./usePromoReadiness";
 
-const th = "whitespace-nowrap border-b border-line bg-subtle px-4 py-2.5 text-left text-xs font-semibold text-muted first:pl-5 last:pr-5";
+const th = "border-b border-line bg-subtle px-4 py-2.5 text-left align-bottom text-xs font-semibold leading-snug text-muted first:pl-5 last:pr-5";
 const td = "border-b border-line px-4 py-3 align-middle first:pl-5 last:pr-5";
 const shortDay = (d: Date) => fmtDate(d, { weekday: "short", month: "short", day: "numeric" });
 const daysUntil = (d: Date) => Math.round((new Date(d.toDateString()).getTime() - new Date(DEMO_NOW.toDateString()).getTime()) / 86_400_000);
@@ -191,10 +191,10 @@ function UpcomingRow({ promo: p, active, onOpen }: { promo: UpcomingPromo; activ
   return (
     <tr className={`cursor-pointer ${active ? "bg-primary-50" : "hover:bg-subtle"}`} onClick={onOpen}>
       <td className={td}>
-        <div className="whitespace-nowrap font-semibold">{t(`promotions.name.${p.name.key}`, p.name.params)}</div>
+        <div className="font-semibold">{t(`promotions.name.${p.name.key}`, p.name.params)}</div>
         <div className="text-xs text-muted">{t("promotions.upcoming.byHeadOffice")}</div>
       </td>
-      <td className={`${td} whitespace-nowrap`}>{dates(p)}</td>
+      <td className={td}>{dates(p)}</td>
       <td className={`${td} whitespace-nowrap`}>
         <span className="text-lg tracking-[2px]" aria-hidden>
           {p.productIds.map((id) => getProduct(id).emoji).join("")}

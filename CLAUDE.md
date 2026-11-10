@@ -86,7 +86,12 @@ assumes automation they don't have.
   08 Bagratunyats Ave · Shengavit, 09 Erebuni St · Erebuni, 10 Tevosyan St ·
   Davtashen, 11 Khudyakov St · Avan, 12 Halabyan St · Ajapnyak. (No stores in
   Kanaker-Zeytun, Nork-Marash, Nubarashen.)
-- Suppliers (fictional): DairyCo, AgriEggs, BevCo, FreshBake GroceryHub (dry goods), ColdFoods (frozen).
+- Suppliers — **fictional Armenian-style brands** (not real companies, because
+  the demo rates them, e.g. one is "Unreliable"): Aragil Dairy / Արագիլ Կաթ
+  (id `dairyco`), Nairi Eggs / Նաիրի Ձու (`agrieggs`), Hrazdan Drinks /
+  Հրազդան Ըմպելիքներ (`bevco`), Tonir Bakery / Թոնիր Հացատուն (`freshbake`),
+  Masis Trade / Մասիս Թրեյդ (`groceryhub`, dry goods), Aragats Frost /
+  Արագած Ֆրոստ (`coldfoods`, frozen). Internal ids kept unchanged.
 - "Today" in the demo = Tue, Nov 10.
 
 ## Working agreement (IMPORTANT)
@@ -107,7 +112,7 @@ assumes automation they don't have.
 | Tech stack | React 19 + TS + Vite 7, Tailwind 4, React Router 7 (hash), react-i18next, Recharts, Lucide | **Agreed 2026-11-10** |
 | Client name / branding | — | TBD |
 | Target design | `docs/design-references/approved/` (18 screens) | **Approved 2026-11-10** |
-| Language | English first, then Armenian + EN/HY switcher; i18n-ready from day one | Agreed |
+| Language | English + Armenian, EN / Հայ switch in the top bar (remembered per browser) | **Done 2026-11-10** |
 
 ## Codebase (how the app is built)
 
@@ -133,16 +138,29 @@ assumes automation they don't have.
 
 ## Language / i18n
 
-- **Final product language is Armenian.** Build in **English first**, then add
-  Armenian with a language switcher (EN / HY).
-- Therefore, from day one: **no hard-coded UI strings** — every label goes
-  through the i18n layer (English locale file first). Numbers, currency (AMD),
-  dates and abbreviations ("M", "B", "pp", "u") must go through locale-aware
-  formatters so Armenian can be added without touching components.
-- Layouts must tolerate **~30–40% longer text** (Armenian labels are longer)
-  — avoid fixed-width labels and truncation of key text.
-- Pick a font family with **Armenian script** support (e.g. Noto Sans +
-  Noto Sans Armenian) so both languages look consistent.
+- **Both English and Armenian are live.** EN / Հայ switch in the top bar; the
+  choice is remembered per browser (`localStorage` key `ri-lang`).
+- All UI text lives in `src/i18n/locales/en.json` and `hy.json` (same keys;
+  missing hy keys fall back to English). **Every new string must be added to
+  both files.** Plural keys (`_one` / `_other`) must exist in hy too.
+- Armenian wording uses **retail / accounting terms, not literal translations**:
+  դուրսգրում (write-off), ապահովագրական պաշար (safety stock), ավելցուկային
+  պաշար (overstock), սպառման ռիսկ (stockout risk), պահեստ (backroom),
+  առկայություն դարակում (shelf availability), կորսված վաճառք (lost sales),
+  ակցիա (promotion), զեղչ (markdown), հավաքում (order picking), պատվերի
+  առաջարկներ (order suggestions), տ.կ. (percentage points). Punctuation: «»
+  quotes, «։» full stop, «՞» on the stressed vowel for questions. Variables are
+  placed so they need no case endings (e.g. «{{supplier}}» մատակարարին,
+  Լրացնել դարակը՝ {{product}}). "X of Y" is written «Y-ից X-ը».
+- Mock-data names are `Localized { en, hy }` (stores, districts, products,
+  suppliers, managers, reps). Use `useLocalized()` in components or `pick()` /
+  `supplierName()` / `initials()` from `src/lib/names.ts`.
+- **Numbers, money and dates for Armenian are formatted by hand** in
+  `src/lib/format.ts` (many browsers have no hy-AM locale data and silently
+  fall back to US English): decimal comma, narrow space for thousands
+  ("1 234,5"), money "1,42 մլն ֏" / "310 հզր ֏", dates "երեքշաբթի, 10 նոյ".
+- Layouts are checked for longer Armenian text: sidebar labels wrap, table
+  headers wrap, tooltips open toward the page.
 
 ## Design references
 
@@ -387,3 +405,9 @@ top nav was replaced by a sidebar).
     chart and get-ready steps. New step kinds `orderExtra` and `note`; new task
     kind `clearSpace`; `existing` steps may have no product (price tags task).
   Remaining placeholders: Settings, Help.
+- **Step 13 (2026-11-10):** **Armenian translation** done (`hy.json`, 811 strings,
+  checked key-by-key and placeholder-by-placeholder against `en.json`) with
+  retail terminology; Armenian names for stores, districts, products, managers;
+  suppliers renamed to fictional Armenian-style brands; hand-made Armenian
+  number / money / date formatting; layout fixes for longer text. Switch is
+  live and remembered per browser.

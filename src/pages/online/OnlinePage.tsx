@@ -20,7 +20,7 @@ import { SlotDrawer } from "./SlotDrawer";
 import { usePrepText } from "./prepText";
 import { prepRef, useOnlineState } from "./useOnlineState";
 
-const th = "whitespace-nowrap border-b border-line bg-subtle px-4 py-2.5 text-left text-xs font-semibold text-muted first:pl-5 last:pr-5";
+const th = "border-b border-line bg-subtle px-4 py-2.5 text-left align-bottom text-xs font-semibold leading-snug text-muted first:pl-5 last:pr-5";
 const td = "border-b border-line px-4 py-3 align-middle first:pl-5 last:pr-5";
 
 /** docs/design-references/approved/09-online-orders.png */
@@ -221,7 +221,7 @@ function OftenMissing() {
         <div className="mt-0.5 text-[13px] text-muted">{t("online.often.subtitle")}</div>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[620px] border-collapse">
+        <table className="w-full min-w-[560px] border-collapse">
           <thead>
             <tr>
               <th className={th}>{t("online.often.col.product")}</th>

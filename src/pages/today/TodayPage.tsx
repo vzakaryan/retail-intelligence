@@ -13,6 +13,7 @@ import { ResultsCard } from "./ResultsCard";
 import { TasksCard } from "./TasksCard";
 import { TodayKpis } from "./TodayKpis";
 import { useRefilled } from "./useRefilled";
+import { pick } from "@/lib/names";
 
 /** Home screen for the store manager — docs/design-references/approved/01-my-store-today.png */
 export function TodayPage() {
@@ -22,7 +23,7 @@ export function TodayPage() {
   const day = getStoreDay(store.id);
   const refilled = useRefilled(store.id);
   const [period, setPeriod] = useState<Period>("week");
-  const firstName = store.manager.name.split(" ")[0];
+  const firstName = pick(store.manager.name).split(" ")[0];
 
   return (
     <>

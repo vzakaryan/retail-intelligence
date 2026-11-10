@@ -17,6 +17,7 @@ import { useStoreLabel } from "@/lib/useStoreLabel";
 import { StoreBadge } from "@/components/ui/StoreBadge";
 import { DistrictMap } from "./DistrictMap";
 import { availabilityStatus, availabilityTone } from "./tones";
+import { pick } from "@/lib/names";
 
 type SortKey = "availability" | "onlineFulfillment" | "lostSales4w" | "suggestionsActedOn";
 
@@ -46,7 +47,7 @@ export function StoresPage() {
   const exportCsv = () => {
     const esc = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`;
     const head = [t("stores.table.number"), t("stores.table.store"), t("stores.table.district"), t("stores.table.manager"), t("stores.table.availability"), t("stores.table.online"), t("stores.table.lostSales"), t("stores.table.actedOn")];
-    const body = rows.map((s) => [s.number, label.name(s), label.district(s), s.manager.name, s.kpis.availability, s.kpis.onlineFulfillment, s.kpis.lostSales4w, s.kpis.suggestionsActedOn]);
+    const body = rows.map((s) => [s.number, label.name(s), label.district(s), pick(s.manager.name), s.kpis.availability, s.kpis.onlineFulfillment, s.kpis.lostSales4w, s.kpis.suggestionsActedOn]);
     const csv = "﻿" + [head, ...body].map((r) => r.map(esc).join(",")).join("\r\n");
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
@@ -55,7 +56,7 @@ export function StoresPage() {
     URL.revokeObjectURL(a.href);
   };
 
-  const th = "whitespace-nowrap border-b border-line bg-subtle px-3.5 py-2.5 text-left text-xs font-semibold text-muted first:pl-5 last:pr-5";
+  const th = "border-b border-line bg-subtle px-3.5 py-2.5 text-left align-bottom text-xs font-semibold leading-snug text-muted first:pl-5 last:pr-5";
   const td = "border-b border-line px-3.5 py-[11px] align-middle first:pl-5 last:pr-5";
   const SortTh = ({ k: key, label, right }: { k: SortKey; label: string; right?: boolean }) => (
     <th className={`${th} ${right ? "text-right" : ""}`} aria-sort={sort.key === key ? (sort.asc ? "ascending" : "descending") : "none"}>
@@ -136,8 +137,8 @@ export function StoresPage() {
                           <StoreBadge number={s.number} label={t("common.storeNumber", { number: s.number })} />
                           <div className="min-w-0">
                             <div className="whitespace-nowrap font-semibold">{label.name(s)}</div>
-                            <div className="whitespace-nowrap text-xs text-muted">
-                              {label.district(s)} · {s.manager.name}
+                            <div className="text-xs text-muted">
+                              {label.district(s)} · {pick(s.manager.name)}
                             </div>
                           </div>
                         </div>

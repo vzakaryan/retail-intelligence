@@ -14,6 +14,7 @@ import { OrderHeader } from "./shared";
 import { OrderLinesCard } from "./OrderLinesCard";
 import { OrderNotFound } from "./OrderNotFound";
 import { downloadOrderSheet, orderAsText } from "./orderSheet";
+import { pick } from "@/lib/names";
 
 /** Step 2 of an order — docs/design-references/approved/05-order-place.png */
 export function OrderPlacePage() {
@@ -60,7 +61,7 @@ export function OrderPlacePage() {
         <div className="flex flex-col gap-4 print:hidden">
           <Card>
             <div className="px-5 pt-[18px]">
-              <div className="text-base font-semibold">{t("orders.place.sendTitle", { supplier: view.supplier.name })}</div>
+              <div className="text-base font-semibold">{t("orders.place.sendTitle", { supplier: pick(view.supplier.name) })}</div>
               <div className="mt-0.5 text-[13px] text-muted">{t("orders.place.sendSub")}</div>
             </div>
             <div className="flex flex-col gap-2.5 px-5 pb-5 pt-4">
@@ -90,7 +91,7 @@ export function OrderPlacePage() {
             </ul>
             <Button variant="primary" className="mt-4 w-full justify-center py-[11px] text-sm" onClick={place}>
               <Check />
-              {t("orders.place.confirm", { supplier: view.supplier.name })}
+              {t("orders.place.confirm", { supplier: pick(view.supplier.name) })}
             </Button>
             <p className="mt-2.5 text-center text-xs text-muted">{t("orders.place.partial")}</p>
           </Card>

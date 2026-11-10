@@ -708,8 +708,8 @@
         "inStoreToo": "shoppers in store need {{count}} today too",
         "substitute": "offer the 0.5L bottle ×{{qty}} for the rest",
         "nextDelivery": "next delivery {{time}}",
-        "agriLate": "AgriEggs delivery is late, none left for tomorrow",
-        "afterDelivery": "BevCo delivers at {{time}}, just before picking"
+        "agriLate": "{{supplier}} delivery is late, none left for tomorrow",
+        "afterDelivery": "{{supplier}} delivers at {{time}}, just before picking"
       }
     },
     "slots": {
@@ -766,7 +766,7 @@
       },
       "suggestion": {
         "weekendAside": "Keep {{qty}} packs aside for online on weekend mornings",
-        "earlierDelivery": "Ask BevCo to deliver before {{time}}",
+        "earlierDelivery": "Ask {{supplier}} to deliver before {{time}}",
         "orderMoreWeekend": "Order +{{qty}} for weekends",
         "morningAside": "Set bread aside for online in the morning"
       },

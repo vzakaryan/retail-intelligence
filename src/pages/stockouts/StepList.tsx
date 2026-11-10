@@ -9,7 +9,6 @@ import type { TaskState } from "@/app/useTasks";
 import { getOrders } from "@/data/orders";
 import type { NewTask, StockStep } from "@/data/stockouts";
 import type { Tone } from "@/data/types";
-import { SUPPLIERS } from "@/data/world";
 import { Button } from "@/components/ui/Button";
 import { IconTile } from "@/components/ui/IconTile";
 import { Pill } from "@/components/ui/Pill";
@@ -19,9 +18,9 @@ import { getProduct } from "@/data/products";
 import { useLocalized } from "@/lib/useLocalized";
 import { stepRef } from "./shared";
 import { useDayLabel } from "@/pages/orders/shared";
+import { supplierName } from "@/lib/names";
 
 const asTaskState = (t: NewTask): TaskState => ({ ...t, id: "", action: "markDone", done: false });
-const supplierName = (id: string) => SUPPLIERS.find((s) => s.id === id)?.name ?? id;
 const shortDay = (d: Date) => fmtDate(d, { weekday: "short", month: "short", day: "numeric" });
 
 function iconFor(step: StockStep): [LucideIcon, Tone] {

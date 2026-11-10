@@ -133,12 +133,12 @@ const S03_TOMORROW: OnlineDayData = {
     {
       id: "eggs-tmr", productId: "eggs10", needs: 10, inOrders: 7, onShelf: 0, backroom: 0,
       task: { kind: "askStore", productId: "eggs10", params: { store: "s04", qty: 40, days: 3 } },
-      note: { key: "agriLate" },
+      note: { key: "agriLate", params: { supplier: "agrieggs" } },
     },
     {
       id: "cola-tmr", productId: "cola15", needs: 8, inOrders: 4, onShelf: 0, backroom: 0,
       task: { kind: "askSupplier", supplierId: "bevco", params: { time: "10:00" }, tag: "supplier" },
-      note: { key: "afterDelivery", params: { time: "09:00" } },
+      note: { key: "afterDelivery", params: { time: "09:00", supplier: "bevco" } },
     },
   ],
   slots: [
@@ -154,7 +154,7 @@ const S03: StoreOnline = {
   missingLastWeek: { value: 23, delta: -9 },
   often: [
     { productId: "eggs10", orders: 31, reason: "shelfEmpty", suggestion: { key: "weekendAside", params: { qty: 20 } }, task: { kind: "weekendAside", productId: "eggs10", params: { qty: 20 }, tag: "online" } },
-    { productId: "cola15", orders: 18, reason: "lateDelivery", suggestion: { key: "earlierDelivery", params: { time: "10:00" } }, task: { kind: "askSupplier", supplierId: "bevco", params: { time: "10:00" }, tag: "supplier" } },
+    { productId: "cola15", orders: 18, reason: "lateDelivery", suggestion: { key: "earlierDelivery", params: { time: "10:00", supplier: "bevco" } }, task: { kind: "askSupplier", supplierId: "bevco", params: { time: "10:00" }, tag: "supplier" } },
     { productId: "sourcream", orders: 12, reason: "soldOutSunday", suggestion: { key: "orderMoreWeekend", params: { qty: 15 } }, handled: "orderSuggestions" },
     { productId: "bread600", orders: 9, reason: "eveningDelivery", suggestion: { key: "morningAside" }, task: { kind: "setAside", productId: "bread600", params: { qty: 7, orders: 5 }, tag: "online" } },
   ],

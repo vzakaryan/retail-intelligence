@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { useDemo } from "@/app/DemoContext";
 import { daysOfStock, extraValue, getOverstock, type OverRow } from "@/data/overstock";
 import { getProduct, type Product } from "@/data/products";
-import { SUPPLIERS } from "@/data/world";
 import { BeforeAfterChart } from "@/components/ui/BeforeAfterChart";
 import { Card } from "@/components/ui/Card";
 import { HBar } from "@/components/ui/HBar";
@@ -19,6 +18,7 @@ import { useLocalized } from "@/lib/useLocalized";
 import { useParamText } from "@/pages/stockouts/shared";
 import { OverstockDrawer, overTone } from "./OverstockDrawer";
 import { useStepStatus } from "./useStepStatus";
+import { supplierName } from "@/lib/names";
 
 type Filter = "all" | "dairy" | "frozen" | "dry";
 const VISIBLE = 6;
@@ -163,7 +163,7 @@ function Row({ row, active, onOpen }: { row: OverRow; active: boolean; onOpen: (
           <ProductThumb emoji={p.emoji} />
           <div>
             <div className="whitespace-nowrap font-semibold">{loc(p.name)}</div>
-            <div className="text-xs text-muted">{SUPPLIERS.find((s) => s.id === p.supplierId)?.name}</div>
+            <div className="text-xs text-muted">{supplierName(p.supplierId)}</div>
           </div>
         </div>
       </td>

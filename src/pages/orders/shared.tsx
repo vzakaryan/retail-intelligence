@@ -6,9 +6,10 @@ import { DEMO_NOW } from "@/data/world";
 import { TONE } from "@/components/ui/tone";
 import { fmtDate } from "@/lib/format";
 import type { OrderView } from "@/app/useOrders";
+import { pick, initials } from "@/lib/names";
 
 export function SupplierTile({ supplier }: { supplier: Supplier }) {
-  return <div className={`grid size-10 shrink-0 place-items-center rounded-ctl text-[13px] font-bold ${TONE[supplier.tone]}`}>{supplier.initials}</div>;
+  return <div className={`grid size-10 shrink-0 place-items-center rounded-ctl text-[13px] font-bold ${TONE[supplier.tone]}`}>{initials(supplier.name)}</div>;
 }
 
 const dayDiff = (a: Date, b: Date) =>
@@ -46,9 +47,9 @@ export function OrderHeader({ view, step }: { view: OrderView; step: 1 | 2 | 3 }
           {t("nav.items.orders")}
         </Link>
         <ChevronRight className="size-3.5" />
-        {view.supplier.name}
+        {pick(view.supplier.name)}
       </nav>
-      <h1 className="text-[26px] font-bold leading-tight tracking-tight">{t("orders.order.title", { supplier: view.supplier.name })}</h1>
+      <h1 className="text-[26px] font-bold leading-tight tracking-tight">{t("orders.order.title", { supplier: pick(view.supplier.name) })}</h1>
       <p className="mt-1 text-[15px] text-muted">
         {view.stage === "placed" ? (
           t("orders.order.subtitlePlaced", { delivery: dayLabel(o.delivery, o.deliveryTime) })

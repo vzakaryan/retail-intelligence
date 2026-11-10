@@ -11,6 +11,7 @@ import { Pill } from "@/components/ui/Pill";
 import { OrderHeader, shortDate, useDayLabel } from "./shared";
 import { OrderLinesCard } from "./OrderLinesCard";
 import { OrderNotFound } from "./OrderNotFound";
+import { pick } from "@/lib/names";
 
 /** Step 3 (confirmation) and the view of an order that is already placed. */
 export function OrderDonePage() {
@@ -35,7 +36,7 @@ export function OrderDonePage() {
         <IconTile icon={o.late ? Clock : view.placedNow ? CircleCheck : Truck} tone={o.late ? "bad" : "good"} size="lg" />
         <div className="min-w-0 flex-1">
           <div className="text-base font-semibold">
-            {view.placedNow ? t("orders.done.placedTitle", { supplier: view.supplier.name }) : t("orders.done.placedBefore", { date: shortDate(o.placedOn!) })}
+            {view.placedNow ? t("orders.done.placedTitle", { supplier: pick(view.supplier.name) }) : t("orders.done.placedBefore", { date: shortDate(o.placedOn!) })}
           </div>
           <div className="text-muted">
             {o.late

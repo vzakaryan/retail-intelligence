@@ -18,6 +18,7 @@ import { fmtAmd, fmtDate, fmtNumber } from "@/lib/format";
 import { useStoreLabel } from "@/lib/useStoreLabel";
 import { useTaskText } from "@/pages/today/taskText";
 import { STATUS_TONE, useDelayText } from "./shared";
+import { pick, initials } from "@/lib/names";
 
 /** Supplier panel — docs/design-references/approved/16-supplier-drawer.png */
 export function SupplierDrawer({ stats, onClose }: { stats?: SupplierStats; onClose: () => void }) {
@@ -32,10 +33,10 @@ export function SupplierDrawer({ stats, onClose }: { stats?: SupplierStats; onCl
         stats &&
         sup && (
           <div className="flex items-center gap-3.5">
-            <div className={`grid size-12 shrink-0 place-items-center rounded-ctl text-[13px] font-bold ${TONE[sup.tone]}`}>{sup.initials}</div>
+            <div className={`grid size-12 shrink-0 place-items-center rounded-ctl text-[13px] font-bold ${TONE[sup.tone]}`}>{initials(sup.name)}</div>
             <div className="min-w-0 flex-1">
-              <div className="truncate text-lg font-bold">{sup.name}</div>
-              <div className="text-xs text-muted">{t("suppliers.drawer.meta", { categories: sup.categories.en, days: t(`suppliers.days.${stats.deliveryDays.key}`), rep: stats.rep })}</div>
+              <div className="truncate text-lg font-bold">{pick(sup.name)}</div>
+              <div className="text-xs text-muted">{t("suppliers.drawer.meta", { categories: pick(sup.categories), days: t(`suppliers.days.${stats.deliveryDays.key}`), rep: pick(stats.rep) })}</div>
             </div>
             <Pill tone={STATUS_TONE[statusOf(stats)]}>{t(`suppliers.status.${statusOf(stats)}`)}</Pill>
           </div>
@@ -117,7 +118,7 @@ function Body({ stats }: { stats: SupplierStats }) {
         </div>
       </section>
 
-      <Steps stats={stats} supplierName={sup.name} />
+      <Steps stats={stats} supplierName={pick(sup.name)} />
     </div>
   );
 }

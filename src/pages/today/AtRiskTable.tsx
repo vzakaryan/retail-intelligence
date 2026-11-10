@@ -3,12 +3,12 @@ import { ArrowRight, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { RiskRow, StoreDay } from "@/data/today";
 import { getProduct } from "@/data/products";
-import { SUPPLIERS } from "@/data/world";
 import { Card } from "@/components/ui/Card";
 import { Pill } from "@/components/ui/Pill";
 import { ProductThumb } from "@/components/ui/ProductThumb";
 import { fmtNumber } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
+import { supplierName } from "@/lib/names";
 
 const th = "whitespace-nowrap border-b border-line bg-subtle px-4 py-2.5 text-left text-xs font-semibold text-muted first:pl-5 last:pr-5";
 const td = "border-b border-line px-4 py-[13px] align-middle first:pl-5 last:pr-5";
@@ -53,7 +53,7 @@ export function AtRiskTable({ atRisk, refilled }: { atRisk: StoreDay["atRisk"]; 
                       <div>
                         <div className="whitespace-nowrap font-semibold">{loc(product.name)}</div>
                         <div className="whitespace-nowrap text-xs text-muted">
-                          {product.sku} · {SUPPLIERS.find((s) => s.id === product.supplierId)?.name}
+                          {product.sku} · {supplierName(product.supplierId)}
                         </div>
                       </div>
                     </div>
@@ -105,7 +105,7 @@ function ActionText({ row }: { row: RiskRow }) {
     return (
       <span>
         {t("today.atRisk.action.noneInBackroom")}
-        {meta(t("today.atRisk.action.nextSupplier", { supplier: SUPPLIERS.find((s) => s.id === a.supplierId)?.name }))}
+        {meta(t("today.atRisk.action.nextSupplier", { supplier: supplierName(a.supplierId) }))}
       </span>
     );
   return (

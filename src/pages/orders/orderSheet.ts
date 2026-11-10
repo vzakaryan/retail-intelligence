@@ -3,6 +3,7 @@ import type { OrderView } from "@/app/useOrders";
 import type { Localized, Store } from "@/data/types";
 import { getDistrict } from "@/data/world";
 import { fmtDate } from "@/lib/format";
+import { pick } from "@/lib/names";
 
 type Loc = (text: Localized) => string;
 
@@ -15,7 +16,7 @@ const day = (d: Date) => fmtDate(d, { weekday: "short", month: "short", day: "nu
 export function orderAsText(t: TFunction, loc: Loc, view: OrderView, store: Store): string {
   const lines = orderedLines(view).map((l) => `• ${loc(l.product.name)} — ${l.review!.qty}`);
   return [
-    t("orders.sheet.heading", { supplier: view.supplier.name, store: storeText(loc, store), number: store.number }),
+    t("orders.sheet.heading", { supplier: pick(view.supplier.name), store: storeText(loc, store), number: store.number }),
     t("orders.sheet.delivery", { date: day(view.order.delivery) }),
     "",
     ...lines,
@@ -32,7 +33,7 @@ export function downloadOrderSheet(t: TFunction, loc: Loc, view: OrderView, stor
     ...orderedLines(view).map((l) => [l.product.sku, loc(l.product.name), l.review!.qty]),
   ];
   const meta = [
-    [t("orders.sheet.heading", { supplier: view.supplier.name, store: storeText(loc, store), number: store.number })],
+    [t("orders.sheet.heading", { supplier: pick(view.supplier.name), store: storeText(loc, store), number: store.number })],
     [t("orders.sheet.delivery", { date: day(view.order.delivery) })],
     [],
   ];
@@ -40,7 +41,7 @@ export function downloadOrderSheet(t: TFunction, loc: Loc, view: OrderView, stor
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = `${view.supplier.name}-order-store${store.number}-${view.order.delivery.toISOString().slice(0, 10)}.csv`;
+  a.download = `${pick(view.supplier.name)}-order-store${store.number}-${view.order.delivery.toISOString().slice(0, 10)}.csv`;
   a.click();
   URL.revokeObjectURL(a.href);
 }

@@ -34,7 +34,7 @@ export interface Store {
   /** Branch name = its street, e.g. "Komitas Ave". Shown with the district: "Komitas Ave, Arabkir". */
   name: Localized;
   districtId: string;
-  manager: { name: string; initials: string };
+  manager: { name: Localized };
   kpis: StoreKpis;
   /** Counts shown in navigation badges for "today". */
   today: { openTasks: number; ordersDueToday: number };
@@ -44,16 +44,15 @@ export type Tone = "good" | "bad" | "warn" | "info" | "primary" | "neutral";
 
 export interface Supplier {
   id: string;
-  name: string;
-  initials: string;
+  /** Fictional Armenian-style brand names (no real companies) */
+  name: Localized;
   tone: Tone;
   categories: Localized;
 }
 
 export interface Persona {
   id: string;
-  name: string;
-  initials: string;
+  name: Localized;
   role: "storeManager" | "headOffice";
   storeId?: string;
 }

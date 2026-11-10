@@ -10,33 +10,33 @@ export const DEMO_NOW = new Date(2026, 10, 10, 11, 0);
 export const DATA_REFRESHED_AT = "06:00";
 
 export const DISTRICTS: District[] = [
-  { id: "davtashen", name: { en: "Davtashen" }, grid: { col: 1, row: 1 } },
-  { id: "arabkir", name: { en: "Arabkir" }, grid: { col: 2, row: 1 } },
-  { id: "kanaker-zeytun", name: { en: "Kanaker-Zeytun" }, grid: { col: 3, row: 1 } },
-  { id: "avan", name: { en: "Avan" }, grid: { col: 4, row: 1 } },
-  { id: "ajapnyak", name: { en: "Ajapnyak" }, grid: { col: 1, row: 2 } },
-  { id: "kentron", name: { en: "Kentron" }, grid: { col: 2, row: 2 } },
-  { id: "nork-marash", name: { en: "Nork-Marash" }, grid: { col: 3, row: 2 } },
-  { id: "nor-nork", name: { en: "Nor Nork" }, grid: { col: 4, row: 2 } },
-  { id: "malatia-sebastia", name: { en: "Malatia-Sebastia" }, grid: { col: 1, row: 3 } },
-  { id: "shengavit", name: { en: "Shengavit" }, grid: { col: 2, row: 3 } },
-  { id: "erebuni", name: { en: "Erebuni" }, grid: { col: 3, row: 3 } },
-  { id: "nubarashen", name: { en: "Nubarashen" }, grid: { col: 2, row: 4, span: 2 } },
+  { id: "davtashen", name: { en: "Davtashen", hy: "Դավթաշեն" }, grid: { col: 1, row: 1 } },
+  { id: "arabkir", name: { en: "Arabkir", hy: "Արաբկիր" }, grid: { col: 2, row: 1 } },
+  { id: "kanaker-zeytun", name: { en: "Kanaker-Zeytun", hy: "Քանաքեռ-Զեյթուն" }, grid: { col: 3, row: 1 } },
+  { id: "avan", name: { en: "Avan", hy: "Ավան" }, grid: { col: 4, row: 1 } },
+  { id: "ajapnyak", name: { en: "Ajapnyak", hy: "Աջափնյակ" }, grid: { col: 1, row: 2 } },
+  { id: "kentron", name: { en: "Kentron", hy: "Կենտրոն" }, grid: { col: 2, row: 2 } },
+  { id: "nork-marash", name: { en: "Nork-Marash", hy: "Նորք-Մարաշ" }, grid: { col: 3, row: 2 } },
+  { id: "nor-nork", name: { en: "Nor Nork", hy: "Նոր Նորք" }, grid: { col: 4, row: 2 } },
+  { id: "malatia-sebastia", name: { en: "Malatia-Sebastia", hy: "Մալաթիա-Սեբաստիա" }, grid: { col: 1, row: 3 } },
+  { id: "shengavit", name: { en: "Shengavit", hy: "Շենգավիթ" }, grid: { col: 2, row: 3 } },
+  { id: "erebuni", name: { en: "Erebuni", hy: "Էրեբունի" }, grid: { col: 3, row: 3 } },
+  { id: "nubarashen", name: { en: "Nubarashen", hy: "Նուբարաշեն" }, grid: { col: 2, row: 4, span: 2 } },
 ];
 
 const store = (
   n: number,
-  name: string,
+  name: [en: string, hy: string],
   districtId: string,
-  manager: [string, string],
+  manager: [en: string, hy: string],
   kpis: [availability: number, online: number, lostSalesM: number, actedOn: number],
   today: [openTasks: number, ordersDueToday: number]
 ): Store => ({
   id: `s${String(n).padStart(2, "0")}`,
   number: String(n).padStart(2, "0"),
-  name: { en: name },
+  name: { en: name[0], hy: name[1] },
   districtId,
-  manager: { name: manager[0], initials: manager[1] },
+  manager: { name: { en: manager[0], hy: manager[1] } },
   kpis: {
     availability: kpis[0],
     onlineFulfillment: kpis[1],
@@ -47,30 +47,30 @@ const store = (
 });
 
 export const STORES: Store[] = [
-  store(1, "Mashtots Ave", "kentron", ["Narine H.", "NH"], [97.9, 97.2, 3.1, 93], [3, 1]),
-  store(2, "Tumanyan St", "kentron", ["Tigran A.", "TA"], [97.3, 96.9, 3.3, 89], [4, 2]),
-  store(3, "Komitas Ave", "arabkir", ["Anna M.", "AM"], [95.8, 94.1, 5.6, 86], [5, 2]),
-  store(4, "Baghramyan Ave", "arabkir", ["Lilit S.", "LS"], [97.0, 96.4, 3.0, 90], [3, 1]),
-  store(5, "Gai Ave", "nor-nork", ["Armen K.", "AK"], [96.3, 95.6, 3.6, 84], [4, 2]),
-  store(6, "Vilnius St", "nor-nork", ["Mariam G.", "MG"], [95.5, 95.0, 4.1, 80], [6, 2]),
-  store(7, "Raffi St", "malatia-sebastia", ["Hayk P.", "HP"], [96.8, 96.1, 3.2, 88], [3, 1]),
-  store(8, "Bagratunyats Ave", "shengavit", ["Ani V.", "AV"], [94.9, 94.2, 4.8, 72], [7, 2]),
-  store(9, "Erebuni St", "erebuni", ["Gor T.", "GT"], [93.6, 92.8, 6.2, 54], [9, 3]),
-  store(10, "Tevosyan St", "davtashen", ["Sona B.", "SB"], [97.1, 96.5, 2.9, 91], [2, 1]),
-  store(11, "Khudyakov St", "avan", ["Karen D.", "KD"], [94.4, 93.9, 5.1, 61], [8, 2]),
-  store(12, "Halabyan St", "ajapnyak", ["Elen R.", "ER"], [95.2, 94.6, 4.4, 77], [6, 2]),
+  store(1, ["Mashtots Ave", "Մաշտոցի պողոտա"], "kentron", ["Narine H.", "Նարինե Հ."], [97.9, 97.2, 3.1, 93], [3, 1]),
+  store(2, ["Tumanyan St", "Թումանյան փողոց"], "kentron", ["Tigran A.", "Տիգրան Ա."], [97.3, 96.9, 3.3, 89], [4, 2]),
+  store(3, ["Komitas Ave", "Կոմիտասի պողոտա"], "arabkir", ["Anna M.", "Աննա Մ."], [95.8, 94.1, 5.6, 86], [5, 2]),
+  store(4, ["Baghramyan Ave", "Բաղրամյան պողոտա"], "arabkir", ["Lilit S.", "Լիլիթ Ս."], [97.0, 96.4, 3.0, 90], [3, 1]),
+  store(5, ["Gai Ave", "Գայի պողոտա"], "nor-nork", ["Armen K.", "Արմեն Կ."], [96.3, 95.6, 3.6, 84], [4, 2]),
+  store(6, ["Vilnius St", "Վիլնյուսի փողոց"], "nor-nork", ["Mariam G.", "Մարիամ Գ."], [95.5, 95.0, 4.1, 80], [6, 2]),
+  store(7, ["Raffi St", "Րաֆֆու փողոց"], "malatia-sebastia", ["Hayk P.", "Հայկ Պ."], [96.8, 96.1, 3.2, 88], [3, 1]),
+  store(8, ["Bagratunyats Ave", "Բագրատունյաց պողոտա"], "shengavit", ["Ani V.", "Անի Վ."], [94.9, 94.2, 4.8, 72], [7, 2]),
+  store(9, ["Erebuni St", "Էրեբունու փողոց"], "erebuni", ["Gor T.", "Գոռ Թ."], [93.6, 92.8, 6.2, 54], [9, 3]),
+  store(10, ["Tevosyan St", "Տևոսյան փողոց"], "davtashen", ["Sona B.", "Սոնա Բ."], [97.1, 96.5, 2.9, 91], [2, 1]),
+  store(11, ["Khudyakov St", "Խուդյակովի փողոց"], "avan", ["Karen D.", "Կարեն Դ."], [94.4, 93.9, 5.1, 61], [8, 2]),
+  store(12, ["Halabyan St", "Հալաբյան փողոց"], "ajapnyak", ["Elen R.", "Էլեն Ռ."], [95.2, 94.6, 4.4, 77], [6, 2]),
 ];
 
 export const SUPPLIERS: Supplier[] = [
-  { id: "dairyco", name: "DairyCo", initials: "DC", tone: "info", categories: { en: "Milk, kefir, cheese" } },
-  { id: "freshbake", name: "FreshBake", initials: "FB", tone: "warn", categories: { en: "Bread, pastries" } },
-  { id: "bevco", name: "BevCo", initials: "BC", tone: "bad", categories: { en: "Soft drinks, water" } },
-  { id: "agrieggs", name: "AgriEggs", initials: "AE", tone: "good", categories: { en: "Eggs" } },
-  { id: "groceryhub", name: "GroceryHub", initials: "GH", tone: "primary", categories: { en: "Dry goods" } },
-  { id: "coldfoods", name: "ColdFoods", initials: "CF", tone: "info", categories: { en: "Frozen food" } },
+  { id: "dairyco", name: { en: "Aragil Dairy", hy: "Արագիլ Կաթ" }, tone: "info", categories: { en: "Milk, kefir, cheese", hy: "Կաթ, կեֆիր, պանիր" } },
+  { id: "freshbake", name: { en: "Tonir Bakery", hy: "Թոնիր Հացատուն" }, tone: "warn", categories: { en: "Bread, pastries", hy: "Հաց, թխվածքներ" } },
+  { id: "bevco", name: { en: "Hrazdan Drinks", hy: "Հրազդան Ըմպելիքներ" }, tone: "bad", categories: { en: "Soft drinks, water", hy: "Զովացուցիչ ըմպելիքներ, ջուր" } },
+  { id: "agrieggs", name: { en: "Nairi Eggs", hy: "Նաիրի Ձու" }, tone: "good", categories: { en: "Eggs", hy: "Ձու" } },
+  { id: "groceryhub", name: { en: "Masis Trade", hy: "Մասիս Թրեյդ" }, tone: "primary", categories: { en: "Dry goods", hy: "Չոր մթերք" } },
+  { id: "coldfoods", name: { en: "Aragats Frost", hy: "Արագած Ֆրոստ" }, tone: "info", categories: { en: "Frozen food", hy: "Սառեցված մթերք" } },
 ];
 
-export const HEAD_OFFICE: Persona = { id: "davit", name: "Davit S.", initials: "DS", role: "headOffice" };
+export const HEAD_OFFICE: Persona = { id: "davit", name: { en: "Davit S.", hy: "Դավիթ Ս." }, role: "headOffice" };
 
 /** The demo's main persona: Anna M., manager of store 03 (Komitas Ave, Arabkir). */
 export const DEFAULT_STORE_ID = "s03";
@@ -83,7 +83,7 @@ export function getStore(id: string): Store {
 
 export function storeManager(storeId: string): Persona {
   const s = getStore(storeId);
-  return { id: `mgr-${s.id}`, name: s.manager.name, initials: s.manager.initials, role: "storeManager", storeId: s.id };
+  return { id: `mgr-${s.id}`, name: s.manager.name, role: "storeManager", storeId: s.id };
 }
 
 export function getDistrict(id: string): District {

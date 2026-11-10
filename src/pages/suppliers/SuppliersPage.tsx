@@ -15,8 +15,9 @@ import { fmtAmd, fmtDate, fmtDeltaPp, fmtNumber, fmtPercent } from "@/lib/format
 import { useLocalized } from "@/lib/useLocalized";
 import { SupplierDrawer } from "./SupplierDrawer";
 import { STATUS_TONE, onTimeColor, useDelayText } from "./shared";
+import { pick, supplierName, initials } from "@/lib/names";
 
-const th = "whitespace-nowrap border-b border-line bg-subtle px-4 py-2.5 text-left text-xs font-semibold text-muted first:pl-5 last:pr-5";
+const th = "border-b border-line bg-subtle px-4 py-2.5 text-left align-bottom text-xs font-semibold leading-snug text-muted first:pl-5 last:pr-5";
 const td = "border-b border-line px-4 py-3 align-middle first:pl-5 last:pr-5";
 const DOT = { onTime: "bg-good", late: "bg-bad", short: "bg-[#e09b2d]" } as const;
 
@@ -34,7 +35,7 @@ export function SuppliersPage() {
   const onTime = ((deliveries - late) / deliveries) * 100;
   const inFull = data.stats.reduce((s, x) => s + x.inFull * x.deliveries, 0) / deliveries;
   const lost = data.stats.reduce((s, x) => s + x.lostSales, 0);
-  const worst = SUPPLIERS.find((s) => s.id === rows[0].supplierId)!.name;
+  const worst = supplierName(rows[0].supplierId);
   const trend = data.trend.weeks.map((w, i) => ({
     label: i === data.trend.weeks.length - 1 ? t("stockouts.trend.thisWeek") : fmtDate(w, { month: "short", day: "numeric" }),
     worst: data.trend.worst[i],
@@ -90,11 +91,11 @@ export function SuppliersPage() {
                   <tr key={s.supplierId} className={`cursor-pointer ${open === s.supplierId ? "bg-primary-50" : "hover:bg-subtle"}`} onClick={() => setOpen(s.supplierId)}>
                     <td className={td}>
                       <div className="flex items-center gap-3">
-                        <div className={`grid size-10 shrink-0 place-items-center rounded-ctl text-[13px] font-bold ${TONE[sup.tone]}`}>{sup.initials}</div>
+                        <div className={`grid size-10 shrink-0 place-items-center rounded-ctl text-[13px] font-bold ${TONE[sup.tone]}`}>{initials(sup.name)}</div>
                         <div>
-                          <div className="font-semibold">{sup.name}</div>
-                          <div className="whitespace-nowrap text-xs text-muted">
-                            {sup.categories.en} · {t("suppliers.table.deliveries", { count: s.deliveries })}
+                          <div className="font-semibold">{pick(sup.name)}</div>
+                          <div className="text-xs text-muted">
+                            {pick(sup.categories)} · {t("suppliers.table.deliveries", { count: s.deliveries })}
                             {s.late > 0 && `, ${t("suppliers.table.lateCount", { count: s.late })}`}
                           </div>
                         </div>
@@ -181,7 +182,7 @@ function RecentRow({ r }: { r: Delivery }) {
       <span className={`mt-[5px] size-2.5 shrink-0 rounded-full ${DOT[r.status]}`} />
       <div>
         <div className="font-semibold">
-          {sup.name} · {r.status === "late" ? t("suppliers.recent.due", { when }) : when}
+          {pick(sup.name)} · {r.status === "late" ? t("suppliers.recent.due", { when }) : when}
         </div>
         <div className="text-xs text-muted">{t(`suppliers.recent.${r.detail.key}`, params)}</div>
       </div>

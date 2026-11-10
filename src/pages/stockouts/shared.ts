@@ -2,9 +2,10 @@ import { useTranslation } from "react-i18next";
 import type { TaskRef } from "@/app/useTaskActions";
 import type { StockRow, StockStep } from "@/data/stockouts";
 import type { TaskParam } from "@/data/today";
-import { STORES, SUPPLIERS } from "@/data/world";
+import { STORES } from "@/data/world";
 import { fmtDate } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
+import { supplierName } from "@/lib/names";
 
 /** The task behind a suggested step, if the step is something you do (not "covered by an order"). */
 export function stepRef(step: StockStep): TaskRef | undefined {
@@ -30,7 +31,7 @@ export function useParamText() {
     const out: Record<string, string | number> = {};
     for (const [k, v] of Object.entries(params)) {
       if (v instanceof Date) out[k] = k === "day" ? fmtDate(v, { weekday: "long" }) : fmtDate(v, { weekday: "short", month: "short", day: "numeric" });
-      else if (k === "supplier") out[k] = SUPPLIERS.find((s) => s.id === v)?.name ?? String(v);
+      else if (k === "supplier") out[k] = supplierName(String(v));
       else if (k === "store") out[k] = loc(STORES.find((s) => s.id === v)?.name ?? { en: String(v) });
       else out[k] = v;
     }

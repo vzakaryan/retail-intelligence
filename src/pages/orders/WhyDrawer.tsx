@@ -11,6 +11,7 @@ import { ProductThumb } from "@/components/ui/ProductThumb";
 import { QtyInput } from "@/components/ui/QtyInput";
 import { fmtDate, fmtNumber } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
+import { pick } from "@/lib/names";
 
 interface Props {
   view: OrderView;
@@ -45,7 +46,7 @@ export function WhyDrawer({ view, line, qty, onQty, onAccept, onClose }: Props) 
             <div className="min-w-0">
               <div className="truncate text-lg font-bold">{loc(line.product.name)}</div>
               <div className="text-xs text-muted">
-                {line.product.sku} · {view.supplier.name}
+                {line.product.sku} · {pick(view.supplier.name)}
               </div>
             </div>
           </div>
@@ -102,7 +103,7 @@ function WhyBody({ view, line }: { view: OrderView; line: LineView }) {
         <div className="overflow-hidden rounded-xl border border-line">
           <CalcRow op="" label={t("orders.why.expected", { from: md(start), to: md(view.order.coversUntil) })} value={l.expected} />
           <CalcRow op="+" label={t("orders.why.safety", { count: safetyDays })} value={l.safetyStock} />
-          {line.extraSafety > 0 && <CalcRow op="+" label={t("orders.why.extraSafety", { supplier: view.supplier.name })} value={line.extraSafety} />}
+          {line.extraSafety > 0 && <CalcRow op="+" label={t("orders.why.extraSafety", { supplier: pick(view.supplier.name) })} value={line.extraSafety} />}
           <CalcRow op="−" label={t("orders.why.inStore")} value={l.inStore} />
           <CalcRow op="−" label={t("orders.why.onTheWay")} value={l.onTheWay} />
           <div className="flex justify-between bg-primary-50 px-3.5 py-2.5 font-bold text-primary">
