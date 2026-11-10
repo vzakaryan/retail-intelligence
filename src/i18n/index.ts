@@ -16,13 +16,16 @@ export type LanguageCode = (typeof LANGUAGES)[number]["code"];
 
 const STORAGE_KEY = "ri-lang";
 
+/** Language shown to first-time visitors (the client is Armenian). */
+const DEFAULT_LANGUAGE = "hy";
+
 /** Remembered language for this browser (a per-viewer convenience; may be unavailable). */
 function savedLanguage(): string {
   try {
     const v = localStorage.getItem(STORAGE_KEY);
-    return v === "hy" || v === "en" ? v : "en";
+    return v === "hy" || v === "en" ? v : DEFAULT_LANGUAGE;
   } catch {
-    return "en";
+    return DEFAULT_LANGUAGE;
   }
 }
 

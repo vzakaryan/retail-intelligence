@@ -140,8 +140,9 @@ assumes automation they don't have.
 
 ## Language / i18n
 
-- **Both English and Armenian are live.** EN / Հայ switch in the top bar; the
-  choice is remembered per browser (`localStorage` key `ri-lang`).
+- **Both English and Armenian are live; Armenian is the default** for new
+  visitors (`DEFAULT_LANGUAGE` in `src/i18n/index.ts`). EN / Հայ switch in the
+  top bar; the choice is remembered per browser (`localStorage` key `ri-lang`).
 - All UI text lives in `src/i18n/locales/en.json` and `hy.json` (same keys;
   missing hy keys fall back to English). **Every new string must be added to
   both files.** Plural keys (`_one` / `_other`) must exist in hy too.
