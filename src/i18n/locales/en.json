@@ -36,7 +36,9 @@
     "searchPlaceholder": "Search products…",
     "notifications": "Notifications",
     "language": "Language",
-    "armenianSoon": "Armenian translation is coming soon"
+    "armenianSoon": "Armenian translation is coming soon",
+    "storeCount_one": "{{count}} store",
+    "storeCount_other": "{{count}} stores"
   },
   "roles": {
     "storeManager": "Store manager",
@@ -96,7 +98,7 @@
   },
   "today": {
     "greeting": "Good morning, {{name}}",
-    "subtitle": "{{date}} · What needs your attention at Store {{code}} today",
+    "subtitle": "{{date}} · What needs your attention at the {{store}} store today",
     "period": {
       "label": "Period",
       "week": "This week",
@@ -230,7 +232,8 @@
     "close": "Close",
     "show": "Show",
     "hide": "Hide",
-    "edit": "Edit"
+    "edit": "Edit",
+    "storeNumber": "Store {{number}}"
   },
   "orders": {
     "day": {
@@ -423,7 +426,7 @@
       "back": "Back to order suggestions"
     },
     "sheet": {
-      "heading": "Order for {{supplier}} — Store {{store}}",
+      "heading": "Order for {{supplier}} — {{store}} (store {{number}})",
       "delivery": "Delivery: {{date}}",
       "total": "{{count}} products · {{units}} units",
       "colSku": "SKU",
@@ -475,7 +478,8 @@
       "lostSales": "Lost sales",
       "actedOn": "Suggestions acted on",
       "open": "Open store",
-      "actedOnShort": "Acted on"
+      "actedOnShort": "Acted on",
+      "number": "Store no."
     },
     "status": {
       "onTrack": "On track",

@@ -2,7 +2,7 @@ import { DEMO_NOW, getStore } from "./world";
 
 /**
  * Supplier orders per store — matches docs/design-references/approved/02–05.
- * Store #03 is hand-crafted; other stores reuse it with scaled numbers.
+ * Store 03 is hand-crafted; other stores reuse it with scaled numbers.
  *
  * The product never places orders itself: the store manager reviews the
  * suggested quantities, orders the usual way (phone, email, Excel) and then
@@ -77,7 +77,7 @@ const L = (
 
 const ok = (qty: number): LineReview => ({ status: "accepted", qty });
 
-// ---------------------------------------------------------------- Store #03
+// ---------------------------------------------------------------- Store 03
 
 const S03_ORDERS: Omit<SupplierOrder, "id" | "storeId">[] = [
   {
@@ -196,7 +196,7 @@ function deriveOrders(storeId: string): SupplierOrder[] {
       onTheWay: sc(l.onTheWay),
       expected: sc(l.expected),
       safetyStock: sc(l.safetyStock),
-      // Only Store #03's manager has started reviewing; placed orders keep their quantities.
+      // Only Store 03's manager has started reviewing; placed orders keep their quantities.
       initialReview: o.status === "placed" && l.initialReview ? { ...l.initialReview, qty: sc(l.initialReview.qty) } : undefined,
     })),
   }));

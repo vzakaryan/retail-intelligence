@@ -6,6 +6,7 @@ import { DEMO_NOW } from "@/data/world";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Segmented } from "@/components/ui/Segmented";
 import { fmtDate } from "@/lib/format";
+import { useStoreLabel } from "@/lib/useStoreLabel";
 import { AtRiskTable } from "./AtRiskTable";
 import { OnlineOrdersCard } from "./OnlineOrdersCard";
 import { ResultsCard } from "./ResultsCard";
@@ -17,6 +18,7 @@ import { useRefilled } from "./useRefilled";
 export function TodayPage() {
   const { t } = useTranslation();
   const { store } = useDemo();
+  const label = useStoreLabel();
   const day = getStoreDay(store.id);
   const refilled = useRefilled(store.id);
   const [period, setPeriod] = useState<Period>("week");
@@ -26,7 +28,7 @@ export function TodayPage() {
     <>
       <PageHeader
         title={t("today.greeting", { name: firstName })}
-        subtitle={t("today.subtitle", { date: fmtDate(DEMO_NOW, { weekday: "long", month: "short", day: "numeric" }), code: store.code })}
+        subtitle={t("today.subtitle", { date: fmtDate(DEMO_NOW, { weekday: "long", month: "short", day: "numeric" }), store: label.name(store) })}
         actions={
           <Segmented
             label={t("today.period.label")}

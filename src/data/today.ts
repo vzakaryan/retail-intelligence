@@ -2,7 +2,7 @@ import { getStore } from "./world";
 
 /**
  * "My store today" data per store.
- * Store #03 (the demo persona's store) is hand-crafted to match
+ * Store 03 (the demo persona's store) is hand-crafted to match
  * docs/design-references/approved/01-my-store-today.png. Other stores are
  * derived deterministically so every store in the selector looks plausible.
  */
@@ -82,7 +82,7 @@ export interface StoreDay {
 
 const nov = (day: number) => new Date(2026, 10, day);
 
-// ---------------------------------------------------------------- Store #03
+// ---------------------------------------------------------------- Store 03
 
 const TASKS_S03: Omit<Task, "id">[] = [
   { kind: "refill", productId: "milk32", params: { moved: 60, aisle: 3 }, action: "markDone", doneAt: "08:40" },

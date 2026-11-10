@@ -29,8 +29,9 @@ export interface StoreKpis {
 
 export interface Store {
   id: string;
-  /** Display number, e.g. "#03" */
-  code: string;
+  /** Store number, e.g. "03" — shown as a small badge, never as "#03" */
+  number: string;
+  /** Branch name = its street, e.g. "Komitas Ave". Shown with the district: "Komitas Ave, Arabkir". */
   name: Localized;
   districtId: string;
   manager: { name: string; initials: string };

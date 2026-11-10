@@ -74,13 +74,18 @@ assumes automation they don't have.
 
 ### Mock world (keep consistent across all screens)
 - Chain: "My Supermarket Chain" (client name TBD), 12 stores in Yerevan.
-- Personas: **Anna M., manager of Store #03 Arabkir – Komitas** (avatar "AM",
+- Personas: **Anna M., manager of store 03 — Komitas Ave, Arabkir** (avatar "AM",
   primary user); **Davit S., Operations, head office** (avatar "DS", chain view).
-- Stores: #01 Kentron – Mashtots, #02 Kentron – Tumanyan, #03 Arabkir – Komitas,
-  #04 Arabkir – Baghramyan, #05 Nor Nork – Gai, #06 Nor Nork – Vilnius,
-  #07 Malatia-Sebastia – Raffi, #08 Shengavit – Bagratunyats, #09 Erebuni,
-  #10 Davtashen, #11 Avan, #12 Ajapnyak. (No stores in Kanaker-Zeytun,
-  Nork-Marash, Nubarashen.)
+- **Store naming (user feedback): never show "#03"-style codes.** A store is
+  shown by its street name with the district ("Komitas Ave, Arabkir"); the
+  number appears only as a small grey badge (`StoreBadge`) in lists. Use
+  `useStoreLabel()` (`name` / `district` / `full`) — don't build names by hand.
+- Stores (number · name · district): 01 Mashtots Ave · Kentron, 02 Tumanyan St ·
+  Kentron, 03 Komitas Ave · Arabkir, 04 Baghramyan Ave · Arabkir, 05 Gai Ave ·
+  Nor Nork, 06 Vilnius St · Nor Nork, 07 Raffi St · Malatia-Sebastia,
+  08 Bagratunyats Ave · Shengavit, 09 Erebuni St · Erebuni, 10 Tevosyan St ·
+  Davtashen, 11 Khudyakov St · Avan, 12 Halabyan St · Ajapnyak. (No stores in
+  Kanaker-Zeytun, Nork-Marash, Nubarashen.)
 - Suppliers (fictional): DairyCo, AgriEggs, BevCo, FreshBake.
 - "Today" in the demo = Tue, Nov 10.
 
@@ -292,3 +297,6 @@ top nav was replaced by a sidebar).
   **All 6 approved screens are now built.** Remaining modules (Stockout risk,
   Online orders, Overstock, Expiry & write-offs, Suppliers, Promotions,
   Settings, Help) are placeholders — their designs must be agreed first.
+- **Step 6b (2026-11-10):** Fixes from user review: district names kept inside
+  map tiles (Nubarashen spans 2 columns, safe wrapping); store names changed
+  from "#03 Arabkir – Komitas" to "Komitas Ave, Arabkir" with a number badge.

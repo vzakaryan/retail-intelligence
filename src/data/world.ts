@@ -33,7 +33,7 @@ const store = (
   today: [openTasks: number, ordersDueToday: number]
 ): Store => ({
   id: `s${String(n).padStart(2, "0")}`,
-  code: `#${String(n).padStart(2, "0")}`,
+  number: String(n).padStart(2, "0"),
   name: { en: name },
   districtId,
   manager: { name: manager[0], initials: manager[1] },
@@ -47,18 +47,18 @@ const store = (
 });
 
 export const STORES: Store[] = [
-  store(1, "Kentron – Mashtots", "kentron", ["Narine H.", "NH"], [97.9, 97.2, 3.1, 93], [3, 1]),
-  store(2, "Kentron – Tumanyan", "kentron", ["Tigran A.", "TA"], [97.3, 96.9, 3.3, 89], [4, 2]),
-  store(3, "Arabkir – Komitas", "arabkir", ["Anna M.", "AM"], [95.8, 94.1, 5.6, 86], [5, 2]),
-  store(4, "Arabkir – Baghramyan", "arabkir", ["Lilit S.", "LS"], [97.0, 96.4, 3.0, 90], [3, 1]),
-  store(5, "Nor Nork – Gai", "nor-nork", ["Armen K.", "AK"], [96.3, 95.6, 3.6, 84], [4, 2]),
-  store(6, "Nor Nork – Vilnius", "nor-nork", ["Mariam G.", "MG"], [95.5, 95.0, 4.1, 80], [6, 2]),
-  store(7, "Malatia-Sebastia – Raffi", "malatia-sebastia", ["Hayk P.", "HP"], [96.8, 96.1, 3.2, 88], [3, 1]),
-  store(8, "Shengavit – Bagratunyats", "shengavit", ["Ani V.", "AV"], [94.9, 94.2, 4.8, 72], [7, 2]),
-  store(9, "Erebuni", "erebuni", ["Gor T.", "GT"], [93.6, 92.8, 6.2, 54], [9, 3]),
-  store(10, "Davtashen", "davtashen", ["Sona B.", "SB"], [97.1, 96.5, 2.9, 91], [2, 1]),
-  store(11, "Avan", "avan", ["Karen D.", "KD"], [94.4, 93.9, 5.1, 61], [8, 2]),
-  store(12, "Ajapnyak", "ajapnyak", ["Elen R.", "ER"], [95.2, 94.6, 4.4, 77], [6, 2]),
+  store(1, "Mashtots Ave", "kentron", ["Narine H.", "NH"], [97.9, 97.2, 3.1, 93], [3, 1]),
+  store(2, "Tumanyan St", "kentron", ["Tigran A.", "TA"], [97.3, 96.9, 3.3, 89], [4, 2]),
+  store(3, "Komitas Ave", "arabkir", ["Anna M.", "AM"], [95.8, 94.1, 5.6, 86], [5, 2]),
+  store(4, "Baghramyan Ave", "arabkir", ["Lilit S.", "LS"], [97.0, 96.4, 3.0, 90], [3, 1]),
+  store(5, "Gai Ave", "nor-nork", ["Armen K.", "AK"], [96.3, 95.6, 3.6, 84], [4, 2]),
+  store(6, "Vilnius St", "nor-nork", ["Mariam G.", "MG"], [95.5, 95.0, 4.1, 80], [6, 2]),
+  store(7, "Raffi St", "malatia-sebastia", ["Hayk P.", "HP"], [96.8, 96.1, 3.2, 88], [3, 1]),
+  store(8, "Bagratunyats Ave", "shengavit", ["Ani V.", "AV"], [94.9, 94.2, 4.8, 72], [7, 2]),
+  store(9, "Erebuni St", "erebuni", ["Gor T.", "GT"], [93.6, 92.8, 6.2, 54], [9, 3]),
+  store(10, "Tevosyan St", "davtashen", ["Sona B.", "SB"], [97.1, 96.5, 2.9, 91], [2, 1]),
+  store(11, "Khudyakov St", "avan", ["Karen D.", "KD"], [94.4, 93.9, 5.1, 61], [8, 2]),
+  store(12, "Halabyan St", "ajapnyak", ["Elen R.", "ER"], [95.2, 94.6, 4.4, 77], [6, 2]),
 ];
 
 export const SUPPLIERS: Supplier[] = [
@@ -70,7 +70,7 @@ export const SUPPLIERS: Supplier[] = [
 
 export const HEAD_OFFICE: Persona = { id: "davit", name: "Davit S.", initials: "DS", role: "headOffice" };
 
-/** The demo's main persona: Anna M., manager of Store #03. */
+/** The demo's main persona: Anna M., manager of store 03 (Komitas Ave, Arabkir). */
 export const DEFAULT_STORE_ID = "s03";
 
 export function getStore(id: string): Store {

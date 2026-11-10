@@ -13,6 +13,8 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { Pill } from "@/components/ui/Pill";
 import { fmtAmd, fmtDeltaPct, fmtDeltaPp, fmtPercent } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
+import { useStoreLabel } from "@/lib/useStoreLabel";
+import { StoreBadge } from "@/components/ui/StoreBadge";
 import { DistrictMap } from "./DistrictMap";
 import { availabilityStatus, availabilityTone } from "./tones";
 
@@ -22,6 +24,7 @@ type SortKey = "availability" | "onlineFulfillment" | "lostSales4w" | "suggestio
 export function StoresPage() {
   const { t } = useTranslation();
   const loc = useLocalized();
+  const label = useStoreLabel();
   const navigate = useNavigate();
   const { setStoreId } = useDemo();
   const [district, setDistrict] = useState<string>();
@@ -42,8 +45,8 @@ export function StoresPage() {
 
   const exportCsv = () => {
     const esc = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`;
-    const head = [t("stores.table.store"), t("stores.table.district"), t("stores.table.manager"), t("stores.table.availability"), t("stores.table.online"), t("stores.table.lostSales"), t("stores.table.actedOn")];
-    const body = rows.map((s) => [`${s.code} ${loc(s.name)}`, loc(getDistrict(s.districtId).name), s.manager.name, s.kpis.availability, s.kpis.onlineFulfillment, s.kpis.lostSales4w, s.kpis.suggestionsActedOn]);
+    const head = [t("stores.table.number"), t("stores.table.store"), t("stores.table.district"), t("stores.table.manager"), t("stores.table.availability"), t("stores.table.online"), t("stores.table.lostSales"), t("stores.table.actedOn")];
+    const body = rows.map((s) => [s.number, label.name(s), label.district(s), s.manager.name, s.kpis.availability, s.kpis.onlineFulfillment, s.kpis.lostSales4w, s.kpis.suggestionsActedOn]);
     const csv = "﻿" + [head, ...body].map((r) => r.map(esc).join(",")).join("\r\n");
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
@@ -129,10 +132,15 @@ export function StoresPage() {
                   return (
                     <tr key={s.id} className="cursor-pointer hover:bg-subtle" onClick={() => openStore(s)}>
                       <td className={td}>
-                        <div className="whitespace-nowrap font-semibold">
-                          {s.code} {loc(s.name)}
+                        <div className="flex items-center gap-3">
+                          <StoreBadge number={s.number} label={t("common.storeNumber", { number: s.number })} />
+                          <div className="min-w-0">
+                            <div className="whitespace-nowrap font-semibold">{label.name(s)}</div>
+                            <div className="whitespace-nowrap text-xs text-muted">
+                              {label.district(s)} · {s.manager.name}
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-xs text-muted">{s.manager.name}</div>
                       </td>
                       <td className={td}>
                         <Pill tone={availabilityTone(a)}>{fmtPercent(a)}</Pill>
