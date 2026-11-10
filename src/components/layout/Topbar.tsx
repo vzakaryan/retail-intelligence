@@ -13,7 +13,7 @@ export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
   const persona = scope === "chain" ? HEAD_OFFICE : storeManager(store.id);
 
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center gap-2 border-b sm:gap-3 border-line bg-white px-4 lg:px-8">
+    <header className="sticky top-0 z-20 print:hidden flex h-16 items-center gap-2 border-b sm:gap-3 border-line bg-white px-4 lg:px-8">
       <button className="rounded-lg p-1.5 text-ink-2 hover:bg-canvas lg:hidden" onClick={onOpenMenu} aria-label={t("nav.openMenu")}>
         <Menu className="size-5" />
       </button>

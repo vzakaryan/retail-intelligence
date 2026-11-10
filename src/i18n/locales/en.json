@@ -43,22 +43,186 @@
     "headOffice": "Operations, head office"
   },
   "pages": {
-    "today": { "title": "My store today", "subtitle": "What needs your attention at {{store}} today" },
-    "stockouts": { "title": "Stockout risk", "subtitle": "Products that may run out at your store" },
-    "orders": { "title": "Order suggestions", "subtitle": "Orders you need to place, sorted by deadline" },
-    "onlineOrders": { "title": "Online orders", "subtitle": "Today's online orders and items that may be missing" },
-    "overstock": { "title": "Overstock", "subtitle": "Products you have too much of" },
-    "writeOffs": { "title": "Expiry & write-offs", "subtitle": "Products close to expiry and what was written off" },
-    "suppliers": { "title": "Suppliers", "subtitle": "How reliable your suppliers are" },
-    "promotions": { "title": "Promotions", "subtitle": "How promotions perform and what to prepare for" },
-    "stores": { "title": "All stores · Yerevan", "subtitle": "Compare stores and see how well suggestions are being used" },
-    "settings": { "title": "Settings", "subtitle": "Demo settings" },
-    "help": { "title": "Help", "subtitle": "How Retail Intelligence works" }
+    "today": {
+      "title": "My store today",
+      "subtitle": "What needs your attention at {{store}} today"
+    },
+    "stockouts": {
+      "title": "Stockout risk",
+      "subtitle": "Products that may run out at your store"
+    },
+    "orders": {
+      "title": "Order suggestions",
+      "subtitle": "Orders you need to place, sorted by deadline"
+    },
+    "onlineOrders": {
+      "title": "Online orders",
+      "subtitle": "Today's online orders and items that may be missing"
+    },
+    "overstock": {
+      "title": "Overstock",
+      "subtitle": "Products you have too much of"
+    },
+    "writeOffs": {
+      "title": "Expiry & write-offs",
+      "subtitle": "Products close to expiry and what was written off"
+    },
+    "suppliers": {
+      "title": "Suppliers",
+      "subtitle": "How reliable your suppliers are"
+    },
+    "promotions": {
+      "title": "Promotions",
+      "subtitle": "How promotions perform and what to prepare for"
+    },
+    "stores": {
+      "title": "All stores · Yerevan",
+      "subtitle": "Compare stores and see how well suggestions are being used"
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Demo settings"
+    },
+    "help": {
+      "title": "Help",
+      "subtitle": "How Retail Intelligence works"
+    }
   },
   "placeholder": {
     "approvedTitle": "This screen is coming next",
     "approvedText": "The design for this screen is approved and will be built in an upcoming step.",
     "plannedTitle": "Design not agreed yet",
     "plannedText": "We will agree the design for this module with you before building it."
+  },
+  "today": {
+    "greeting": "Good morning, {{name}}",
+    "subtitle": "{{date}} · What needs your attention at Store {{code}} today",
+    "period": {
+      "label": "Period",
+      "week": "This week",
+      "4w": "Last 4 weeks"
+    },
+    "vs": {
+      "week": "vs. last week",
+      "4w": "vs. prior 4 weeks"
+    },
+    "kpi": {
+      "availability": "Shelf availability",
+      "availabilityInfo": "How often products were on the shelf when shoppers looked for them.",
+      "online": "Online orders complete",
+      "onlineInfo": "Online orders delivered with every item the customer ordered.",
+      "onlineFoot": "{{done}} of {{total}} orders",
+      "lostSales": "Lost sales (est.)",
+      "lostSalesInfo": "Sales we estimate were missed because products were not on the shelf.",
+      "writeOffs": "Write-offs",
+      "writeOffsInfo": "Value of products thrown away: expired, spoiled or damaged."
+    },
+    "tasks": {
+      "title": "Today's tasks",
+      "subtitle": "Suggested from today's forecast · you decide what to do",
+      "progress": "{{done}} of {{total}} done",
+      "showMore_one": "Show {{count}} more task",
+      "showMore_other": "Show {{count}} more tasks",
+      "showLess": "Show fewer tasks",
+      "print": "Print today's list",
+      "markDone": "Mark done",
+      "review": "Review",
+      "logCall": "Log call",
+      "undo": "Mark as not done",
+      "doneNow": "Done just now",
+      "calledNow": "Call logged just now",
+      "allDone": "All done for today. Nice work!"
+    },
+    "tags": {
+      "online": "Online orders",
+      "ordering": "Ordering",
+      "expiry": "Expiry",
+      "supplier": "Supplier",
+      "promo": "Promotion"
+    },
+    "task": {
+      "refill": {
+        "title": "Refill {{product}} from backroom",
+        "detail": "{{onShelf}} on shelf · {{backroom}} in backroom · Aisle {{aisle}}",
+        "doneDetail": "Moved {{moved}} units to the shelf · Aisle {{aisle}} · done at {{at}}"
+      },
+      "refillOnline": {
+        "title": "Refill {{product}} before {{time}}",
+        "detail": "{{onShelf}} on shelf · {{backroom}} in backroom · {{orders}} of today's online orders include it",
+        "doneDetail": "Refilled · done at {{at}}"
+      },
+      "removeExpired": {
+        "title": "Remove expired {{product}}",
+        "detail": "{{units}} units expired today",
+        "doneDetail": "{{units}} units written off · done at {{at}}"
+      },
+      "checkExpiry": {
+        "title": "Check expiry dates in the dairy fridge",
+        "detail": "Look for products that expire in the next 2 days",
+        "doneDetail": "{{found}} products close to expiry found · done at {{at}}"
+      },
+      "reviewOrder": {
+        "title": "Review the {{supplier}} order",
+        "detail": "Order by {{deadline}} · {{count}} products suggested · delivery {{delivery}}",
+        "doneDetail": "Reviewed · done at {{at}}"
+      },
+      "markdown": {
+        "title": "Mark down {{product}}",
+        "detail": "{{units}} units expire on {{date}} · suggested price cut −{{cut}}%",
+        "doneDetail": "Marked down · done at {{at}}"
+      },
+      "callSupplier": {
+        "title": "Call {{supplier}} about the late delivery",
+        "detail": "Was due {{due}} · about {{days}} days of stock left in store",
+        "doneDetail": "Call logged at {{at}}"
+      },
+      "promoTags": {
+        "title": "Put up price tags for the weekend promotion",
+        "detail": "{{count}} products · promotion starts {{starts}}",
+        "doneDetail": "Done at {{at}}"
+      }
+    },
+    "online": {
+      "title": "Online orders today",
+      "subtitle": "{{orders}} orders · {{atRisk}} include items that may be missing",
+      "meta": "in {{orders}} orders · {{onShelf}} on shelf",
+      "level": {
+        "refill": "Refill",
+        "low": "Low",
+        "refilled": "Refilled"
+      }
+    },
+    "results": {
+      "title": "Your results so far",
+      "subtitle": "Last 8 weeks vs. the 8 weeks before",
+      "availability": "Shelf availability",
+      "lostSales": "Lost sales",
+      "writeOffs": "Write-offs",
+      "actedOn": "Suggestions acted on"
+    },
+    "atRisk": {
+      "title": "Products that may run out today",
+      "subtitle": "At your store, based on today's expected sales",
+      "seeAll": "See all {{count}} products",
+      "col": {
+        "product": "Product",
+        "onShelf": "On shelf",
+        "backroom": "In backroom",
+        "expected": "Expected sales today",
+        "runsOut": "May run out",
+        "action": "What you can do"
+      },
+      "around": "around {{time}}",
+      "refilled": "Refilled",
+      "action": {
+        "refill": "Refill from backroom",
+        "taskAdded": "task added",
+        "noneInBackroom": "None in backroom",
+        "nextSupplier": "next {{supplier}} delivery tomorrow",
+        "nextDelivery": "Evening delivery at {{time}}",
+        "askEarlier": "consider asking earlier",
+        "done": "Refilled from backroom"
+      }
+    }
   }
 }

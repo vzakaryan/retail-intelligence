@@ -12,7 +12,6 @@ import {
   TrendingUp,
   type LucideIcon,
 } from "lucide-react";
-import type { Store } from "@/data/types";
 
 export type PageId =
   | "today"
@@ -35,7 +34,8 @@ export interface NavItem {
   design: "approved" | "planned";
   /** Head-office (chain) page rather than a single-store page. */
   chain?: boolean;
-  badge?: (store: Store) => number;
+  /** Red count in the sidebar */
+  badge?: "openTasks" | "ordersDueToday";
 }
 
 export interface NavGroup {
@@ -47,13 +47,13 @@ export interface NavGroup {
 export const NAV: NavGroup[] = [
   {
     groupKey: null,
-    items: [{ id: "today", path: "/today", icon: ListChecks, design: "approved", badge: (s) => s.today.openTasks }],
+    items: [{ id: "today", path: "/today", icon: ListChecks, design: "approved", badge: "openTasks" }],
   },
   {
     groupKey: "stockDemand",
     items: [
       { id: "stockouts", path: "/stockouts", icon: TrendingUp, design: "planned" },
-      { id: "orders", path: "/orders", icon: ClipboardList, design: "approved", badge: (s) => s.today.ordersDueToday },
+      { id: "orders", path: "/orders", icon: ClipboardList, design: "approved", badge: "ordersDueToday" },
       { id: "onlineOrders", path: "/online-orders", icon: ShoppingBag, design: "planned" },
     ],
   },

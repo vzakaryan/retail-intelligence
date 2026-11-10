@@ -256,4 +256,15 @@ top nav was replaced by a sidebar).
   **Live demo: https://vzakaryan.github.io/retail-intelligence/** (auto-deploys on
   every push to `main`). Note: the repo is public — never commit client names,
   real data or secrets.
-  Next proposed step: build the "My store today" screen.
+- **Step 4 (2026-11-10):** Built **My store today** (`src/pages/today/`) to match
+  `approved/01-my-store-today.png`. Data in `src/data/today.ts` (Store #03
+  hand-crafted; other stores derived deterministically) + `src/data/products.ts`.
+  Interactive: Mark done / Log call / un-tick tasks (state in `DemoContext`,
+  memory only — reload resets the demo), progress + sidebar badge update live,
+  refilled products turn green in "Online orders" and "may run out" table,
+  Show more tasks, This week / Last 4 weeks switch, Review → Order suggestions,
+  Print today's list. Shared UI added in `src/components/ui/` (KpiCard, Pill,
+  Tag, Button, IconTile, InfoTip, Progress, Segmented, ProductThumb).
+  Small deviation from the mockup: the period dropdowns became one
+  This week / Last 4 weeks switch.
+  Next proposed step: build the Order suggestions flow (screens 02–05).

@@ -3,6 +3,7 @@ import { ShoppingCart, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { FOOTER_NAV, NAV, type NavItem } from "@/app/navigation";
 import { useDemo } from "@/app/DemoContext";
+import { useTasks } from "@/app/useTasks";
 import { DATA_REFRESHED_AT } from "@/data/world";
 
 interface Props {
@@ -29,7 +30,7 @@ export function Sidebar({ open, onClose }: Props) {
         </button>
       </div>
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-[248px] flex-col border-r border-line bg-white px-3.5 py-[18px] transition-transform duration-200 lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-[248px] print:hidden flex-col border-r border-line bg-white px-3.5 py-[18px] transition-transform duration-200 lg:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -76,7 +77,8 @@ function SidebarLink({ item, onNavigate }: { item: NavItem; onNavigate: () => vo
   const { t } = useTranslation();
   const { store } = useDemo();
   const Icon = item.icon;
-  const badge = item.badge?.(store);
+  const { openCount } = useTasks(store.id);
+  const badge = item.badge === "openTasks" ? openCount : item.badge === "ordersDueToday" ? store.today.ordersDueToday : 0;
 
   return (
     <NavLink
