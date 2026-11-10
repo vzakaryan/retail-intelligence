@@ -89,3 +89,42 @@ export function getDistrict(id: string): District {
   if (!found) throw new Error(`Unknown district ${id}`);
   return found;
 }
+
+// ------------------------------------------------------------- Chain view
+
+/** Change vs. the prior 4 weeks for the chain-level KPIs (head-office screen). */
+export const CHAIN_DELTAS = {
+  availabilityPp: 1.3,
+  onlineFulfillmentPp: 1.4,
+  lostSalesPct: -14,
+  actedOnPp: 6,
+};
+
+/** Stores acting on at least this share of suggestions count as "high adoption". */
+export const HIGH_ADOPTION_PCT = 85;
+
+const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / (xs.length || 1);
+
+export function chainKpis(stores: Store[] = STORES) {
+  return {
+    availability: avg(stores.map((s) => s.kpis.availability)),
+    onlineFulfillment: avg(stores.map((s) => s.kpis.onlineFulfillment)),
+    lostSales4w: stores.reduce((a, s) => a + s.kpis.lostSales4w, 0),
+    suggestionsActedOn: avg(stores.map((s) => s.kpis.suggestionsActedOn)),
+  };
+}
+
+/** Average availability of stores that act on most suggestions vs. the rest. */
+export function adoptionInsight(stores: Store[] = STORES) {
+  const high = stores.filter((s) => s.kpis.suggestionsActedOn >= HIGH_ADOPTION_PCT);
+  const rest = stores.filter((s) => s.kpis.suggestionsActedOn < HIGH_ADOPTION_PCT);
+  return {
+    high: { count: high.length, availability: avg(high.map((s) => s.kpis.availability)) },
+    rest: { count: rest.length, availability: avg(rest.map((s) => s.kpis.availability)) },
+  };
+}
+
+export function districtStats(districtId: string) {
+  const stores = STORES.filter((s) => s.districtId === districtId);
+  return { count: stores.length, availability: stores.length ? avg(stores.map((s) => s.kpis.availability)) : undefined };
+}

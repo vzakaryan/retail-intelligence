@@ -430,5 +430,57 @@
       "colProduct": "Product",
       "colQty": "Quantity"
     }
+  },
+  "stores": {
+    "period": "Last 4 weeks · vs. prior 4 weeks",
+    "kpi": {
+      "availability": "Shelf availability",
+      "online": "Online orders complete",
+      "lostSales": "Lost sales (est.)",
+      "actedOn": "Suggestions acted on",
+      "actedOnInfo": "Share of suggestions (tasks and order quantities) that store managers accepted or acted on."
+    },
+    "map": {
+      "title": "Availability by district",
+      "subtitle": "{{stores}} stores in {{districts}} districts · schematic map",
+      "noStores": "No stores",
+      "stores_one": "{{count}} store",
+      "stores_other": "{{count}} stores",
+      "legend": {
+        "good": "≥ 96%",
+        "warn": "94–96%",
+        "bad": "< 94%"
+      },
+      "hint": "Click a district to see only its stores",
+      "clear": "Show all"
+    },
+    "insight": {
+      "title": "Stores that act on suggestions do better",
+      "high_one": "Acting on {{pct}}% or more ({{count}} store)",
+      "high_other": "Acting on {{pct}}% or more ({{count}} stores)",
+      "rest_one": "All other stores ({{count}} store)",
+      "rest_other": "All other stores ({{count}} stores)",
+      "note": "Average shelf availability, last 4 weeks"
+    },
+    "table": {
+      "title": "Stores ranked by availability",
+      "titleDistrict": "Stores in {{district}}",
+      "subtitle": "Lowest first · click a store to open its \"today\" view",
+      "export": "Export",
+      "store": "Store",
+      "district": "District",
+      "manager": "Manager",
+      "availability": "Availability",
+      "online": "Online orders",
+      "lostSales": "Lost sales",
+      "actedOn": "Suggestions acted on",
+      "open": "Open store",
+      "actedOnShort": "Acted on"
+    },
+    "status": {
+      "onTrack": "On track",
+      "watch": "Watch",
+      "attention": "Needs attention"
+    }
   }
 }

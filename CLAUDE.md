@@ -282,4 +282,13 @@ top nav was replaced by a sidebar).
   opens in Excel), Copy as text, Print, "I've placed the order" → Done.
   Placing an order completes its "Review the … order" task on My store today;
   Log call on a late order completes the call task; sidebar badges update.
-  Next proposed step: build the head-office **All stores · Yerevan** screen (06).
+- **Step 6 (2026-11-10):** Built **All stores · Yerevan** (`src/pages/stores/`)
+  matching approved 06. Chain KPIs computed from `STORES` (`chainKpis`,
+  deltas in `CHAIN_DELTAS`), clickable schematic district tile map (filters
+  the table), "stores that act on suggestions do better" insight
+  (`adoptionInsight`, threshold `HIGH_ADOPTION_PCT` = 85), sortable ranking
+  table (lowest availability first), Export (CSV), click a store → its
+  "My store today". `fmtAmd(v, { fixed: true })` for aligned table amounts.
+  **All 6 approved screens are now built.** Remaining modules (Stockout risk,
+  Online orders, Overstock, Expiry & write-offs, Suppliers, Promotions,
+  Settings, Help) are placeholders — their designs must be agreed first.
