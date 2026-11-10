@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>My store today — proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="today" data-scope="store">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>Good morning, Anna</h1>
+          <div class="subtitle">Tuesday, Nov 10 · What needs your attention at Store #03 today</div>
+        </div>
+        <div class="filters">
+          <div class="select"><i data-lucide="calendar"></i>This week<i data-lucide="chevron-down"></i></div>
+          <div class="select"><span class="lbl">Compare to</span>Last week<i data-lucide="chevron-down"></i></div>
+        </div>
+      </div>
+
+      <section class="kpis">
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-good"><i data-lucide="circle-check"></i></div>Shelf availability<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">95.8%</div>
+          <div class="kpi-foot"><span class="delta tone-good">↑ 0.9 pp</span>vs. last week</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-info"><i data-lucide="shopping-bag"></i></div>Online orders complete<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">94.1%</div>
+          <div class="kpi-foot"><span class="delta tone-good">↑ 1.6 pp</span>112 of 119 orders</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-bad"><i data-lucide="banknote"></i></div>Lost sales (est.)<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">AMD 1.42M</div>
+          <div class="kpi-foot"><span class="delta tone-good">↓ 8.5%</span>vs. last week</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-warn"><i data-lucide="trash-2"></i></div>Write-offs<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">AMD 0.61M</div>
+          <div class="kpi-foot"><span class="delta tone-bad">↑ 4.2%</span>vs. last week</div>
+        </div>
+      </section>
+
+      <section class="row r-2-1">
+        <div class="card">
+          <div class="card-head" style="padding-bottom: 14px">
+            <div>
+              <div class="card-title">Today's tasks</div>
+              <div class="card-sub">Suggested from today's forecast · you decide what to do</div>
+            </div>
+            <div style="text-align: right">
+              <div style="font-weight: 600; margin-bottom: 6px">3 of 8 done</div>
+              <div class="progress"><div style="width: 37.5%"></div></div>
+            </div>
+          </div>
+
+          <div class="task done">
+            <div class="checkbox on"><i data-lucide="check"></i></div>
+            <div class="task-body">
+              <div class="task-title">Refill Milk 3.2% (1L) from backroom</div>
+              <div class="task-detail">Moved 60 units to the shelf · Aisle 3 · done at 08:40</div>
+            </div>
+          </div>
+          <div class="task done">
+            <div class="checkbox on"><i data-lucide="check"></i></div>
+            <div class="task-body">
+              <div class="task-title">Remove expired Kefir (1L)</div>
+              <div class="task-detail">12 units written off · done at 08:55</div>
+            </div>
+          </div>
+          <div class="task">
+            <div class="checkbox"></div>
+            <div class="task-body">
+              <div class="task-title">Refill Eggs (10-pack) before 11:00 <span class="tag tone-info">Online orders</span></div>
+              <div class="task-detail">9 on shelf · 40 in backroom · 9 of today's online orders include eggs</div>
+            </div>
+            <span class="btn">Mark done</span>
+          </div>
+          <div class="task">
+            <div class="checkbox"></div>
+            <div class="task-body">
+              <div class="task-title">Review the DairyCo order <span class="tag tone-primary">Ordering</span></div>
+              <div class="task-detail">Order by 16:00 · 14 products suggested · delivery Thu, Nov 12</div>
+            </div>
+            <span class="btn btn-primary">Review</span>
+          </div>
+          <div class="task">
+            <div class="checkbox"></div>
+            <div class="task-body">
+              <div class="task-title">Mark down Yogurt (500g) <span class="tag tone-warn">Expiry</span></div>
+              <div class="task-detail">46 units expire on Nov 12 · suggested price cut −30%</div>
+            </div>
+            <span class="btn">Mark done</span>
+          </div>
+          <div class="task">
+            <div class="checkbox"></div>
+            <div class="task-body">
+              <div class="task-title">Call AgriEggs about the late delivery <span class="tag tone-bad">Supplier</span></div>
+              <div class="task-detail">Was due Nov 9 · about 2 days of eggs left in store</div>
+            </div>
+            <span class="btn">Log call</span>
+          </div>
+          <div class="table-foot"><span class="link">Show 2 more tasks<i data-lucide="chevron-down"></i></span><span class="btn"><i data-lucide="printer"></i>Print today's list</span></div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Online orders today</div>
+                <div class="card-sub">38 orders · 6 include items that may be missing</div>
+              </div>
+            </div>
+            <div class="card-body" style="padding-top: 8px">
+              <div class="mini-row"><div class="product"><div class="thumb" style="width:34px;height:34px;font-size:18px">🥚</div><div><div class="p-name">Eggs (10-pack)</div><div class="meta">in 9 orders · 9 on shelf</div></div></div><span class="pill tone-bad">Refill</span></div>
+              <div class="mini-row"><div class="product"><div class="thumb" style="width:34px;height:34px;font-size:18px">🥤</div><div><div class="p-name">Cola (1.5L)</div><div class="meta">in 4 orders · 6 on shelf</div></div></div><span class="pill tone-warn">Low</span></div>
+              <div class="mini-row"><div class="product"><div class="thumb" style="width:34px;height:34px;font-size:18px">🫙</div><div><div class="p-name">Sour cream (400g)</div><div class="meta">in 3 orders · 7 on shelf</div></div></div><span class="pill tone-warn">Low</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Your results so far</div>
+                <div class="card-sub">Last 8 weeks vs. the 8 weeks before</div>
+              </div>
+            </div>
+            <div class="card-body" style="padding-top: 6px">
+              <div class="win"><span>Shelf availability</span><b style="color: var(--good)">+2.4 pp</b></div>
+              <div class="win"><span>Lost sales</span><b style="color: var(--good)">−18%</b></div>
+              <div class="win"><span>Write-offs</span><b style="color: var(--good)">−11%</b></div>
+              <div class="win"><span>Suggestions acted on</span><b>86%</b></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head" style="padding-bottom: 14px">
+          <div>
+            <div class="card-title">Products that may run out today</div>
+            <div class="card-sub">At your store, based on today's expected sales</div>
+          </div>
+          <span class="link">See all 11 products<i data-lucide="arrow-right"></i></span>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Product</th><th class="num">On shelf</th><th class="num">In backroom</th><th class="num">Expected sales today</th><th>May run out</th><th>What you can do</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="product"><div class="thumb">🥚</div><div><div class="p-name">Eggs (10-pack)</div><div class="meta">EGG-010 · AgriEggs</div></div></div></td>
+              <td class="num">9</td><td class="num">40</td><td class="num">26</td>
+              <td><span class="pill tone-bad">around 11:00</span></td>
+              <td>Refill from backroom <span class="meta">· task added</span></td>
+              <td><i class="chev" data-lucide="chevron-right"></i></td>
+            </tr>
+            <tr>
+              <td><div class="product"><div class="thumb">🥤</div><div><div class="p-name">Cola (1.5L)</div><div class="meta">BEV-015 · BevCo</div></div></div></td>
+              <td class="num">6</td><td class="num">0</td><td class="num">22</td>
+              <td><span class="pill tone-bad">around 12:00</span></td>
+              <td>None in backroom <span class="meta">· next BevCo delivery tomorrow</span></td>
+              <td><i class="chev" data-lucide="chevron-right"></i></td>
+            </tr>
+            <tr>
+              <td><div class="product"><div class="thumb">🫙</div><div><div class="p-name">Sour cream (400g)</div><div class="meta">SCR-040 · DairyCo</div></div></div></td>
+              <td class="num">7</td><td class="num">12</td><td class="num">15</td>
+              <td><span class="pill tone-warn">around 15:00</span></td>
+              <td>Refill from backroom</td>
+              <td><i class="chev" data-lucide="chevron-right"></i></td>
+            </tr>
+            <tr>
+              <td><div class="product"><div class="thumb">🍞</div><div><div class="p-name">Bread (white, 600g)</div><div class="meta">BRD-004 · FreshBake</div></div></div></td>
+              <td class="num">14</td><td class="num">0</td><td class="num">58</td>
+              <td><span class="pill tone-warn">around 17:00</span></td>
+              <td>Evening delivery at 18:00 <span class="meta">· consider asking earlier</span></td>
+              <td><i class="chev" data-lucide="chevron-right"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="common.js"></script>
+</body>
+</html>

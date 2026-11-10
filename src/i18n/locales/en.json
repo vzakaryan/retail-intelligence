@@ -1,0 +1,64 @@
+{
+  "app": {
+    "name": "Retail Intelligence",
+    "tagline": "for Supermarket Chains",
+    "dataFreshness": "Data updated today, {{time}}"
+  },
+  "nav": {
+    "groups": {
+      "stockDemand": "Stock & demand",
+      "inventoryHealth": "Inventory health",
+      "partnersSales": "Partners & sales",
+      "headOffice": "Head office"
+    },
+    "items": {
+      "today": "My store today",
+      "stockouts": "Stockout risk",
+      "orders": "Order suggestions",
+      "onlineOrders": "Online orders",
+      "overstock": "Overstock",
+      "writeOffs": "Expiry & write-offs",
+      "suppliers": "Suppliers",
+      "promotions": "Promotions",
+      "stores": "All stores",
+      "settings": "Settings",
+      "help": "Help"
+    },
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "topbar": {
+    "store": "Store",
+    "viewing": "Viewing",
+    "allStores": "All stores · Yerevan",
+    "headOffice": "Head office",
+    "stores": "Stores",
+    "searchPlaceholder": "Search products…",
+    "notifications": "Notifications",
+    "language": "Language",
+    "armenianSoon": "Armenian translation is coming soon"
+  },
+  "roles": {
+    "storeManager": "Store manager",
+    "headOffice": "Operations, head office"
+  },
+  "pages": {
+    "today": { "title": "My store today", "subtitle": "What needs your attention at {{store}} today" },
+    "stockouts": { "title": "Stockout risk", "subtitle": "Products that may run out at your store" },
+    "orders": { "title": "Order suggestions", "subtitle": "Orders you need to place, sorted by deadline" },
+    "onlineOrders": { "title": "Online orders", "subtitle": "Today's online orders and items that may be missing" },
+    "overstock": { "title": "Overstock", "subtitle": "Products you have too much of" },
+    "writeOffs": { "title": "Expiry & write-offs", "subtitle": "Products close to expiry and what was written off" },
+    "suppliers": { "title": "Suppliers", "subtitle": "How reliable your suppliers are" },
+    "promotions": { "title": "Promotions", "subtitle": "How promotions perform and what to prepare for" },
+    "stores": { "title": "All stores · Yerevan", "subtitle": "Compare stores and see how well suggestions are being used" },
+    "settings": { "title": "Settings", "subtitle": "Demo settings" },
+    "help": { "title": "Help", "subtitle": "How Retail Intelligence works" }
+  },
+  "placeholder": {
+    "approvedTitle": "This screen is coming next",
+    "approvedText": "The design for this screen is approved and will be built in an upcoming step.",
+    "plannedTitle": "Design not agreed yet",
+    "plannedText": "We will agree the design for this module with you before building it."
+  }
+}

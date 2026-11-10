@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>DairyCo order: place — proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .place { display: grid; grid-template-columns: minmax(0, 1fr) 440px; gap: 16px; align-items: start; }
+    .order-line { display: flex; justify-content: space-between; padding: 9px 20px; border-top: 1px solid var(--border); }
+    .order-line b { font-variant-numeric: tabular-nums; }
+    .benefit { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; color: var(--text-2); }
+    .benefit svg { width: 18px; height: 18px; color: var(--good); margin-top: 1px; }
+  </style>
+</head>
+<body data-page="orders" data-scope="store">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="page">
+      <div class="crumb"><a>Order suggestions</a><i data-lucide="chevron-right"></i>DairyCo</div>
+      <div class="page-head" style="margin-bottom: 18px">
+        <div>
+          <h1>DairyCo order</h1>
+          <div class="subtitle">Order by <b style="color: var(--bad)">today 16:00</b> · delivery Thu, Nov 12 · should last until the next delivery on Sat, Nov 14</div>
+        </div>
+      </div>
+
+      <div class="stepper">
+        <div class="step done"><span class="n"><i data-lucide="check"></i></span>Review quantities</div>
+        <div class="step-line done"></div>
+        <div class="step on"><span class="n">2</span>Place the order</div>
+        <div class="step-line"></div>
+        <div class="step"><span class="n">3</span>Done</div>
+      </div>
+
+      <div class="place">
+        <section class="card">
+          <div class="card-head" style="padding-bottom: 14px">
+            <div>
+              <div class="card-title">Your order · 13 products</div>
+              <div class="card-sub">813 units · about AMD 0.58M · Yogurt (500g) not needed this time</div>
+            </div>
+            <span class="link"><i data-lucide="arrow-left"></i>Back to review</span>
+          </div>
+          <div id="lines"></div>
+        </section>
+
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <section class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Send it to DairyCo your usual way</div>
+                <div class="card-sub">Contact: Aram K., DairyCo sales</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="option"><div class="tile tone-good"><i data-lucide="file-spreadsheet"></i></div><div><div style="font-weight:600">Download Excel order sheet</div><div class="meta">Ready to email or print</div></div><i class="chev" data-lucide="download"></i></div>
+              <div class="option"><div class="tile tone-info"><i data-lucide="copy"></i></div><div><div style="font-weight:600">Copy as text</div><div class="meta">Paste into email, Viber or WhatsApp</div></div><i class="chev" data-lucide="copy"></i></div>
+              <div class="option" style="margin-bottom: 0"><div class="tile tone-neutral"><i data-lucide="printer"></i></div><div><div style="font-weight:600">Print</div><div class="meta">To read out over the phone</div></div><i class="chev" data-lucide="printer"></i></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Placed it? Let us know</div>
+                <div class="card-sub">Once you confirm, we will:</div>
+              </div>
+            </div>
+            <div class="card-body" style="padding-top: 10px">
+              <div class="benefit"><i data-lucide="circle-check"></i>Take it off today's tasks</div>
+              <div class="benefit"><i data-lucide="circle-check"></i>Remind you if the delivery is late</div>
+              <div class="benefit"><i data-lucide="circle-check"></i>Compare what you ordered with what sold, to improve the next suggestions</div>
+              <span class="btn btn-primary btn-block" style="margin-top: 14px"><i data-lucide="check"></i>I've placed the order with DairyCo</span>
+              <div class="meta" style="margin-top: 10px; white-space: normal; text-align: center">Supplier can't deliver everything? You can update the quantities when the delivery arrives.</div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script>
+    const L = [
+      ["🥛", "Milk 3.2% (1L)", 300], ["🥛", "Milk 2.5% (1L)", 120], ["🥣", "Matsun (500g)", 60, ""],
+      ["🫙", "Sour cream (400g)", 60], ["🍶", "Kefir (1L)", 50, "you changed from 60"], ["🥛", "Tan (1L)", 48],
+      ["🥣", "Cottage cheese (400g)", 40], ["🥛", "Milk 1.5% (1L)", 36], ["🥛", "Cream 10% (500ml)", 30],
+      ["🧈", "Butter (200g)", 24], ["🧀", "Lori cheese (300g)", 18], ["🧀", "Chanakh cheese (300g)", 15], ["🧀", "Cheese (300g)", 12],
+    ];
+    document.getElementById("lines").innerHTML = L.map(([e, n, q, note]) =>
+      `<div class="order-line"><span>${e}&nbsp; ${n}${note ? ` <span class="meta">· ${note}</span>` : ""}</span><b>${q}</b></div>`).join("");
+  </script>
+  <script src="common.js"></script>
+</body>
+</html>

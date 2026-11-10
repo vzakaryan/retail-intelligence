@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>All stores, Yerevan — proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    td { padding-top: 11px; padding-bottom: 11px; }
+    .row.r-1-2 { grid-template-columns: 330px minmax(0, 1fr); }
+    th, td { padding-left: 14px; padding-right: 14px; }
+  </style>
+</head>
+<body data-page="stores" data-scope="chain">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>All stores · Yerevan</h1>
+          <div class="subtitle">Compare stores and see how well suggestions are being used</div>
+        </div>
+        <div class="filters">
+          <div class="select"><i data-lucide="calendar"></i>Last 4 weeks<i data-lucide="chevron-down"></i></div>
+          <div class="select"><span class="lbl">Compare to</span>Prior 4 weeks<i data-lucide="chevron-down"></i></div>
+        </div>
+      </div>
+
+      <section class="kpis">
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-good"><i data-lucide="circle-check"></i></div>Shelf availability<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">96.0%</div>
+          <div class="kpi-foot"><span class="delta tone-good">↑ 1.3 pp</span>vs. prior 4 weeks</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-info"><i data-lucide="shopping-bag"></i></div>Online orders complete<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">95.3%</div>
+          <div class="kpi-foot"><span class="delta tone-good">↑ 1.4 pp</span>vs. prior 4 weeks</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-bad"><i data-lucide="banknote"></i></div>Lost sales (est.)<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">AMD 49.3M</div>
+          <div class="kpi-foot"><span class="delta tone-good">↓ 14%</span>vs. prior 4 weeks</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-primary"><i data-lucide="list-checks"></i></div>Suggestions acted on<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">80%</div>
+          <div class="kpi-foot"><span class="delta tone-good">↑ 6 pp</span>vs. prior 4 weeks</div>
+        </div>
+      </section>
+
+      <section class="row r-1-2">
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Availability by district</div>
+                <div class="card-sub">12 stores in 9 districts · schematic map</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="district-map" id="dmap"></div>
+              <div class="map-legend" style="display:flex;gap:10px;justify-content:center;font-size:12px;color:var(--muted);margin-top:12px;white-space:nowrap">
+                <span><i class="pill tone-good" style="padding:0 5px;margin-right:4px">&nbsp;</i>≥ 96%</span>
+                <span><i class="pill tone-warn" style="padding:0 5px;margin-right:4px">&nbsp;</i>94–96%</span>
+                <span><i class="pill tone-bad" style="padding:0 5px;margin-right:4px">&nbsp;</i>&lt; 94%</span>
+                <span><i class="pill" style="background:#f3f3f7;padding:0 5px;margin-right:4px">&nbsp;</i>No stores</span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div style="display: flex; gap: 12px">
+                <div class="tile lg tone-primary"><i data-lucide="lightbulb"></i></div>
+                <div>
+                  <div class="attn-title" style="margin-bottom: 10px">Stores that act on suggestions do better</div>
+                </div>
+              </div>
+              <div class="win"><span>Acting on 85% or more (6 stores)</span><b style="color: var(--good)">97.0%</b></div>
+              <div class="win"><span>All other stores (6 stores)</span><b style="color: var(--warn)">95.0%</b></div>
+              <div class="meta" style="margin-top: 8px">Average shelf availability, last 4 weeks</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head" style="padding-bottom: 14px">
+            <div>
+              <div class="card-title">Stores ranked by availability</div>
+              <div class="card-sub">Lowest first · click a store to open its "today" view</div>
+            </div>
+            <span class="btn"><i data-lucide="file-spreadsheet"></i>Export</span>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Store</th><th>Availability</th><th class="num">Online orders</th><th class="num">Lost sales</th><th class="num">Suggestions<br />acted on</th></tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script>
+    const tone = (v) => (v >= 96 ? "tone-good" : v >= 94 ? "tone-warn" : "tone-bad");
+    const color = (v) => (v >= 96 ? "#138a4b" : v >= 94 ? "#e09b2d" : "#d63b3b");
+    // [name, col, row, stores, availability]
+    const D = [
+      ["Davtashen", 1, 1, 1, 97.1], ["Arabkir", 2, 1, 2, 96.4], ["Kanaker-Zeytun", 3, 1, 0], ["Avan", 4, 1, 1, 94.4],
+      ["Ajapnyak", 1, 2, 1, 95.2], ["Kentron", 2, 2, 2, 97.6], ["Nork-Marash", 3, 2, 0], ["Nor Nork", 4, 2, 2, 95.9],
+      ["Malatia-Sebastia", 1, 3, 1, 96.8], ["Shengavit", 2, 3, 1, 94.9], ["Erebuni", 3, 3, 1, 93.6],
+      ["Nubarashen", 3, 4, 0],
+    ];
+    document.getElementById("dmap").innerHTML = D.map(([n, c, r, s, v]) =>
+      `<div class="district ${s ? tone(v) : "none"}" style="grid-column:${c};grid-row:${r}">
+        <div class="d-name">${n}</div>
+        ${s ? `<div><div class="d-val">${v}%</div><div class="d-cnt">${s} store${s > 1 ? "s" : ""}</div></div>` : `<div class="d-cnt">No stores</div>`}
+      </div>`).join("");
+
+    // [store, availability, online, lost sales, acted on]
+    const S = [
+      ["#09 Erebuni", 93.6, 92.8, "6.2M", 54], ["#11 Avan", 94.4, 93.9, "5.1M", 61],
+      ["#08 Shengavit – Bagratunyats", 94.9, 94.2, "4.8M", 72], ["#12 Ajapnyak", 95.2, 94.6, "4.4M", 77],
+      ["#06 Nor Nork – Vilnius", 95.5, 95.0, "4.1M", 80], ["#03 Arabkir – Komitas", 95.8, 94.1, "5.6M", 86],
+      ["#05 Nor Nork – Gai", 96.3, 95.6, "3.6M", 84], ["#07 Malatia-Sebastia – Raffi", 96.8, 96.1, "3.2M", 88],
+      ["#04 Arabkir – Baghramyan", 97.0, 96.4, "3.0M", 90], ["#10 Davtashen", 97.1, 96.5, "2.9M", 91],
+      ["#02 Kentron – Tumanyan", 97.3, 96.9, "3.3M", 89], ["#01 Kentron – Mashtots", 97.9, 97.2, "3.1M", 93],
+    ];
+    const status = (v) => (v >= 96 ? ["tone-good", "On track"] : v >= 94 ? ["tone-warn", "Watch"] : ["tone-bad", "Needs attention"]);
+    document.getElementById("rows").innerHTML = S.map(([n, a, o, l, s]) => {
+      const [t, label] = status(a);
+      const w = Math.round(((a - 90) / 10) * 100);
+      return `<tr>
+        <td><span class="p-name">${n}</span></td>
+        <td><span class="pill ${t}">${a.toFixed(1)}%</span> <span class="meta">${label}</span></td>
+        <td class="num">${o.toFixed(1)}%</td>
+        <td class="num">AMD ${l}</td>
+        <td class="num" style="${s < 70 ? "color:var(--bad);font-weight:600" : ""}">${s}%</td>      </tr>`;
+    }).join("");
+  </script>
+  <script src="common.js"></script>
+</body>
+</html>

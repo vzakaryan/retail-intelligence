@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/* Design tokens — taken from docs/design-references/approved/src/styles.css */
+@theme {
+  --font-sans: "Inter", "Noto Sans Armenian", system-ui, sans-serif;
+
+  --color-primary: #5b3fe0;
+  --color-primary-600: #4c32c9;
+  --color-primary-50: #f3f0fe;
+  --color-primary-100: #e6e0fd;
+  --color-primary-200: #cfc4fb;
+
+  --color-ink: #151827;
+  --color-ink-2: #464b5e;
+  --color-muted: #7a7f93;
+  --color-faint: #b3b6c4;
+  --color-line: #e9e9f0;
+  --color-canvas: #f6f6f9;
+  --color-subtle: #fafafc;
+
+  --color-good: #138a4b;
+  --color-good-bg: #e7f6ee;
+  --color-bad: #d63b3b;
+  --color-bad-bg: #fdeded;
+  --color-warn: #b86a05;
+  --color-warn-bg: #fef4e3;
+  --color-info: #2563eb;
+  --color-info-bg: #eaf1fe;
+  --color-neutral-bg: #f0f0f5;
+
+  --radius-card: 14px;
+  --radius-ctl: 10px;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-canvas text-ink font-sans text-sm antialiased;
+    line-height: 1.5;
+  }
+}

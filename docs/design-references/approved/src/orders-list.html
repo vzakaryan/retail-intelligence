@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Order suggestions — proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    td { padding-top: 16px; padding-bottom: 16px; }
+    table { table-layout: fixed; }
+    th:nth-child(1), td:nth-child(1) { width: 30%; }
+    th:nth-child(2), td:nth-child(2) { width: 18%; }
+    th:nth-child(3), td:nth-child(3) { width: 17%; }
+    th:nth-child(4), td:nth-child(4) { width: 19%; }
+    td.act { text-align: right; }
+  </style>
+</head>
+<body data-page="orders" data-scope="store">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>Order suggestions</h1>
+          <div class="subtitle">Orders you need to place, sorted by deadline</div>
+        </div>
+      </div>
+
+      <section class="card how">
+        <div class="how-step"><div class="how-n">1</div><div><div class="how-title">Review the quantities</div><div class="how-text">We suggest how much to order. Accept or change each one.</div></div></div>
+        <div class="how-step"><div class="how-n">2</div><div><div class="how-title">Order as you do today</div><div class="how-text">Phone, email or Excel. We prepare the list for you.</div></div></div>
+        <div class="how-step"><div class="how-n">3</div><div><div class="how-title">Tell us it's placed</div><div class="how-text">We'll check the delivery and learn from the results.</div></div></div>
+        <span class="btn">Got it</span>
+      </section>
+
+      <div class="section-label">Due today · 2 orders</div>
+      <section class="card">
+        <table>
+          <thead><tr><th>Supplier</th><th>Order by</th><th>Delivery</th><th>Progress</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="product"><div class="sup tone-info">DC</div><div><div class="p-name">DairyCo</div><div class="meta">Milk, kefir, cheese · 14 products</div></div></div></td>
+              <td><div style="font-weight:600">Today, 16:00</div><span class="pill tone-bad" style="margin-top:4px">in 5 hours</span></td>
+              <td>Thu, Nov 12</td>
+              <td><div style="font-weight:600; margin-bottom:6px">6 of 14 reviewed</div><div class="progress"><div style="width:43%"></div></div></td>
+              <td class="act"><span class="btn btn-primary">Continue review<i data-lucide="arrow-right"></i></span></td>
+            </tr>
+            <tr>
+              <td><div class="product"><div class="sup tone-warn">FB</div><div><div class="p-name">FreshBake</div><div class="meta">Bread, pastries · 6 products</div></div></div></td>
+              <td><div style="font-weight:600">Today, 20:00</div><span class="pill tone-warn" style="margin-top:4px">in 9 hours</span></td>
+              <td>Wed, Nov 11 · 07:00</td>
+              <td><div style="font-weight:600; margin-bottom:6px">Not started</div><div class="progress"><div style="width:0%"></div></div></td>
+              <td class="act"><span class="btn">Start review<i data-lucide="arrow-right"></i></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div class="section-label">Coming up</div>
+      <section class="card">
+        <table>
+          <tbody>
+            <tr>
+              <td><div class="product"><div class="sup tone-bad">BC</div><div><div class="p-name">BevCo</div><div class="meta">Soft drinks, water · 9 products</div></div></div></td>
+              <td><div style="font-weight:600">Tomorrow, 12:00</div></td>
+              <td>Thu, Nov 12</td>
+              <td><div style="font-weight:600; margin-bottom:6px">Not started</div><div class="progress"><div style="width:0%"></div></div></td>
+              <td class="act"><span class="btn">Start review<i data-lucide="arrow-right"></i></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div class="section-label">Placed · waiting for delivery</div>
+      <section class="card">
+        <table>
+          <tbody>
+            <tr>
+              <td><div class="product"><div class="sup tone-good">AE</div><div><div class="p-name">AgriEggs</div><div class="meta">Placed Nov 6 · 3 products</div></div></div></td>
+              <td><div style="font-weight:600">Was due Nov 9</div></td>
+              <td><span class="pill tone-bad">1 day late</span></td>
+              <td class="meta">About 2 days of eggs left</td>
+              <td class="act"><span class="btn"><i data-lucide="phone"></i>Log call</span></td>
+            </tr>
+            <tr>
+              <td><div class="product"><div class="sup tone-bad">BC</div><div><div class="p-name">BevCo</div><div class="meta">Placed Nov 9 · 8 products</div></div></div></td>
+              <td><div style="font-weight:600">Due tomorrow, 09:00</div></td>
+              <td><span class="pill tone-neutral">On the way</span></td>
+              <td></td>
+              <td class="act"><span class="btn">View order</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="common.js"></script>
+</body>
+</html>

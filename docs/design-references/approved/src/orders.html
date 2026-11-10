@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>DairyCo order: review — proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="orders" data-scope="store">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="page">
+      <div class="crumb"><a>Order suggestions</a><i data-lucide="chevron-right"></i>DairyCo</div>
+      <div class="page-head" style="margin-bottom: 18px">
+        <div>
+          <h1>DairyCo order</h1>
+          <div class="subtitle">Order by <b style="color: var(--bad)">today 16:00</b> · delivery Thu, Nov 12 · should last until the next delivery on Sat, Nov 14</div>
+        </div>
+      </div>
+
+      <div class="stepper">
+        <div class="step on"><span class="n">1</span>Review quantities</div>
+        <div class="step-line"></div>
+        <div class="step"><span class="n">2</span>Place the order</div>
+        <div class="step-line"></div>
+        <div class="step"><span class="n">3</span>Done</div>
+      </div>
+
+      <section class="card">
+        <div class="card-head" style="padding-bottom: 14px">
+          <div>
+            <div class="card-title">Needs your review · 8 products</div>
+            <div class="card-sub">Change a quantity if you know something we don't. Click "Why?" to see how we calculated it.</div>
+          </div>
+          <span class="btn"><i data-lucide="check-check"></i>Accept all 8</span>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Product</th><th class="num">In store</th><th class="num">Expected sales<br />until Sat</th><th class="num">Suggested</th><th>Your quantity</th><th></th></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </section>
+
+      <section class="card collapsed" style="margin-top: 16px">
+        <div class="tile tone-good"><i data-lucide="circle-check"></i></div>
+        <div style="flex: 1">
+          <div style="font-weight: 600">Reviewed · 6 products</div>
+          <div class="meta">Milk 3.2% 300 · Milk 2.5% 120 · Kefir 50 (you changed) · Matsun 60 · Tan 48 · Yogurt not needed</div>
+        </div>
+        <span class="link">Show<i data-lucide="chevron-down"></i></span>
+      </section>
+
+      <section class="card page-foot">
+        <span><b>6 of 14</b> reviewed · order so far <b>AMD 0.30M</b></span>
+        <span class="spacer"></span>
+        <span class="meta">Review 8 more to continue</span>
+        <span class="btn btn-primary" style="opacity: .5">Next: place the order<i data-lucide="arrow-right"></i></span>
+      </section>
+    </main>
+  </div>
+
+  <!-- "Why?" drawer -->
+  <div class="overlay"></div>
+  <aside class="drawer">
+    <div class="drawer-head">
+      <div class="thumb">🫙</div>
+      <div style="flex: 1">
+        <div class="drawer-title">Sour cream (400g)</div>
+        <div class="meta">SCR-040 · Dairy · DairyCo · Store #03</div>
+      </div>
+      <div class="icon-btn" style="border: none"><i data-lucide="x"></i></div>
+    </div>
+    <div class="drawer-body" style="gap: 18px">
+      <div>
+        <div class="section-title">Why we suggest 60 units</div>
+        <div class="calc">
+          <div class="calc-row"><span><span class="op"></span>Expected sales, Nov 11 – Nov 14</span><b>64</b></div>
+          <div class="calc-row"><span><span class="op">+</span>Safety stock (about 1 day)</span><b>20</b></div>
+          <div class="calc-row"><span><span class="op">−</span>In store now (shelf + backroom)</span><b>19</b></div>
+          <div class="calc-row"><span><span class="op">−</span>Already on the way</span><b>5</b></div>
+          <div class="calc-row"><span><span class="op">=</span>Suggested order</span><span>60 units</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="section-title">Daily sales at your store</div>
+        <div class="legend" style="margin-bottom: 6px">
+          <span><i style="background:#cfc4fb"></i>Sold</span>
+          <span><i style="background:#fff;border:1.5px dashed #5b3fe0"></i>Expected</span>
+          <span><i style="background:#f4b4b4"></i>Shelf was empty part of the day</span>
+        </div>
+        <div style="height: 170px"><canvas id="sales"></canvas></div>
+      </div>
+      <div>
+        <div class="section-title">Recent suggestions for this product</div>
+        <div class="mini-row"><span>Nov 7 · suggested 55, <b>ordered 40</b></span><span class="pill tone-bad">Ran out Sun 17:00</span></div>
+        <div class="mini-row"><span>Nov 3 · suggested 50, ordered 50</span><span class="pill tone-good">No stockout</span></div>
+        <div class="mini-row"><span>Oct 31 · suggested 48, ordered 48</span><span class="pill tone-good">No stockout</span></div>
+      </div>
+    </div>
+    <div style="padding: 16px 24px; border-top: 1px solid var(--border)">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px">
+        <span style="font-weight: 600; white-space: nowrap">Your quantity</span>
+        <div class="qty"><span>−</span><input value="60" /><span>+</span></div>
+        <span class="meta" style="white-space: normal">If you change it, we'll ask why. It helps improve future suggestions.</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px">
+        <span class="btn btn-primary btn-block"><i data-lucide="check"></i>Accept 60</span>
+        <span class="btn btn-block">Close</span>
+      </div>
+    </div>
+  </aside>
+
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    // [emoji, name, sku, inStore, onTheWay, expected, suggested, reason]
+    const R = [
+      ["🫙", "Sour cream (400g)", "SCR-040", 19, 5, 64, 60, "Ran out on Sunday"],
+      ["🧈", "Butter (200g)", "BUT-100", 34, 0, 48, 24, "Usual demand"],
+      ["🧀", "Cheese (300g)", "CHS-200", 22, 0, 30, 12, "Usual demand"],
+      ["🥣", "Cottage cheese (400g)", "CTG-030", 18, 0, 44, 40, "Selling faster this week"],
+      ["🥛", "Cream 10% (500ml)", "CRM-010", 14, 0, 32, 30, "Weekend baking +25%"],
+      ["🧀", "Lori cheese (300g)", "CHS-310", 20, 0, 26, 18, "Usual demand"],
+      ["🧀", "Chanakh cheese (300g)", "CHS-320", 16, 0, 22, 15, "Usual demand"],
+      ["🥛", "Milk 1.5% (1L)", "DAI-003", 40, 0, 58, 36, "Usual demand"],
+    ];
+    const drawer = location.hash === "#drawer";
+    document.getElementById("rows").innerHTML = R.map((r) => `
+      <tr class="${drawer && r[2] === "SCR-040" ? "active" : ""}">
+        <td><div class="product"><div class="thumb">${r[0]}</div><div><div class="p-name">${r[1]}</div><div class="meta">${r[2]}</div></div></div></td>
+        <td class="num"><div>${r[3]}</div>${r[4] ? `<div class="meta">+${r[4]} on the way</div>` : ""}</td>
+        <td class="num">${r[5]}</td>
+        <td class="num"><div style="font-weight:700">${r[6]}</div><div class="meta">${r[7]}</div></td>
+        <td><div class="qty"><span>−</span><input value="${r[6]}" /><span>+</span></div></td>
+        <td style="text-align:right;white-space:nowrap"><span class="why" style="margin-right:14px">Why?</span><span class="btn" style="color:var(--good)"><i data-lucide="check"></i>Accept</span></td>
+      </tr>`).join("");
+  </script>
+  <script src="common.js"></script>
+  <script>
+    if (drawer) {
+      const sold = [14, 15, 13, 17, 19, 22, 12, 15, 14, 16, 18, 9, 21, 13];
+      const exp = [14, 15, 16, 19];
+      const labels = ["Oct 28", "", "", "", "Nov 1", "", "", "", "Nov 5", "", "", "Nov 8", "", "", "Nov 11", "", "", "Nov 14"];
+      const data = [...sold, ...exp];
+      document.fonts.ready.then(() =>
+        new Chart(document.getElementById("sales"), {
+          type: "bar",
+          data: {
+            labels,
+            datasets: [{
+              data,
+              backgroundColor: data.map((_, i) => (i >= sold.length ? "rgba(91,63,224,.08)" : i === 11 ? "#f4b4b4" : "#cfc4fb")),
+              borderColor: data.map((_, i) => (i >= sold.length ? "#5b3fe0" : "transparent")),
+              borderWidth: data.map((_, i) => (i >= sold.length ? 1.5 : 0)),
+              borderRadius: 5,
+              barPercentage: 0.75,
+            }],
+          },
+          options: {
+            scales: {
+              x: { grid: { display: false }, border: { display: false }, ticks: { autoSkip: false, maxRotation: 0 } },
+              y: { beginAtZero: true, max: 25, ticks: { stepSize: 5 }, grid: { color: "#f0f0f5" }, border: { display: false } },
+            },
+          },
+        })
+      );
+    }
+  </script>
+</body>
+</html>
