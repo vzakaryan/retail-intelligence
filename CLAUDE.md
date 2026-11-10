@@ -83,7 +83,7 @@ assumes automation they don't have.
 - Stores (number · name · district): 01 Mashtots Ave · Kentron, 02 Tumanyan St ·
   Kentron, 03 Komitas Ave · Arabkir, 04 Baghramyan Ave · Arabkir, 05 Gai Ave ·
   Nor Nork, 06 Vilnius St · Nor Nork, 07 Raffi St · Malatia-Sebastia,
-  08 Bagratunyats Ave · Shengavit, 09 Erebuni St · Erebuni, 10 Tevosyan St ·
+  08 Bagratunyats Ave · Shengavit, 09 Erebuni St · Erebuni, 10 Tevosyan St (HY Թևոսյան փողոց) ·
   Davtashen, 11 Khudyakov St · Avan, 12 Halabyan St · Ajapnyak. (No stores in
   Kanaker-Zeytun, Nork-Marash, Nubarashen.)
 - Suppliers — **fictional Armenian-style brands chosen by the user** (not real
@@ -146,10 +146,10 @@ assumes automation they don't have.
   missing hy keys fall back to English). **Every new string must be added to
   both files.** Plural keys (`_one` / `_other`) must exist in hy too.
 - Armenian wording uses **retail / accounting terms, not literal translations**:
-  դուրսգրում (write-off), ապահովագրական պաշար (safety stock), ավելցուկային
+  դուրսգրում (write-off), պահուստային պաշար (safety stock), ավելցուկային
   պաշարներ (overstock), ապրանքի բացակայության ռիսկ (stockout risk), պահեստ (backroom),
-  առկայություն դարակում (shelf availability), կորսված վաճառք (lost sales),
-  ակցիա (promotion), զեղչ (markdown), հավաքում (order picking), պատվերների
+  ապրանքի առկայություն (shelf availability), չիրացված վաճառք (lost sales),
+  ակցիա (promotion), զեղչ (markdown), պատվերների հավաքում (order picking), պատվերների
   առաջարկներ (order suggestions), տ.կ. (percentage points).
   **Menu / page names approved by the user:** Ապրանքներ և պահանջարկ (group),
   Ապրանքի բացակայության ռիսկ, Պատվերների առաջարկներ, Պաշարների կարգավիճակ
@@ -160,7 +160,11 @@ assumes automation they don't have.
   orders), Բացակա ապրանքներ (missing items), Կարող են ունենալ բացակա ապրանքներ
   (may be incomplete), Ապրանքներ ռիսկային գոտում (products at risk), Հանքային ջուր
   (sparkling water), Եգիպտացորեն (cornflakes).
-  Open questions for a native speaker: `docs/translation-review.md`. Punctuation: «»
+  Third round (approved): Պահուստային պաշար, Ապրանքի առկայություն, Պատվերների
+  հավաքում, Կլրացվի … պատվերով, Վաճառքի մենեջեր, Պաշարը բավարար է (օր),
+  Գնումների մենեջեր, Արդարացված / Չարդարացված, «Լավ» button, Զեղչերով խնայված,
+  Երեկոյան զեղչ հացաբուլկեղենի համար, Ջուր (still water), Թևոսյան փողոց.
+  Decided vs still-open items: `docs/translation-review.md`. Punctuation: «»
   quotes, «։» full stop, «՞» on the stressed vowel for questions. Variables are
   placed so they need no case endings (e.g. «{{supplier}}» մատակարարին,
   Լրացնել դարակը՝ {{product}}). "X of Y" is written «Y-ից X-ը».
@@ -170,7 +174,8 @@ assumes automation they don't have.
 - **Numbers, money and dates for Armenian are formatted by hand** in
   `src/lib/format.ts` (many browsers have no hy-AM locale data and silently
   fall back to US English): decimal comma, narrow space for thousands
-  ("1 234,5"), money "1,42 մլն ֏" / "310 հզր ֏", dates "երեքշաբթի, 10 նոյ".
+  ("1 234,5"), money "1,42 մլն ֏" / "310 հազ. ֏", dates "երեքշաբթի, նոյեմբերի 10"
+  (month in the genitive, then day — approved by the user).
 - Layouts are checked for longer Armenian text: sidebar labels wrap, table
   headers wrap, tooltips open toward the page.
 
@@ -430,3 +435,6 @@ top nav was replaced by a sidebar).
 - **Step 13d (2026-11-10):** User's second round of Armenian corrections applied
   everywhere the same term appears; 43 remaining uncertain phrases listed in
   `docs/translation-review.md` for a native speaker to confirm.
+- **Step 13e (2026-11-10):** Third round of Armenian corrections (15 items) applied
+  everywhere, incl. «հազ.» for thousands and «նոյեմբերի 10» dates. Review list
+  split into "Still open" and "Decided".

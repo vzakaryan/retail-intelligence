@@ -28,10 +28,10 @@ export function fmtPercent(value: number, digits = 1): string {
   return `${fmtNumber(value, digits)}%`;
 }
 
-/** Money label: "AMD 1.42M" in English, "1,42 մլն ֏" in Armenian. */
+/** Money label: "AMD 1.42M" in English, "1,42 մլն ֏" / "310 հազ. ֏" in Armenian. */
 function money(num: string, unit: "" | "K" | "M" | "B"): string {
   if (!isHy()) return `AMD ${num}${unit}`;
-  const hyUnit = { "": "", K: " հզր", M: " մլն", B: " մլրդ" }[unit];
+  const hyUnit = { "": "", K: " հազ.", M: " մլն", B: " մլրդ" }[unit];
   return `${num}${hyUnit} ֏`;
 }
 
@@ -66,21 +66,21 @@ export function fmtPp(delta: number, digits = 1): string {
 
 const HY_WEEKDAY_LONG = ["կիրակի", "երկուշաբթի", "երեքշաբթի", "չորեքշաբթի", "հինգշաբթի", "ուրբաթ", "շաբաթ"];
 const HY_WEEKDAY_SHORT = ["կիր", "երկ", "երք", "չրք", "հնգ", "ուրբ", "շբթ"];
-const HY_MONTH_SHORT = ["հնվ", "փտվ", "մրտ", "ապր", "մյս", "հնս", "հլս", "օգս", "սեպ", "հոկ", "նոյ", "դեկ"];
 const HY_MONTH_LONG = ["հունվարի", "փետրվարի", "մարտի", "ապրիլի", "մայիսի", "հունիսի", "հուլիսի", "օգոստոսի", "սեպտեմբերի", "հոկտեմբերի", "նոյեմբերի", "դեկտեմբերի"];
 const pad = (n: number) => String(n).padStart(2, "0");
 
 /**
- * Dates. Armenian order is "երեքշաբթի, 10 նոյ" (weekday, day, month);
+ * Dates. Armenian style is "երեքշաբթի, նոյեմբերի 10" (weekday, month in the genitive, day);
  * times are always 24-hour "16:00".
  */
 export function fmtDate(date: Date, options: Intl.DateTimeFormatOptions): string {
   if (!isHy()) return new Intl.DateTimeFormat("en-US", options).format(date);
   const parts: string[] = [];
   if (options.weekday) parts.push((options.weekday === "long" ? HY_WEEKDAY_LONG : HY_WEEKDAY_SHORT)[date.getDay()]);
+  // Month first, in the genitive: "նոյեմբերի 10" (approved by the user)
   const dm: string[] = [];
+  if (options.month) dm.push(HY_MONTH_LONG[date.getMonth()]);
   if (options.day) dm.push(String(date.getDate()));
-  if (options.month) dm.push((options.month === "long" ? HY_MONTH_LONG : HY_MONTH_SHORT)[date.getMonth()]);
   if (dm.length) parts.push(dm.join(" "));
   if (options.hour) parts.push(`${pad(date.getHours())}:${pad(date.getMinutes())}`);
   return parts.join(", ");

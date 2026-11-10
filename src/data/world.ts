@@ -56,7 +56,7 @@ export const STORES: Store[] = [
   store(7, ["Raffi St", "Րաֆֆու փողոց"], "malatia-sebastia", ["Hayk P.", "Հայկ Պ."], [96.8, 96.1, 3.2, 88], [3, 1]),
   store(8, ["Bagratunyats Ave", "Բագրատունյաց պողոտա"], "shengavit", ["Ani V.", "Անի Վ."], [94.9, 94.2, 4.8, 72], [7, 2]),
   store(9, ["Erebuni St", "Էրեբունու փողոց"], "erebuni", ["Gor T.", "Գոռ Թ."], [93.6, 92.8, 6.2, 54], [9, 3]),
-  store(10, ["Tevosyan St", "Տևոսյան փողոց"], "davtashen", ["Sona B.", "Սոնա Բ."], [97.1, 96.5, 2.9, 91], [2, 1]),
+  store(10, ["Tevosyan St", "Թևոսյան փողոց"], "davtashen", ["Sona B.", "Սոնա Բ."], [97.1, 96.5, 2.9, 91], [2, 1]),
   store(11, ["Khudyakov St", "Խուդյակովի փողոց"], "avan", ["Karen D.", "Կարեն Դ."], [94.4, 93.9, 5.1, 61], [8, 2]),
   store(12, ["Halabyan St", "Հալաբյան փողոց"], "ajapnyak", ["Elen R.", "Էլեն Ռ."], [95.2, 94.6, 4.4, 77], [6, 2]),
 ];
