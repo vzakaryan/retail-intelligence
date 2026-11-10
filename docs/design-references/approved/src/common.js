@@ -57,7 +57,7 @@
 
   const scopeSel = chain
     ? `<div class="select"><i data-lucide="map"></i><span class="lbl">Viewing</span>All stores · Yerevan<i data-lucide="chevron-down"></i></div>`
-    : `<div class="select"><i data-lucide="store"></i><span class="lbl">Store</span>#03 Arabkir – Komitas<i data-lucide="chevron-down"></i></div>`;
+    : `<div class="select"><i data-lucide="store"></i><span class="lbl">Store</span><span>Komitas Ave<span class="lbl">, Arabkir</span></span><i data-lucide="chevron-down"></i></div>`;
 
   document.getElementById("topbar").innerHTML = `
     ${scopeSel}

@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import { DEFAULT_STORE_ID, getStore } from "@/data/world";
 import type { LineReview } from "@/data/orders";
+import type { NewTask } from "@/data/stockouts";
 import type { Store } from "@/data/types";
 
 /** What the user did to a task during the demo (overrides the mock data). */
@@ -29,6 +30,21 @@ interface DemoState {
 
   howItWorksDismissed: boolean;
   dismissHowItWorks: () => void;
+
+  /** Tasks added during the demo from Stockout risk / Online orders, keyed by id */
+  addedTasks: Record<string, AddedTask>;
+  addTask: (id: string, storeId: string, task: NewTask) => void;
+
+  /** Online orders whose customer was contacted about a substitute */
+  contactedOrders: Record<string, true>;
+  toggleContacted: (orderKey: string) => void;
+}
+
+export interface AddedTask {
+  storeId: string;
+  task: NewTask;
+  /** Insertion order, so added tasks keep a stable position */
+  seq: number;
 }
 
 const DemoContext = createContext<DemoState | null>(null);
@@ -42,6 +58,8 @@ export function DemoProvider({ children }: { children: ReactNode }) {
   const [lineReviews, setReviews] = useState<Record<string, LineReview | null>>({});
   const [placedOrders, setPlaced] = useState<Record<string, true>>({});
   const [howItWorksDismissed, setDismissed] = useState(false);
+  const [addedTasks, setAdded] = useState<Record<string, AddedTask>>({});
+  const [contactedOrders, setContacted] = useState<Record<string, true>>({});
 
   const setTaskDone = useCallback((taskId: string, done: boolean, via: TaskOverride["via"] = "done") => {
     setOverrides((prev) => ({ ...prev, [taskId]: { done, via } }));
@@ -58,6 +76,17 @@ export function DemoProvider({ children }: { children: ReactNode }) {
   }, []);
   const markPlaced = useCallback((orderId: string) => setPlaced((prev) => ({ ...prev, [orderId]: true })), []);
   const dismissHowItWorks = useCallback(() => setDismissed(true), []);
+  const addTask = useCallback((id: string, storeId: string, task: NewTask) => {
+    setAdded((prev) => (prev[id] ? prev : { ...prev, [id]: { storeId, task, seq: Object.keys(prev).length } }));
+  }, []);
+  const toggleContacted = useCallback((orderKey: string) => {
+    setContacted((prev) => {
+      const next = { ...prev };
+      if (next[orderKey]) delete next[orderKey];
+      else next[orderKey] = true;
+      return next;
+    });
+  }, []);
 
   const value = useMemo(
     () => ({
@@ -72,8 +101,12 @@ export function DemoProvider({ children }: { children: ReactNode }) {
       markPlaced,
       howItWorksDismissed,
       dismissHowItWorks,
+      addedTasks,
+      addTask,
+      contactedOrders,
+      toggleContacted,
     }),
-    [storeId, taskOverrides, setTaskDone, lineReviews, setLineReview, setLineReviews, placedOrders, markPlaced, howItWorksDismissed, dismissHowItWorks]
+    [storeId, taskOverrides, setTaskDone, lineReviews, setLineReview, setLineReviews, placedOrders, markPlaced, howItWorksDismissed, dismissHowItWorks, addedTasks, addTask, contactedOrders, toggleContacted]
   );
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>;
 }

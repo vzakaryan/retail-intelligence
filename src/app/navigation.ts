@@ -52,9 +52,9 @@ export const NAV: NavGroup[] = [
   {
     groupKey: "stockDemand",
     items: [
-      { id: "stockouts", path: "/stockouts", icon: TrendingUp, design: "planned" },
+      { id: "stockouts", path: "/stockouts", icon: TrendingUp, design: "approved" },
       { id: "orders", path: "/orders", icon: ClipboardList, design: "approved", badge: "ordersDueToday" },
-      { id: "onlineOrders", path: "/online-orders", icon: ShoppingBag, design: "planned" },
+      { id: "onlineOrders", path: "/online-orders", icon: ShoppingBag, design: "approved" },
     ],
   },
   {

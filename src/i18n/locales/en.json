@@ -183,6 +183,31 @@
         "title": "Put up price tags for the weekend promotion",
         "detail": "{{count}} products · promotion starts {{starts}}",
         "doneDetail": "Done at {{at}}"
+      },
+      "askStore": {
+        "title": "Ask the {{store}} store for {{qty}} × {{product}}",
+        "detail": "They have about {{days}} days of extra stock",
+        "doneDetail": "Done at {{at}}"
+      },
+      "askSupplier": {
+        "title": "Ask {{supplier}} to deliver before {{time}}",
+        "detail": "So the shelf is full before online orders are picked",
+        "doneDetail": "Done at {{at}}"
+      },
+      "moveToShelf": {
+        "title": "Move {{qty}} × {{product}} to the shelf",
+        "detail": "{{onShelf}} on shelf · {{backroom}} in backroom",
+        "doneDetail": "Done at {{at}}"
+      },
+      "setAside": {
+        "title": "Set {{qty}} × {{product}} aside for online orders",
+        "detail": "Needed by {{orders}} online orders today",
+        "doneDetail": "Done at {{at}}"
+      },
+      "weekendAside": {
+        "title": "Keep {{qty}} × {{product}} aside for online on weekend mornings",
+        "detail": "Starting this Saturday",
+        "doneDetail": "Done at {{at}}"
       }
     },
     "online": {
@@ -193,7 +218,8 @@
         "refill": "Refill",
         "low": "Low",
         "refilled": "Refilled"
-      }
+      },
+      "open": "Open online orders"
     },
     "results": {
       "title": "Your results so far",
@@ -485,6 +511,234 @@
       "onTrack": "On track",
       "watch": "Watch",
       "attention": "Needs attention"
+    }
+  },
+  "stockouts": {
+    "subtitle": "Products that may run out at your store, and what you can do about it",
+    "horizon": {
+      "label": "Period",
+      "3d": "Next 3 days",
+      "7d": "Next 7 days"
+    },
+    "kpi": {
+      "atRisk": "Products at risk",
+      "atRiskInfo": "Products that may run out before their next delivery.",
+      "oos": "Out-of-stock rate",
+      "oosInfo": "Share of time products were missing from the shelf this week.",
+      "lostSales": "Lost sales this week",
+      "accuracy": "Forecast accuracy",
+      "accuracyInfo": "How close our sales forecast was to what actually sold.",
+      "last4w": "last 4 weeks"
+    },
+    "table": {
+      "title": "Products that may run out",
+      "subtitle": "Soonest first · click a product to see why and what to do",
+      "product": "Product",
+      "runsOut": "May run out",
+      "onShelf": "On shelf",
+      "expected": {
+        "3d": "Expected sales, 3 days",
+        "7d": "Expected sales, 7 days"
+      },
+      "action": "What you can do",
+      "inBackroom": "+{{count}} in backroom",
+      "showMore": {
+        "3d": "Show {{count}} more (in 2–3 days)",
+        "7d": "Show {{count}} more (later this week)"
+      },
+      "showLess": "Show fewer",
+      "onList": "on today's tasks",
+      "stepsDone": "done",
+      "deliveryLate": "delivery late"
+    },
+    "groups": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "soon": "In 2–3 days",
+      "later": "Later this week"
+    },
+    "runsOut": {
+      "around": "around {{time}}",
+      "dayPart": "{{day}} {{part}}",
+      "morning": "morning",
+      "afternoon": "afternoon",
+      "evening": "evening"
+    },
+    "action": {
+      "refill": "Refill from backroom",
+      "askStore": "Ask the {{store}} store for {{qty}}",
+      "askEarlier": "Ask {{supplier}} to deliver earlier",
+      "covered": "Covered by {{day}}'s {{supplier}} order",
+      "coveredTonight": "Covered by tonight's {{supplier}} order"
+    },
+    "meta": {
+      "deliversTomorrow": "{{supplier}} delivers tomorrow {{time}}",
+      "eveningDelivery": "evening delivery {{time}}",
+      "dayLow": "1 day with little stock"
+    },
+    "trend": {
+      "title": "Out-of-stock rate at your store",
+      "subtitle": "Share of time products were missing from the shelf, by week",
+      "before": "Before",
+      "with": "With Retail Intelligence",
+      "thisWeek": "This week"
+    },
+    "misses": {
+      "title": "Biggest misses last week",
+      "subtitle": "Shelf was empty while shoppers wanted it",
+      "emptyHoursDays": "Empty {{hours}} hours over {{days}} days",
+      "emptyHoursOn": "Empty {{hours}} hours on {{day}}",
+      "ranOutTimes": "Ran out {{count}} times",
+      "total": "Total lost sales last week"
+    },
+    "drawer": {
+      "titleToday": "The shelf may be empty by {{time}} today",
+      "titleLater": "May run out {{when}}",
+      "sells": "Your store usually sells about {{count}} a day.",
+      "online_one": "{{count}} of today's online orders includes it.",
+      "online_other": "{{count}} of today's online orders include it.",
+      "stock": "There are {{shelf}} on the shelf and {{backroom}} in the backroom.",
+      "stockNoBackroom": "There are {{shelf}} on the shelf and none in the backroom.",
+      "late": "The {{supplier}} delivery due {{due}} hasn't arrived.",
+      "next": "The next {{supplier}} delivery comes {{when}}.",
+      "onShelf": "On shelf",
+      "backroom": "In backroom",
+      "expectedToday": "Expected today",
+      "chartTitle": "Stock in your store, next 5 days",
+      "now": "Now",
+      "tonight": "Tonight",
+      "ifDelivers": "If {{supplier}} delivers tomorrow",
+      "ifLate": "If it's late again",
+      "expectedStock": "Expected stock",
+      "whatToDo": "What you can do",
+      "coveredBy": "Covered by the next {{supplier}} order",
+      "coveredMeta": "Delivery {{delivery}}",
+      "viewOrder": "View order",
+      "callMeta": "Was due {{due}} · {{qty}} packs",
+      "onList": "Already on today's tasks",
+      "doneMeta": "Done today",
+      "done": "Done",
+      "taskAdded": "Task added",
+      "addTask": "Add task",
+      "addAll_one": "Add {{count}} step to today's tasks",
+      "addAll_other": "Add {{count}} steps to today's tasks",
+      "allAdded": "All steps are on today's tasks"
+    }
+  },
+  "online": {
+    "subtitle": "Make sure online orders can be picked complete",
+    "dayLabel": "Day",
+    "kpi": {
+      "orders": {
+        "today": "Orders today",
+        "tomorrow": "Orders tomorrow"
+      },
+      "vsLastWeek": {
+        "today": "vs. last Tuesday",
+        "tomorrow": "vs. last Wednesday"
+      },
+      "atRisk": "May be incomplete",
+      "atRiskInfo": "Orders with items the shelf may not have at picking time.",
+      "ordersUnit_one": "order",
+      "ordersUnit_other": "orders",
+      "atRiskFoot": "items may be missing at picking time",
+      "allReady": "all orders can be picked complete",
+      "complete": "Complete this week",
+      "missing": "Missing items last week",
+      "missingFoot": "vs. the week before"
+    },
+    "prep": {
+      "title": {
+        "today": "Prepare before picking starts at {{time}}",
+        "tomorrow": "Prepare for tomorrow's picking at {{time}}"
+      },
+      "subtitle": "Products online orders need that the shelf may not have",
+      "col": {
+        "product": "Product",
+        "needs": "Online needs",
+        "onShelf": "On shelf",
+        "backroom": "In backroom",
+        "action": "What to do"
+      },
+      "inOrders_one": "in {{count}} order",
+      "inOrders_other": "in {{count}} orders",
+      "doneAt": "done at {{time}}",
+      "undo": "Undo",
+      "do": {
+        "moveToShelf": "Move {{qty}} to the shelf",
+        "setAside": "Set {{qty}} aside for online",
+        "askStore": "Ask the {{store}} store for {{qty}}",
+        "askSupplier": "Ask {{supplier}} to deliver before {{time}}"
+      },
+      "note": {
+        "inStoreToo": "shoppers in store need {{count}} today too",
+        "substitute": "offer the 0.5L bottle ×{{qty}} for the rest",
+        "nextDelivery": "next delivery {{time}}",
+        "agriLate": "AgriEggs delivery is late, none left for tomorrow",
+        "afterDelivery": "BevCo delivers at {{time}}, just before picking"
+      }
+    },
+    "slots": {
+      "title": {
+        "today": "Today's delivery slots",
+        "tomorrow": "Tomorrow's delivery slots"
+      },
+      "subtitle": "Click a slot to see the orders at risk",
+      "orders_one": "{{count}} order",
+      "orders_other": "{{count}} orders",
+      "atRisk": "{{count}} at risk",
+      "legendRisk": "May be incomplete"
+    },
+    "slot": {
+      "title": "Delivery {{from}} – {{to}}",
+      "meta_one": "{{count}} order · picking starts {{time}}",
+      "meta_other": "{{count}} orders · picking starts {{time}}",
+      "mayBeIncomplete": "{{count}} may be incomplete",
+      "ready": "Ready",
+      "addFixes_one": "Add {{count}} fix to today's tasks",
+      "addFixes_other": "Add {{count}} fixes to today's tasks",
+      "fixesAdded": "Fixes are on today's tasks",
+      "bestFix": "{{product}}: {{action}} — fixes {{count}} of the {{total}} orders at risk",
+      "substituteHint": "Order {{id}} needs {{product}}, which runs out before picking. Offer {{sub}} instead.",
+      "allReady": "All orders in this slot can now be picked complete.",
+      "order": "Order {{id}}",
+      "items_one": "{{count}} item",
+      "items_other": "{{count}} items",
+      "contacted": "Customer contacted",
+      "markContacted": "Mark customer contacted",
+      "substituteAgreed": "Customer contacted",
+      "fixed": "Fixed",
+      "fixWith": "Fix: {{action}}",
+      "notEnough": "Not enough in store",
+      "suggestion": "Suggestion: offer {{sub}} instead",
+      "others_one": "{{count}} other order in this slot is ready to pick.",
+      "others_other": "{{count}} other orders in this slot are ready to pick."
+    },
+    "often": {
+      "title": "Often missing from online orders",
+      "subtitle": "Last 4 weeks · fixing these few products prevents most incomplete orders",
+      "col": {
+        "product": "Product",
+        "reason": "Usual reason",
+        "suggestion": "Suggestion"
+      },
+      "missingIn_one": "missing in {{count}} order",
+      "missingIn_other": "missing in {{count}} orders",
+      "reason": {
+        "shelfEmpty": "Shelf empty before picking",
+        "lateDelivery": "Delivery arrives after picking",
+        "soldOutSunday": "Sold out on Sundays",
+        "eveningDelivery": "Evening delivery"
+      },
+      "suggestion": {
+        "weekendAside": "Keep {{qty}} packs aside for online on weekend mornings",
+        "earlierDelivery": "Ask BevCo to deliver before {{time}}",
+        "orderMoreWeekend": "Order +{{qty}} for weekends",
+        "morningAside": "Set bread aside for online in the morning"
+      },
+      "inOrderSuggestions": "In order suggestions",
+      "added": "Added to tasks",
+      "add": "Add to tasks"
     }
   }
 }

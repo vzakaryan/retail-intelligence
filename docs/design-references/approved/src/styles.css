@@ -298,3 +298,18 @@ body.drawer-open .drawer { display: flex; }
 .option .chev { margin-left: auto; }
 .page-foot { display: flex; align-items: center; gap: 12px; margin-top: 20px; padding: 16px 20px; }
 .page-foot .spacer { flex: 1; }
+
+/* ---------- v4: stockout + online orders proposals ---------- */
+tr.group td { background: #fafafc; font-size: 11.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); padding-top: 8px; padding-bottom: 8px; }
+.act { font-weight: 500; }
+.act .meta { white-space: normal; }
+.slot { display: grid; grid-template-columns: 96px 1fr auto; gap: 12px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--border); }
+.slot:last-child { border-bottom: none; }
+.slot-bar { height: 10px; border-radius: 99px; background: #eeeef4; overflow: hidden; display: flex; }
+.slot-bar i { display: block; height: 100%; }
+.step-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.step-item:last-child { border-bottom: none; }
+.order-card { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
+.order-card .row-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.item-line { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0 0; font-size: 13px; }
+.badge-num { display: inline-grid; place-items: center; height: 24px; min-width: 24px; padding: 0 6px; border-radius: 8px; background: #f0f0f5; font-weight: 600; font-size: 11px; color: var(--text-2); }

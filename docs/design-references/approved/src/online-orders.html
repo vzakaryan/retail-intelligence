@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Online orders — proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    td { padding-top: 12px; padding-bottom: 12px; }
+  </style>
+</head>
+<body data-page="online" data-scope="store">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>Online orders</h1>
+          <div class="subtitle">Make sure today's online orders can be picked complete</div>
+        </div>
+        <div class="segmented"><span class="on">Today</span><span>Tomorrow</span></div>
+      </div>
+
+      <section class="kpis">
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-info"><i data-lucide="shopping-bag"></i></div>Orders today</div>
+          <div class="kpi-value">38</div>
+          <div class="kpi-foot"><span class="delta tone-neutral">+5</span>vs. last Tuesday</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-bad"><i data-lucide="triangle-alert"></i></div>May be incomplete<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">6 <small>orders</small></div>
+          <div class="kpi-foot">items may be missing at picking time</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-good"><i data-lucide="circle-check"></i></div>Complete this week<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">94.1%</div>
+          <div class="kpi-foot"><span class="delta tone-good">↑ 1.6 pp</span>112 of 119 orders</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-warn"><i data-lucide="package-minus"></i></div>Missing items last week</div>
+          <div class="kpi-value">23</div>
+          <div class="kpi-foot"><span class="delta tone-good">↓ 9</span>vs. the week before</div>
+        </div>
+      </section>
+
+      <section style="margin-bottom: 24px">
+        <div class="card">
+          <div class="card-head" style="padding-bottom: 14px">
+            <div>
+              <div class="card-title">Prepare before picking starts at 12:00</div>
+              <div class="card-sub">Products online orders need that the shelf may not have</div>
+            </div>
+            <div style="text-align: right">
+              <div style="font-weight: 600; margin-bottom: 6px">1 of 4 done</div>
+              <div class="progress"><div style="width: 25%"></div></div>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Product</th><th class="num">Online needs</th><th class="num">On shelf</th><th class="num">In backroom</th><th>What to do</th><th></th></tr></thead>
+            <tbody id="prep"></tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <section class="row r-1-2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Today's delivery slots</div>
+              <div class="card-sub">Click a slot to see the orders at risk</div>
+            </div>
+          </div>
+          <div class="card-body" style="padding-top: 6px" id="slots"></div>
+          <div class="table-foot">
+            <div class="legend"><span><i style="background:#cfc4fb"></i>Ready</span><span><i style="background:#d63b3b"></i>May be incomplete</span></div>
+          </div>
+        </div>
+        <div class="card">
+        <div class="card-head" style="padding-bottom: 14px">
+          <div>
+            <div class="card-title">Often missing from online orders</div>
+            <div class="card-sub">Last 4 weeks · fixing these few products prevents most incomplete orders</div>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Product</th><th>Usual reason</th><th>Suggestion</th><th></th></tr></thead>
+          <tbody id="often"></tbody>
+        </table>
+      </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Slot drawer -->
+  <div class="overlay"></div>
+  <aside class="drawer">
+    <div class="drawer-head">
+      <div class="tile lg tone-info"><i data-lucide="truck"></i></div>
+      <div style="flex: 1">
+        <div class="drawer-title">Delivery 14:00 – 16:00</div>
+        <div class="meta">12 orders · picking starts 12:30</div>
+      </div>
+      <span class="pill tone-bad">3 may be incomplete</span>
+      <div class="icon-btn" style="border: none"><i data-lucide="x"></i></div>
+    </div>
+    <div class="drawer-body" style="gap: 14px">
+      <div class="callout tone-primary">
+        <i data-lucide="lightbulb" style="width: 20px; height: 20px; margin-top: 2px"></i>
+        <div>
+          <div class="callout-title">Moving 20 packs of eggs to the shelf fixes 2 of the 3 orders</div>
+          <p>The third needs Cola (1.5L), which runs out before picking. Offer the customer Cola (0.5L) ×3 instead.</p>
+        </div>
+      </div>
+      <div id="orders"></div>
+      <div class="meta" style="white-space: normal">9 other orders in this slot are ready to pick.</div>
+    </div>
+    <div style="padding: 16px 24px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 2fr 1fr; gap: 10px">
+      <span class="btn btn-primary btn-block"><i data-lucide="list-plus"></i>Add fixes to today's tasks</span>
+      <span class="btn btn-block">Close</span>
+    </div>
+  </aside>
+
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script>
+    const drawer = location.hash === "#drawer";
+    // [emoji, name, needs, needsMeta, shelf, backroom, action, actionMeta, done, button]
+    const P = [
+      ["🥚", "Eggs (10-pack)", "14", "in 9 orders", "9", "40", "Move 20 packs to the shelf", "shoppers in store need 26 today too", false, "Mark done"],
+      ["🥤", "Cola (1.5L)", "9", "in 4 orders", "6", "0", "Set 6 aside for online now", "offer Cola (0.5L) ×3 for the rest", false, "Mark done"],
+      ["🫙", "Sour cream (400g)", "4", "in 3 orders", "7", "12", "Move 10 to the shelf", "", false, "Mark done"],
+      ["🍞", "Bread (white, 600g)", "7", "in 5 orders", "14", "0", "Set 7 aside for online", "next delivery 18:00", true, ""],
+    ];
+    document.getElementById("prep").innerHTML = P.map((r) => `
+      <tr${r[8] ? ' style="background: rgba(231,246,238,.45)"' : ""}>
+        <td><div class="product"><div class="thumb">${r[0]}</div><div><div class="p-name">${r[1]}</div></div></div></td>
+        <td class="num"><b>${r[2]}</b><div class="meta">${r[3]}</div></td>
+        <td class="num">${r[4]}</td>
+        <td class="num">${r[5]}</td>
+        <td class="act">${r[8] ? '<span style="color:var(--good)">✓ ' + r[6] + "</span>" : r[6]}${r[7] && !r[8] ? `<div class="meta">${r[7]}</div>` : r[8] ? '<div class="meta">done at 10:20</div>' : ""}</td>
+        <td style="text-align:right">${r[8] ? "" : `<span class="btn">${r[9]}</span>`}</td>
+      </tr>`).join("");
+
+    // [slot, orders, atRisk]
+    const S = [["12:00–14:00", 8, 0], ["14:00–16:00", 12, 3], ["16:00–18:00", 10, 2], ["18:00–20:00", 8, 1]];
+    const max = 12;
+    document.getElementById("slots").innerHTML = S.map(([slot, n, risk], i) => `
+      <div class="slot"${drawer && i === 1 ? ' style="background:var(--primary-50);margin:0 -20px;padding-left:20px;padding-right:20px"' : ""}>
+        <div><div style="font-weight:600">${slot}</div><div class="meta">${n} orders</div></div>
+        <div class="slot-bar" style="width:${(n / max) * 100}%"><i style="width:${((n - risk) / n) * 100}%;background:#cfc4fb"></i><i style="width:${(risk / n) * 100}%;background:#d63b3b"></i></div>
+        ${risk ? `<span class="pill tone-bad">${risk} at risk</span>` : '<span class="pill tone-good">Ready</span>'}
+      </div>`).join("");
+
+    const O = [
+      ["🥚", "Eggs (10-pack)", "31 orders", "Shelf empty before picking", "Keep 20 packs aside for online on weekend mornings", "Add to checklist"],
+      ["🥤", "Cola (1.5L)", "18 orders", "Delivery arrives after picking", "Ask BevCo to deliver before 10:00", "Add task"],
+      ["🫙", "Sour cream (400g)", "12 orders", "Sold out on Sundays", "Order +15 for weekends", "In order suggestions"],
+      ["🍞", "Bread (white, 600g)", "9 orders", "Evening delivery", "Set bread aside for online in the morning", "Add to checklist"],
+    ];
+    document.getElementById("often").innerHTML = O.map((r) => `
+      <tr>
+        <td><div class="product"><div class="thumb">${r[0]}</div><div><div class="p-name">${r[1]}</div><div class="meta">missing in ${r[2]}</div></div></div></td>
+        <td>${r[3]}</td>
+        <td class="act">${r[4]}</td>
+        <td style="text-align:right">${r[5] === "In order suggestions" ? '<span class="pill tone-good">In order suggestions</span>' : `<span class="btn btn-soft">${r[5]}</span>`}</td>
+      </tr>`).join("");
+
+    const ORD = [
+      ["4821", "14 items", [["🥚 Eggs (10-pack) ×2", "Fixed by moving eggs to shelf", "good"]]],
+      ["4826", "9 items", [["🥚 Eggs (10-pack) ×1", "Fixed by moving eggs to shelf", "good"], ["🫙 Sour cream (400g) ×1", "Fixed by moving 10 to shelf", "good"]]],
+      ["4830", "11 items", [["🥤 Cola (1.5L) ×3", "Not enough in store", "bad"]], "Offer Cola (0.5L) ×3 instead"],
+    ];
+    document.getElementById("orders").innerHTML = ORD.map(([id, items, lines, sub]) => `
+      <div class="order-card">
+        <div class="row-top"><div><b>Order ${id}</b> <span class="meta">· ${items}</span></div>${sub ? '<span class="btn" style="padding:6px 10px">Customer contacted</span>' : ""}</div>
+        ${lines.map(([what, note, tone]) => `<div class="item-line"><span>${what}</span><span class="pill tone-${tone}">${note}</span></div>`).join("")}
+        ${sub ? `<div class="item-line"><span class="meta" style="white-space:normal">Suggestion: ${sub}</span></div>` : ""}
+      </div>`).join("");
+  </script>
+  <script src="common.js"></script>
+</body>
+</html>

@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import type { TaskParam } from "@/data/today";
 import type { TaskState } from "@/app/useTasks";
 import { getProduct } from "@/data/products";
-import { SUPPLIERS } from "@/data/world";
+import { STORES, SUPPLIERS } from "@/data/world";
 import { fmtDate } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
 
@@ -16,6 +16,9 @@ export function useTaskText() {
     for (const [k, v] of Object.entries(task.params)) vars[k] = formatParam(v);
     if (task.productId) vars.product = loc(getProduct(task.productId).name);
     if (task.supplierId) vars.supplier = SUPPLIERS.find((s) => s.id === task.supplierId)?.name ?? "";
+    // "store" params hold a store id → show the store's street name
+    const helper = STORES.find((s) => s.id === task.params.store);
+    if (helper) vars.store = loc(helper.name);
 
     const title = t(`today.task.${task.kind}.title`, vars);
     let detail: string;

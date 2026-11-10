@@ -30,7 +30,13 @@ export type TaskKind =
   | "reviewOrder"
   | "markdown"
   | "callSupplier"
-  | "promoTags";
+  | "promoTags"
+  // Added during the demo from Stockout risk / Online orders:
+  | "askStore"
+  | "askSupplier"
+  | "moveToShelf"
+  | "setAside"
+  | "weekendAside";
 
 export type TaskTag = "online" | "ordering" | "expiry" | "supplier" | "promo";
 export type TaskAction = "markDone" | "review" | "logCall";

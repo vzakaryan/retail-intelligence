@@ -17,9 +17,14 @@ export function orderIdForTask(storeId: string, task: Task): string | undefined 
 
 /** Today's tasks for a store, with whatever the user did in the demo. */
 export function useTasks(storeId: string) {
-  const { taskOverrides, placedOrders } = useDemo();
+  const { taskOverrides, placedOrders, addedTasks } = useDemo();
   return useMemo(() => {
-    const tasks: TaskState[] = getStoreDay(storeId).tasks.map((t) => {
+    // Tasks added from Stockout risk / Online orders appear after the planned ones.
+    const added: Task[] = Object.entries(addedTasks)
+      .filter(([, a]) => a.storeId === storeId)
+      .sort((a, b) => a[1].seq - b[1].seq)
+      .map(([id, a]) => ({ id, ...a.task, action: "markDone" as const }));
+    const tasks: TaskState[] = [...getStoreDay(storeId).tasks, ...added].map((t) => {
       // Placing an order completes its "review the order" task.
       const orderId = orderIdForTask(storeId, t);
       if (orderId && placedOrders[orderId]) return { ...t, done: true, doneNow: "order" };
@@ -29,5 +34,5 @@ export function useTasks(storeId: string) {
     });
     const doneCount = tasks.filter((t) => t.done).length;
     return { tasks, doneCount, openCount: tasks.length - doneCount, total: tasks.length };
-  }, [storeId, taskOverrides, placedOrders]);
+  }, [storeId, taskOverrides, placedOrders, addedTasks]);
 }

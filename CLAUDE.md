@@ -106,7 +106,7 @@ assumes automation they don't have.
 | Data | 100% mocked, consistent across screens | Agreed |
 | Tech stack | React 19 + TS + Vite 7, Tailwind 4, React Router 7 (hash), react-i18next, Recharts, Lucide | **Agreed 2026-11-10** |
 | Client name / branding | — | TBD |
-| Target design | `docs/design-references/approved/` (6 screens) | **Approved 2026-11-10** |
+| Target design | `docs/design-references/approved/` (10 screens) | **Approved 2026-11-10** |
 | Language | English first, then Armenian + EN/HY switcher; i18n-ready from day one | Agreed |
 
 ## Codebase (how the app is built)
@@ -148,7 +148,7 @@ assumes automation they don't have.
 
 ### Approved target design (SOURCE OF TRUTH — build to match these)
 
-Approved by the user on 2026-11-10. Files in `docs/design-references/approved/`.
+Approved by the user on 2026-11-10 (01–06, then 07–10). Files in `docs/design-references/approved/`.
 The HTML/CSS mockup source is in `approved/src/` (`styles.css` holds the design
 tokens: colors, radii, type sizes) — reuse it when building the real app.
 
@@ -160,6 +160,10 @@ tokens: colors, radii, type sizes) — reuse it when building the real app.
 | `04-order-why-suggestion.png` | "Why?" drawer | Store manager | Transparent math (expected sales + safety stock − in store − on the way), daily sales chart with stockout day, past suggestions vs outcome, Accept / change |
 | `05-order-place.png` | One order, step 2: Place the order | Store manager | Final order list; Download Excel / Copy as text / Print; "I've placed the order with <supplier>" + what happens next |
 | `06-all-stores-yerevan.png` | All stores · Yerevan | Head office | Chain KPIs incl. "suggestions acted on", schematic Yerevan district tile map, stores ranked by availability, insight "stores that act on suggestions do better" |
+| `07-stockout-risk.png` | Stockout risk | Store manager | KPIs (products at risk, OOS rate, lost sales, forecast accuracy), full-width "products that may run out" grouped Today / Tomorrow with one next step each, OOS-rate trend before vs. with the product, biggest misses last week |
+| `08-stockout-product-drawer.png` | Stockout product panel | Store manager | Why it may run out (plain sentence), on shelf / backroom / expected, what-if stock chart, manual steps (refill, call supplier, ask nearby store) → add to today's tasks |
+| `09-online-orders.png` | Online orders | Store manager | KPIs, full-width "prepare before picking" checklist, today's delivery slots with at-risk counts, often-missing products with fixes |
+| `10-online-orders-slot-drawer.png` | Delivery slot panel | Store manager | Orders at risk in a slot, which fix resolves them, substitute suggestion + "customer contacted" |
 
 Shell (all screens): **left sidebar** with grouped modules (My store today ·
 Stock & demand · Inventory health · Partners & sales · Head office), top bar
@@ -300,3 +304,26 @@ top nav was replaced by a sidebar).
 - **Step 6b (2026-11-10):** Fixes from user review: district names kept inside
   map tiles (Nubarashen spans 2 columns, safe wrapping); store names changed
   from "#03 Arabkir – Komitas" to "Komitas Ave, Arabkir" with a number badge.
+- **Step 7 (2026-11-10):** Mockups for the next two modules in
+  `docs/design-proposals/` (HTML in `src/`, PNGs rendered with headless Chrome):
+  `07-stockout-risk`, `08-stockout-product-drawer`, `09-online-orders`,
+  `10-online-orders-slot-drawer`. Layout rule applied: the main action table is
+  full width; secondary cards sit side by side below (avoids cramped columns).
+  **Approved** by the user and moved to `design-references/approved/`.
+- **Step 8 (2026-11-10):** Built **Stockout risk** (`src/pages/stockouts/`,
+  data `src/data/stockouts.ts`) and **Online orders** (`src/pages/online/`,
+  data `src/data/online.ts`) matching approved 07–10.
+  - Stockout risk: 3 / 7-day switch, rows grouped Today / Tomorrow / In 2–3 days
+    / Later this week, product drawer with plain-language reason, what-if stock
+    chart and steps (existing task, log call, add task, covered by order → link).
+  - Online orders: Today / Tomorrow switch, "prepare before picking" checklist,
+    delivery slots (at-risk counts update live), slot drawer (best fix,
+    substitute + "customer contacted"), often-missing with "Add to tasks".
+  - **One task per suggestion:** suggestions on these screens map to tasks on
+    "My store today" via `useTaskActions` (`find` / `add` / `complete`) with
+    deterministic ids (`newTaskId`) or a link to an existing task (e.g. the eggs
+    refill). Added tasks live in `DemoContext.addedTasks`; contacted customers
+    in `contactedOrders`. New task kinds: askStore, askSupplier, moveToShelf,
+    setAside, weekendAside.
+  Remaining placeholders: Overstock, Expiry & write-offs, Suppliers, Promotions,
+  Settings, Help (designs to be agreed first).

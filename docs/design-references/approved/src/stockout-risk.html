@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Stockout risk — proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    td { padding-top: 12px; padding-bottom: 12px; }
+  </style>
+</head>
+<body data-page="stockouts" data-scope="store">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>Stockout risk</h1>
+          <div class="subtitle">Products that may run out at your store, and what you can do about it</div>
+        </div>
+        <div class="segmented"><span class="on">Next 3 days</span><span>Next 7 days</span></div>
+      </div>
+
+      <section class="kpis">
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-bad"><i data-lucide="package-x"></i></div>Products at risk<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">11</div>
+          <div class="kpi-foot"><span class="delta tone-good">↓ 3</span>vs. last week</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-warn"><i data-lucide="circle-off"></i></div>Out-of-stock rate<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">4.2%</div>
+          <div class="kpi-foot"><span class="delta tone-good">↓ 0.6 pp</span>vs. last week</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-bad"><i data-lucide="banknote"></i></div>Lost sales this week<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">AMD 1.42M</div>
+          <div class="kpi-foot"><span class="delta tone-good">↓ 8.5%</span>vs. last week</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-primary"><i data-lucide="target"></i></div>Forecast accuracy<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">91.8%</div>
+          <div class="kpi-foot"><span class="delta tone-good">↑ 2.1 pp</span>last 4 weeks</div>
+        </div>
+      </section>
+
+      <section style="margin-bottom: 24px">
+        <div class="card">
+          <div class="card-head" style="padding-bottom: 14px">
+            <div>
+              <div class="card-title">Products that may run out</div>
+              <div class="card-sub">Soonest first · click a product to see why and what to do</div>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Product</th><th>May run out</th><th class="num">On shelf</th><th class="num">Expected sales<br />next 3 days</th><th>What you can do</th><th></th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+          <div class="table-foot"><span class="link">Show 3 more (in 2–3 days)<i data-lucide="chevron-down"></i></span><span></span></div>
+        </div>
+
+      </section>
+
+      <section class="row r-2-1">
+        <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Out-of-stock rate at your store</div>
+            <div class="card-sub">Share of time products were missing from the shelf, by week</div>
+          </div>
+          <div class="legend" style="white-space: nowrap"><span><i style="background:#e4e5ec"></i>Before</span><span><i style="background:#cfc4fb"></i>With Retail Intelligence</span></div>
+        </div>
+        <div class="card-body"><div style="height: 210px"><canvas id="trend"></canvas></div></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Biggest misses last week</div>
+              <div class="card-sub">Shelf was empty while shoppers wanted it</div>
+            </div>
+          </div>
+          <div class="card-body" style="padding-top: 8px" id="misses"></div>
+          <div class="table-foot"><span>Total lost sales last week <b style="color: var(--text)">AMD 1.55M</b></span></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Product drawer -->
+  <div class="overlay"></div>
+  <aside class="drawer">
+    <div class="drawer-head">
+      <div class="thumb">🥚</div>
+      <div style="flex: 1">
+        <div class="drawer-title">Eggs (10-pack)</div>
+        <div class="meta">EGG-010 · AgriEggs</div>
+      </div>
+      <span class="pill tone-bad">around 11:00</span>
+      <div class="icon-btn" style="border: none"><i data-lucide="x"></i></div>
+    </div>
+    <div class="drawer-body" style="gap: 18px">
+      <div class="callout tone-bad">
+        <i data-lucide="triangle-alert" style="width: 20px; height: 20px; margin-top: 2px"></i>
+        <div>
+          <div class="callout-title">The shelf may be empty by 11:00 today</div>
+          <p>Your store usually sells about 26 packs a day, and 9 of today's online orders include eggs. There are 9 packs on the shelf and 40 in the backroom. The AgriEggs delivery due yesterday hasn't arrived.</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-label">On shelf</div><div class="stat-value">9</div></div>
+        <div class="stat"><div class="stat-label">In backroom</div><div class="stat-value">40</div></div>
+        <div class="stat"><div class="stat-label">Expected today</div><div class="stat-value">26</div></div>
+      </div>
+      <div>
+        <div class="section-title">Stock in your store, next 5 days</div>
+        <div class="legend" style="margin: 4px 0 6px">
+          <span><i class="line" style="background:#5b3fe0"></i>If AgriEggs delivers tomorrow</span>
+          <span><i class="line" style="background:#d63b3b"></i>If it's late again</span>
+        </div>
+        <div style="height: 160px"><canvas id="proj"></canvas></div>
+      </div>
+      <div>
+        <div class="section-title">What you can do</div>
+        <div class="step-item">
+          <div class="tile tone-good"><i data-lucide="circle-check"></i></div>
+          <div style="flex:1"><div style="font-weight:600">Move 30 packs from the backroom to the shelf</div><div class="meta">Already on today's tasks</div></div>
+          <span class="pill tone-good">Task added</span>
+        </div>
+        <div class="step-item">
+          <div class="tile tone-bad"><i data-lucide="phone"></i></div>
+          <div style="flex:1"><div style="font-weight:600">Call AgriEggs about the late delivery</div><div class="meta">Was due Mon, Nov 9 · 240 packs</div></div>
+          <span class="btn">Log call</span>
+        </div>
+        <div class="step-item">
+          <div class="tile tone-info"><i data-lucide="arrow-left-right"></i></div>
+          <div style="flex:1"><div style="font-weight:600">Ask the Baghramyan Ave store for 40 packs</div><div class="meta">They have about 3 days of extra stock · 1.2 km away</div></div>
+          <span class="btn">Add task</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding: 16px 24px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 2fr 1fr; gap: 10px">
+      <span class="btn btn-primary btn-block"><i data-lucide="list-plus"></i>Add both to today's tasks</span>
+      <span class="btn btn-block">Close</span>
+    </div>
+  </aside>
+
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    const drawer = location.hash === "#drawer";
+    // [group | emoji, name, meta, when, tone, inStore, expected, action, actionMeta]
+    const R = [
+      ["Today"],
+      ["🥚", "Eggs (10-pack)", "AgriEggs · delivery late", "around 11:00", "bad", "9|40", "78", "Refill from backroom", "task added"],
+      ["🥤", "Cola (1.5L)", "BevCo", "around 12:00", "bad", "6", "66", "Ask Baghramyan Ave store for 24", "BevCo delivers tomorrow 09:00"],
+      ["🫙", "Sour cream (400g)", "DairyCo", "around 15:00", "warn", "7|12", "47", "Refill from backroom", ""],
+      ["🍞", "Bread (white, 600g)", "FreshBake", "around 17:00", "warn", "14", "170", "Ask FreshBake to deliver earlier", "evening delivery 18:00"],
+      ["Tomorrow"],
+      ["🥣", "Matsun (500g)", "DairyCo", "Wed morning", "warn", "30", "64", "Covered by Thursday's DairyCo order", "1 day with little stock"],
+      ["🥣", "Cottage cheese (400g)", "DairyCo", "Wed afternoon", "warn", "18", "33", "Covered by Thursday's DairyCo order", ""],
+      ["🫓", "Lavash (pack)", "FreshBake", "Wed evening", "neutral", "20", "105", "Covered by tonight's FreshBake order", ""],
+    ];
+    document.getElementById("rows").innerHTML = R.map((r, i) => r.length === 1
+      ? `<tr class="group"><td colspan="6">${r[0]}</td></tr>`
+      : `<tr class="${drawer && i === 1 ? "active" : ""}">
+          <td><div class="product"><div class="thumb">${r[0]}</div><div><div class="p-name">${r[1]}</div><div class="meta">${r[2]}</div></div></div></td>
+          <td><span class="pill tone-${r[4]}">${r[3]}</span></td>
+          <td class="num">${String(r[5]).split("|")[0]}${String(r[5]).includes("|") ? `<div class="meta">+${r[5].split("|")[1]} in backroom</div>` : ""}</td>
+          <td class="num">${r[6]}</td>
+          <td class="act">${r[7]}${r[8] ? `<div class="meta">${r[8]}</div>` : ""}</td>
+          <td><i class="chev" data-lucide="chevron-right"></i></td>
+        </tr>`).join("");
+
+    const M = [["🥚", "Eggs (10-pack)", "Empty 9 hours over 2 days", "AMD 310K"], ["🥤", "Cola (1.5L)", "Empty 7 hours on Saturday", "AMD 140K"], ["🫙", "Sour cream (400g)", "Empty 5 hours on Sunday", "AMD 95K"], ["🥣", "Matsun (500g)", "Ran out twice", "AMD 80K"]];
+    document.getElementById("misses").innerHTML = M.map((m) => `
+      <div class="mini-row"><div class="product"><div class="thumb" style="width:34px;height:34px;font-size:18px">${m[0]}</div><div><div class="p-name">${m[1]}</div><div class="meta">${m[2]}</div></div></div><b>${m[3]}</b></div>`).join("");
+  </script>
+  <script src="common.js"></script>
+  <script>
+    document.fonts.ready.then(() => {
+      const before = [6.9, 6.6, 6.8, 6.7];
+      const after = [6.4, 6.1, 5.6, 5.2, 4.9, 5.1, 4.8, 4.2];
+      const data = [...before, ...after];
+      const labels = ["Aug 17", "Aug 24", "Aug 31", "Sep 7", "Sep 14", "Sep 21", "Sep 28", "Oct 5", "Oct 12", "Oct 19", "Oct 26", "This wk"];
+      const labelsPlugin = { id: "lbl", afterDatasetsDraw(c) { const { ctx } = c; ctx.save(); ctx.font = "600 11.5px Inter, system-ui"; ctx.textAlign = "center"; c.getDatasetMeta(0).data.forEach((b, i) => { ctx.fillStyle = i >= before.length ? "#5b3fe0" : "#7a7f93"; ctx.fillText(data[i].toFixed(1) + "%", b.x, b.y - 6); }); ctx.restore(); } };
+      new Chart(document.getElementById("trend"), {
+        type: "bar",
+        data: { labels, datasets: [{ data, backgroundColor: data.map((_, i) => (i >= before.length ? (i === data.length - 1 ? "#5b3fe0" : "#cfc4fb") : "#e4e5ec")), borderRadius: 7, barPercentage: 0.6 }] },
+        options: { layout: { padding: { top: 18 } }, scales: { x: { grid: { display: false }, border: { display: false } }, y: { display: false, beginAtZero: true, max: 8 } } },
+        plugins: [labelsPlugin],
+      });
+      if (location.hash === "#drawer") {
+        new Chart(document.getElementById("proj"), {
+          type: "line",
+          data: {
+            labels: ["Now", "Tue eve", "Wed", "Thu", "Fri", "Sat"],
+            datasets: [
+              { data: [49, 23, 237, 211, 183, 152], borderColor: "#5b3fe0", backgroundColor: "rgba(91,63,224,.08)", fill: true, tension: 0.25, borderWidth: 2.5, pointRadius: 0 },
+              { data: [49, 23, 0, 0, 0, 0], borderColor: "#d63b3b", tension: 0.25, borderWidth: 2.5, pointRadius: 0 },
+            ],
+          },
+          options: { scales: { x: { grid: { display: false }, border: { display: false } }, y: { beginAtZero: true, max: 260, ticks: { stepSize: 100 }, grid: { color: "#f0f0f5" }, border: { display: false } } } },
+        });
+      }
+    });
+  </script>
+</body>
+</html>
