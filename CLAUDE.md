@@ -97,7 +97,7 @@ assumes automation they don't have.
 
 | Topic | Decision | Status |
 |---|---|---|
-| Hosting | GitHub repo + static deploy (GitHub Pages) | Agreed |
+| Hosting | Public GitHub repo + GitHub Pages: https://vzakaryan.github.io/retail-intelligence/ | Live |
 | Data | 100% mocked, consistent across screens | Agreed |
 | Tech stack | React 19 + TS + Vite 7, Tailwind 4, React Router 7 (hash), react-i18next, Recharts, Lucide | **Agreed 2026-11-10** |
 | Client name / branding | — | TBD |
@@ -250,4 +250,10 @@ top nav was replaced by a sidebar).
   and badges, top bar with store / head-office selector, language switch, user;
   responsive (off-canvas menu on small screens); placeholder pages for all routes;
   GitHub Pages workflow. Verified locally (build + click-through desktop/mobile).
-  **Not yet committed/pushed; GitHub Pages not yet enabled.**
+  First commit `43d1acc` pushed to `main` (2026-11-10). Pages was blocked while
+  the repo was private (plan limit), so **the user made the repo public** and
+  Pages was enabled with GitHub Actions as source.
+  **Live demo: https://vzakaryan.github.io/retail-intelligence/** (auto-deploys on
+  every push to `main`). Note: the repo is public — never commit client names,
+  real data or secrets.
+  Next proposed step: build the "My store today" screen.
