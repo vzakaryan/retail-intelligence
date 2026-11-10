@@ -28,6 +28,7 @@ export function fmtPercent(value: number, digits = 1): string {
  */
 export function fmtAmd(value: number): string {
   const abs = Math.abs(value);
+  if (abs === 0) return "AMD 0";
   const n = (v: number, max: number) => new Intl.NumberFormat(currentLocale(), { maximumFractionDigits: max }).format(v);
   if (abs >= 1e9) return `AMD ${n(value / 1e9, 2)}B`;
   if (abs >= 1e5) return `AMD ${n(value / 1e6, abs < 1e7 ? 2 : 1)}M`;

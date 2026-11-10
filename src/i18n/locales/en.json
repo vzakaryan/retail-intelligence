@@ -129,9 +129,10 @@
       "review": "Review",
       "logCall": "Log call",
       "undo": "Mark as not done",
+      "allDone": "All done for today. Nice work!",
       "doneNow": "Done just now",
-      "calledNow": "Call logged just now",
-      "allDone": "All done for today. Nice work!"
+      "callNow": "Call logged just now",
+      "orderNow": "Order placed just now"
     },
     "tags": {
       "online": "Online orders",
@@ -223,6 +224,211 @@
         "askEarlier": "consider asking earlier",
         "done": "Refilled from backroom"
       }
+    }
+  },
+  "common": {
+    "close": "Close",
+    "show": "Show",
+    "hide": "Hide",
+    "edit": "Edit"
+  },
+  "orders": {
+    "day": {
+      "today": "Today",
+      "tomorrow": "Tomorrow"
+    },
+    "how": {
+      "1": {
+        "title": "Review the quantities",
+        "text": "We suggest how much to order. Accept or change each one."
+      },
+      "2": {
+        "title": "Order as you do today",
+        "text": "Phone, email or Excel. We prepare the list for you."
+      },
+      "3": {
+        "title": "Tell us it's placed",
+        "text": "We'll check the delivery and learn from the results."
+      },
+      "gotIt": "Got it"
+    },
+    "list": {
+      "dueToday_one": "Due today · {{count}} order",
+      "dueToday_other": "Due today · {{count}} orders",
+      "noneDueToday": "Nothing left to order today. Well done!",
+      "comingUp": "Coming up",
+      "placed": "Placed · waiting for delivery",
+      "meta_one": "{{categories}} · {{count}} product",
+      "meta_other": "{{categories}} · {{count}} products",
+      "placedMeta_one": "Placed {{date}} · {{count}} product",
+      "placedMeta_other": "Placed {{date}} · {{count}} products",
+      "inHours_one": "in {{count}} hour",
+      "inHours_other": "in {{count}} hours",
+      "notStarted": "Not started",
+      "ready": "Ready to place",
+      "reviewed": "{{done}} of {{total}} reviewed",
+      "start": "Start review",
+      "continue": "Continue review",
+      "placeOrder": "Place the order",
+      "wasDue": "Was due {{date}}",
+      "due": "Due {{when}}",
+      "daysLate_one": "{{count}} day late",
+      "daysLate_other": "{{count}} days late",
+      "stockLeft_one": "About {{count}} day of stock left",
+      "stockLeft_other": "About {{count}} days of stock left",
+      "onTheWay": "On the way",
+      "placedNow": "Placed just now",
+      "viewOrder": "View order",
+      "callLogged": "Call logged",
+      "col": {
+        "supplier": "Supplier",
+        "orderBy": "Order by",
+        "delivery": "Delivery",
+        "progress": "Progress"
+      }
+    },
+    "steps": {
+      "review": "Review quantities",
+      "place": "Place the order",
+      "done": "Done"
+    },
+    "order": {
+      "title": "{{supplier}} order",
+      "orderBy": "Order by",
+      "subtitle": "delivery {{delivery}} · should last until the next delivery on {{until}}",
+      "subtitlePlaced": "Delivery {{delivery}}"
+    },
+    "reason": {
+      "weekend": "Weekend demand +{{pct}}%",
+      "usual": "Usual demand",
+      "ranOutTwice": "Ran out twice last week",
+      "enoughExpiring": "Enough stock · some expire soon",
+      "ranOutSunday": "Ran out on Sunday",
+      "sellingFaster": "Selling faster this week",
+      "weekendBaking": "Weekend baking +{{pct}}%",
+      "lowStock": "Almost gone from the shelf"
+    },
+    "status": {
+      "accepted": "Accepted",
+      "changed": "Changed {{diff}}",
+      "notNeeded": "Not needed",
+      "reasonNote": "Reason: {{reason}}"
+    },
+    "changeReason": {
+      "shelfSpace": "Limited shelf space",
+      "promo": "Promotion coming",
+      "lowerDemand": "I expect lower sales",
+      "higherDemand": "I expect higher sales",
+      "packSize": "Supplier pack size / minimum",
+      "other": "Other"
+    },
+    "reasonDialog": {
+      "title": "Why did you change it?",
+      "text": "We suggested {{suggested}} {{product}}, you chose {{qty}}. Your answer helps improve future suggestions.",
+      "skip": "Skip",
+      "save": "Save {{qty}}"
+    },
+    "review": {
+      "needsReview_one": "Needs your review · {{count}} product",
+      "needsReview_other": "Needs your review · {{count}} products",
+      "needsReviewSub": "Change a quantity if you know something we don't. Click \"Why?\" to see how we calculated it.",
+      "acceptAll_one": "Accept {{count}}",
+      "acceptAll_other": "Accept all {{count}}",
+      "col": {
+        "product": "Product",
+        "inStore": "In store",
+        "expected": "Expected sales until {{day}}",
+        "suggested": "Suggested",
+        "yourQty": "Your quantity"
+      },
+      "onTheWay": "+{{count}} on the way",
+      "why": "Why?",
+      "accept": "Accept",
+      "save": "Save",
+      "acceptQty": "Accept {{qty}}",
+      "yourQty": "Your quantity",
+      "qtyFor": "Quantity for {{product}}",
+      "reviewed_one": "Reviewed · {{count}} product",
+      "reviewed_other": "Reviewed · {{count}} products",
+      "sumNotNeeded": "{{name}} not needed",
+      "sumChanged": "{{name}} {{qty}} (you changed)",
+      "progress": "{{done}} of {{total}} reviewed",
+      "orderSoFar": "order so far",
+      "moreToGo_one": "Review {{count}} more to continue",
+      "moreToGo_other": "Review {{count}} more to continue",
+      "next": "Next: place the order",
+      "allDoneTitle": "All {{count}} products reviewed",
+      "allDoneText": "Check the final list and send it to {{supplier}} your usual way."
+    },
+    "why": {
+      "title": "Why we suggest {{qty}} units",
+      "expected": "Expected sales, {{from}} – {{to}}",
+      "safety_one": "Safety stock (about {{count}} day)",
+      "safety_other": "Safety stock (about {{count}} days)",
+      "inStore": "In store now (shelf + backroom)",
+      "onTheWay": "Already on the way",
+      "suggested": "Suggested order",
+      "units_one": "{{count}} unit",
+      "units_other": "{{count}} units",
+      "salesTitle": "Daily sales at your store",
+      "legendSold": "Sold",
+      "legendExpected": "Expected",
+      "legendEmpty": "Shelf was empty part of the day",
+      "tooltipUnits": "Units",
+      "historyTitle": "Recent suggestions for this product",
+      "suggestedN": "suggested {{count}}",
+      "orderedN": "ordered {{count}}",
+      "ranOut": "Ran out {{day}} {{time}}",
+      "noStockout": "No stockout",
+      "changeNote": "If you change it, we'll ask why. It helps improve future suggestions."
+    },
+    "place": {
+      "yourOrder_one": "Your order · {{count}} product",
+      "yourOrder_other": "Your order · {{count}} products",
+      "summary": "{{units}} units · about {{value}}",
+      "notNeeded": "not needed this time: {{names}}",
+      "changedFrom": "you changed from {{qty}}",
+      "back": "Back to review",
+      "sendTitle": "Send it to {{supplier}} your usual way",
+      "sendSub": "We prepared the order list for you",
+      "excel": "Download Excel order sheet",
+      "excelText": "Ready to email or print",
+      "copy": "Copy as text",
+      "copied": "Copied!",
+      "copyText": "Paste into email, Viber or WhatsApp",
+      "print": "Print",
+      "printText": "To read out over the phone",
+      "confirmTitle": "Placed it? Let us know",
+      "confirmSub": "Once you confirm, we will:",
+      "benefit": {
+        "tasks": "Take it off today's tasks",
+        "late": "Remind you if the delivery is late",
+        "learn": "Compare what you ordered with what sold, to improve the next suggestions"
+      },
+      "confirm": "I've placed the order with {{supplier}}",
+      "partial": "Supplier can't deliver everything? You can update the quantities when the delivery arrives."
+    },
+    "done": {
+      "placedTitle": "Order placed with {{supplier}}",
+      "placedBefore": "Order placed on {{date}}",
+      "deliveryText": "Delivery expected {{delivery}}. We'll remind you if it's late.",
+      "lateText_one": "It was due {{date}} and hasn't arrived. About {{count}} day of stock left.",
+      "lateText_other": "It was due {{date}} and hasn't arrived. About {{count}} days of stock left.",
+      "backToOrders": "Back to order suggestions",
+      "backToToday": "Back to today's tasks"
+    },
+    "notFound": {
+      "title": "Order not found",
+      "text": "This order belongs to another store, or it no longer exists.",
+      "back": "Back to order suggestions"
+    },
+    "sheet": {
+      "heading": "Order for {{supplier}} — Store {{store}}",
+      "delivery": "Delivery: {{date}}",
+      "total": "{{count}} products · {{units}} units",
+      "colSku": "SKU",
+      "colProduct": "Product",
+      "colQty": "Quantity"
     }
   }
 }

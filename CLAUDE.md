@@ -267,4 +267,19 @@ top nav was replaced by a sidebar).
   Tag, Button, IconTile, InfoTip, Progress, Segmented, ProductThumb).
   Small deviation from the mockup: the period dropdowns became one
   This week / Last 4 weeks switch.
-  Next proposed step: build the Order suggestions flow (screens 02–05).
+- **Step 5 (2026-11-10):** Built the **Order suggestions** flow
+  (`src/pages/orders/`) matching approved 02–05. Routes: `/orders` (list),
+  `/orders/:orderId` (1 Review), `/orders/:orderId/place` (2 Place),
+  `/orders/:orderId/done` (3 Done / view a placed order). Data:
+  `src/data/orders.ts` (suggested = expected + safety − in store − on the way;
+  Store #03 hand-crafted: DairyCo 14 lines with 6 pre-reviewed, FreshBake,
+  BevCo, placed AgriEggs (late) + BevCo; other stores derived) and prices in
+  `products.ts`. State in `DemoContext` (line reviews, placed orders, "how it
+  works" dismissed) via `useOrders`/`useOrder`. Interactions: edit qty,
+  Accept / Accept all, changed qty asks a reason (dialog), Why? drawer with
+  calculation + daily sales chart (Recharts) + past suggestions, reviewed list
+  with Edit, Next disabled until all reviewed, Download order sheet (CSV that
+  opens in Excel), Copy as text, Print, "I've placed the order" → Done.
+  Placing an order completes its "Review the … order" task on My store today;
+  Log call on a late order completes the call task; sidebar badges update.
+  Next proposed step: build the head-office **All stores · Yerevan** screen (06).

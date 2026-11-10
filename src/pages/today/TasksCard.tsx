@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { Check, ChevronDown, ChevronUp, PartyPopper, Phone, Printer } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useDemo } from "@/app/DemoContext";
-import { useTasks, type TaskState } from "@/app/useTasks";
+import { orderIdForTask, useTasks, type TaskState } from "@/app/useTasks";
 import type { TaskTag } from "@/data/today";
 import type { Tone } from "@/data/types";
 import { Button } from "@/components/ui/Button";
@@ -69,7 +69,7 @@ export function TasksCard() {
 function TaskRow({ task }: { task: TaskState }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { setTaskDone } = useDemo();
+  const { setTaskDone, store } = useDemo();
   const text = useTaskText()(task);
 
   return (
@@ -98,7 +98,7 @@ function TaskRow({ task }: { task: TaskState }) {
       {!task.done && (
         <div className="ml-9 shrink-0 sm:ml-0 print:hidden">
           {task.action === "review" && (
-            <Button variant="primary" onClick={() => navigate("/orders")}>
+            <Button variant="primary" onClick={() => navigate(`/orders/${orderIdForTask(store.id, task) ?? ""}`)}>
               {t("today.tasks.review")}
             </Button>
           )}

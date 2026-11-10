@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { FOOTER_NAV, NAV, type NavItem } from "@/app/navigation";
 import { useDemo } from "@/app/DemoContext";
 import { useTasks } from "@/app/useTasks";
+import { useOrders } from "@/app/useOrders";
 import { DATA_REFRESHED_AT } from "@/data/world";
 
 interface Props {
@@ -78,7 +79,8 @@ function SidebarLink({ item, onNavigate }: { item: NavItem; onNavigate: () => vo
   const { store } = useDemo();
   const Icon = item.icon;
   const { openCount } = useTasks(store.id);
-  const badge = item.badge === "openTasks" ? openCount : item.badge === "ordersDueToday" ? store.today.ordersDueToday : 0;
+  const dueToday = useOrders(store.id).filter((o) => o.dueToday).length;
+  const badge = item.badge === "openTasks" ? openCount : item.badge === "ordersDueToday" ? dueToday : 0;
 
   return (
     <NavLink

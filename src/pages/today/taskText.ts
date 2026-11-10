@@ -19,7 +19,7 @@ export function useTaskText() {
 
     const title = t(`today.task.${task.kind}.title`, vars);
     let detail: string;
-    if (task.doneNow) detail = t(task.doneNow === "call" ? "today.tasks.calledNow" : "today.tasks.doneNow");
+    if (task.doneNow) detail = t(`today.tasks.${task.doneNow}Now`);
     else if (task.done && task.doneAt) detail = t(`today.task.${task.kind}.doneDetail`, { ...vars, at: task.doneAt });
     else detail = t(`today.task.${task.kind}.detail`, vars);
     return { title, detail };

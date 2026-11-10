@@ -8,36 +8,58 @@ export interface Product {
   emoji: string;
   supplierId: string;
   category: "dairy" | "eggs" | "bakery" | "beverages";
+  /** Purchase price per unit, AMD (used for order value) */
+  price: number;
 }
 
-const p = (id: string, sku: string, name: string, emoji: string, supplierId: string, category: Product["category"]): Product => ({
+const p = (id: string, sku: string, name: string, emoji: string, supplierId: string, category: Product["category"], price: number): Product => ({
   id,
   sku,
   name: { en: name },
   emoji,
   supplierId,
   category,
+  price,
 });
 
 /** Assortment shared by all stores in the chain. */
 export const PRODUCTS: Product[] = [
-  p("milk32", "DAI-001", "Milk 3.2% (1L)", "🥛", "dairyco", "dairy"),
-  p("milk25", "DAI-002", "Milk 2.5% (1L)", "🥛", "dairyco", "dairy"),
-  p("milk15", "DAI-003", "Milk 1.5% (1L)", "🥛", "dairyco", "dairy"),
-  p("kefir", "DAI-010", "Kefir (1L)", "🍶", "dairyco", "dairy"),
-  p("matsun", "DAI-021", "Matsun (500g)", "🥣", "dairyco", "dairy"),
-  p("tan", "DAI-030", "Tan (1L)", "🥛", "dairyco", "dairy"),
-  p("yogurt", "YOG-002", "Yogurt (500g)", "🥣", "dairyco", "dairy"),
-  p("sourcream", "SCR-040", "Sour cream (400g)", "🫙", "dairyco", "dairy"),
-  p("butter", "BUT-100", "Butter (200g)", "🧈", "dairyco", "dairy"),
-  p("cheese", "CHS-200", "Cheese (300g)", "🧀", "dairyco", "dairy"),
-  p("cottage", "CTG-030", "Cottage cheese (400g)", "🥣", "dairyco", "dairy"),
-  p("cream10", "CRM-010", "Cream 10% (500ml)", "🥛", "dairyco", "dairy"),
-  p("lori", "CHS-310", "Lori cheese (300g)", "🧀", "dairyco", "dairy"),
-  p("chanakh", "CHS-320", "Chanakh cheese (300g)", "🧀", "dairyco", "dairy"),
-  p("eggs10", "EGG-010", "Eggs (10-pack)", "🥚", "agrieggs", "eggs"),
-  p("cola15", "BEV-015", "Cola (1.5L)", "🥤", "bevco", "beverages"),
-  p("bread600", "BRD-004", "Bread (white, 600g)", "🍞", "freshbake", "bakery"),
+  // DairyCo
+  p("milk32", "DAI-001", "Milk 3.2% (1L)", "🥛", "dairyco", "dairy", 520),
+  p("milk25", "DAI-002", "Milk 2.5% (1L)", "🥛", "dairyco", "dairy", 490),
+  p("milk15", "DAI-003", "Milk 1.5% (1L)", "🥛", "dairyco", "dairy", 470),
+  p("kefir", "DAI-010", "Kefir (1L)", "🍶", "dairyco", "dairy", 600),
+  p("matsun", "DAI-021", "Matsun (500g)", "🥣", "dairyco", "dairy", 550),
+  p("tan", "DAI-030", "Tan (1L)", "🥛", "dairyco", "dairy", 450),
+  p("yogurt", "YOG-002", "Yogurt (500g)", "🥣", "dairyco", "dairy", 700),
+  p("sourcream", "SCR-040", "Sour cream (400g)", "🫙", "dairyco", "dairy", 900),
+  p("butter", "BUT-100", "Butter (200g)", "🧈", "dairyco", "dairy", 1900),
+  p("cheese", "CHS-200", "Cheese (300g)", "🧀", "dairyco", "dairy", 2400),
+  p("cottage", "CTG-030", "Cottage cheese (400g)", "🥣", "dairyco", "dairy", 1100),
+  p("cream10", "CRM-010", "Cream 10% (500ml)", "🥛", "dairyco", "dairy", 1000),
+  p("lori", "CHS-310", "Lori cheese (300g)", "🧀", "dairyco", "dairy", 1700),
+  p("chanakh", "CHS-320", "Chanakh cheese (300g)", "🧀", "dairyco", "dairy", 1800),
+  // AgriEggs
+  p("eggs10", "EGG-010", "Eggs (10-pack)", "🥚", "agrieggs", "eggs", 950),
+  p("eggs6", "EGG-006", "Eggs (6-pack)", "🥚", "agrieggs", "eggs", 600),
+  p("eggs30", "EGG-030", "Eggs (30-pack)", "🥚", "agrieggs", "eggs", 2700),
+  // BevCo
+  p("cola15", "BEV-015", "Cola (1.5L)", "🥤", "bevco", "beverages", 520),
+  p("cola05", "BEV-005", "Cola (0.5L)", "🥤", "bevco", "beverages", 300),
+  p("water15", "BEV-101", "Still water (1.5L)", "💧", "bevco", "beverages", 220),
+  p("sparkling", "BEV-110", "Sparkling water (1L)", "💧", "bevco", "beverages", 280),
+  p("ojuice", "BEV-201", "Orange juice (1L)", "🧃", "bevco", "beverages", 750),
+  p("ajuice", "BEV-202", "Apple juice (1L)", "🧃", "bevco", "beverages", 700),
+  p("lemonade", "BEV-301", "Lemonade (1L)", "🍋", "bevco", "beverages", 450),
+  p("icetea", "BEV-310", "Iced tea (1L)", "🧋", "bevco", "beverages", 480),
+  p("energy", "BEV-401", "Energy drink (0.25L)", "⚡", "bevco", "beverages", 550),
+  // FreshBake
+  p("bread600", "BRD-004", "Bread (white, 600g)", "🍞", "freshbake", "bakery", 350),
+  p("rye", "BRD-010", "Bread (rye, 500g)", "🍞", "freshbake", "bakery", 450),
+  p("lavash", "BRD-020", "Lavash (pack)", "🫓", "freshbake", "bakery", 300),
+  p("matnakash", "BRD-030", "Matnakash (500g)", "🥖", "freshbake", "bakery", 400),
+  p("croissant", "BRD-040", "Croissant", "🥐", "freshbake", "bakery", 350),
+  p("buns", "BRD-050", "Buns (6-pack)", "🥯", "freshbake", "bakery", 600),
 ];
 
 export function getProduct(id: string): Product {
