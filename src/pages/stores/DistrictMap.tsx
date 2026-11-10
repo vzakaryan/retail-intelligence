@@ -36,11 +36,11 @@ export function DistrictMap({ selected, onSelect }: Props) {
             const s = districtStats(d.id);
             const has = s.count > 0 && s.availability !== undefined;
             const isSel = selected === d.id;
-            const style = { gridColumn: d.grid.col, gridRow: d.grid.row };
+            const style = { gridColumn: `${d.grid.col} / span ${d.grid.span ?? 1}`, gridRow: d.grid.row };
             if (!has)
               return (
-                <div key={d.id} style={style} className="flex min-h-16 flex-col justify-between rounded-ctl bg-[#f3f3f7] p-2 text-[#a3a7b7]">
-                  <div className="text-[11.5px] font-semibold leading-tight">{loc(d.name)}</div>
+                <div key={d.id} style={style} className="flex min-h-16 min-w-0 flex-col justify-between gap-1 overflow-hidden rounded-ctl bg-[#f3f3f7] px-1.5 py-2 text-[#a3a7b7]">
+                  <div lang="en" className="hyphens-auto text-[11px] font-semibold leading-tight [overflow-wrap:anywhere]">{loc(d.name)}</div>
                   <div className="text-[11px]">{t("stores.map.noStores")}</div>
                 </div>
               );
@@ -50,13 +50,13 @@ export function DistrictMap({ selected, onSelect }: Props) {
                 style={style}
                 onClick={() => onSelect(isSel ? undefined : d.id)}
                 aria-pressed={isSel}
-                className={`flex min-h-16 flex-col justify-between rounded-ctl p-2 text-left transition-shadow hover:shadow-[inset_0_0_0_2px_currentColor] ${TONE[availabilityTone(s.availability!)]} ${
+                className={`flex min-h-16 min-w-0 flex-col justify-between gap-1 overflow-hidden rounded-ctl px-1.5 py-2 text-left transition-shadow hover:shadow-[inset_0_0_0_2px_currentColor] ${TONE[availabilityTone(s.availability!)]} ${
                   isSel ? "shadow-[inset_0_0_0_2px_var(--color-primary)]" : ""
                 } ${selected && !isSel ? "opacity-50" : ""}`}
               >
-                <div className="text-[11.5px] font-semibold leading-tight">{loc(d.name)}</div>
+                <div lang="en" className="hyphens-auto text-[11px] font-semibold leading-tight [overflow-wrap:anywhere]">{loc(d.name)}</div>
                 <div>
-                  <div className="text-[15px] font-bold">{fmtPercent(s.availability!)}</div>
+                  <div className="text-[15px] font-bold leading-tight">{fmtPercent(s.availability!)}</div>
                   <div className="text-[11px] opacity-80">{t("stores.map.stores", { count: s.count })}</div>
                 </div>
               </button>

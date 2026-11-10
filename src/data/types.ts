@@ -12,8 +12,8 @@ export interface Localized {
 export interface District {
   id: string;
   name: Localized;
-  /** Position on the schematic district tile map (1-based grid). */
-  grid: { col: number; row: number };
+  /** Position on the schematic district tile map (1-based grid); `span` = columns wide. */
+  grid: { col: number; row: number; span?: number };
 }
 
 export interface StoreKpis {

@@ -21,7 +21,7 @@ export const DISTRICTS: District[] = [
   { id: "malatia-sebastia", name: { en: "Malatia-Sebastia" }, grid: { col: 1, row: 3 } },
   { id: "shengavit", name: { en: "Shengavit" }, grid: { col: 2, row: 3 } },
   { id: "erebuni", name: { en: "Erebuni" }, grid: { col: 3, row: 3 } },
-  { id: "nubarashen", name: { en: "Nubarashen" }, grid: { col: 3, row: 4 } },
+  { id: "nubarashen", name: { en: "Nubarashen" }, grid: { col: 2, row: 4, span: 2 } },
 ];
 
 const store = (

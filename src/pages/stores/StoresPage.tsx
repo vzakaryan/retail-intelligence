@@ -78,7 +78,7 @@ export function StoresPage() {
         <KpiCard icon={ListChecks} iconTone="primary" label={t("stores.kpi.actedOn")} info={t("stores.kpi.actedOnInfo")} value={fmtPercent(k.suggestionsActedOn, 0)} delta={{ text: fmtDeltaPp(CHAIN_DELTAS.actedOnPp, 0), tone: deltaTone(CHAIN_DELTAS.actedOnPp, true) }} foot={t("today.vs.4w")} />
       </section>
 
-      <section className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[330px_minmax(0,1fr)]">
+      <section className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
         <div className="flex flex-col gap-4">
           <DistrictMap selected={district} onSelect={setDistrict} />
           <Card className="px-5 py-[18px]">
