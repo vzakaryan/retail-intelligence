@@ -67,8 +67,8 @@ export const NAV: NavGroup[] = [
   {
     groupKey: "partnersSales",
     items: [
-      { id: "suppliers", path: "/suppliers", icon: Handshake, design: "planned" },
-      { id: "promotions", path: "/promotions", icon: BadgePercent, design: "planned" },
+      { id: "suppliers", path: "/suppliers", icon: Handshake, design: "approved" },
+      { id: "promotions", path: "/promotions", icon: BadgePercent, design: "approved" },
     ],
   },
   {

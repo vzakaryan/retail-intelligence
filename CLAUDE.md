@@ -106,7 +106,7 @@ assumes automation they don't have.
 | Data | 100% mocked, consistent across screens | Agreed |
 | Tech stack | React 19 + TS + Vite 7, Tailwind 4, React Router 7 (hash), react-i18next, Recharts, Lucide | **Agreed 2026-11-10** |
 | Client name / branding | — | TBD |
-| Target design | `docs/design-references/approved/` (14 screens) | **Approved 2026-11-10** |
+| Target design | `docs/design-references/approved/` (18 screens) | **Approved 2026-11-10** |
 | Language | English first, then Armenian + EN/HY switcher; i18n-ready from day one | Agreed |
 
 ## Codebase (how the app is built)
@@ -148,7 +148,7 @@ assumes automation they don't have.
 
 ### Approved target design (SOURCE OF TRUTH — build to match these)
 
-Approved by the user on 2026-11-10 (01–06, then 07–10, then 11–14). Files in `docs/design-references/approved/`.
+Approved by the user on 2026-11-10 (01–06, 07–10, 11–14, 15–18). Files in `docs/design-references/approved/`.
 The HTML/CSS mockup source is in `approved/src/` (`styles.css` holds the design
 tokens: colors, radii, type sizes) — reuse it when building the real app.
 
@@ -168,6 +168,10 @@ tokens: colors, radii, type sizes) — reuse it when building the real app.
 | `12-overstock-product-drawer.png` | Overstock product panel | Store manager | Why there's too much (plain sentence), sold vs delivered chart, steps: move to another store, order less (order suggestions), promotion |
 | `13-expiry-writeoffs.png` | Expiry & write-offs | Store manager | KPIs (write-offs, expiring soon, write-off rate, saved by markdowns), full-width "expiring soon" grouped by day with will-sell / at-risk, write-offs by reason, weekly trend |
 | `14-expiry-product-drawer.png` | Expiry product panel | Store manager | Units likely thrown away, normal vs markdown sales chart, steps: markdown (existing task), move to another store, order 0 |
+| `15-suppliers.png` | Suppliers | Store manager | KPIs (on time, in full, late deliveries, cost of late deliveries), supplier table least reliable first, recent deliveries, AgriEggs vs others on-time trend |
+| `16-supplier-drawer.png` | Supplier panel | Store manager | Late/short summary + cost, last 8 deliveries chart, steps: log call, keep extra safety stock (order-suggestion setting), copy summary for head office |
+| `17-promotions.png` | Promotions | Store manager | Promotions set by head office; KPIs, coming-up table with readiness, running now, did past promotions pay off |
+| `18-promotion-drawer.png` | Promotion panel | Store manager | Expected uplift, normal vs promotion chart, get-ready steps (order extra in supplier order, price tags task, clear space) |
 
 Shell (all screens): **left sidebar** with grouped modules (My store today ·
 Stock & demand · Inventory health · Partners & sales · Head office), top bar
@@ -357,3 +361,29 @@ top nav was replaced by a sidebar).
   Overstock KPIs now come from the rows (AMD 0.41M across 10 products) rather
   than the mockup's illustrative AMD 3.4M / 18 products.
   Remaining placeholders: Suppliers, Promotions, Settings, Help.
+- **Step 11 (2026-11-10):** Mockups for **Suppliers** and **Promotions** in
+  `docs/design-proposals/`: `15-suppliers`, `16-supplier-drawer`,
+  `17-promotions`, `18-promotion-drawer`. Suppliers: on-time / in-full / late /
+  cost of late deliveries, supplier table (least reliable first), recent
+  deliveries, AgriEggs vs others trend; panel with call, extra safety stock,
+  copy summary for head office. Promotions: promotions are **set by head
+  office**, the store prepares — coming-up table with "Ready?" steps, running
+  now, did past promotions pay off; panel with expected uplift chart and
+  get-ready steps (order +160 milk already in DairyCo suggestion, price tags
+  task, clear fridge space). **Approved** and filed in `design-references/approved/`.
+- **Step 12 (2026-11-10):** Built **Suppliers** (`src/pages/suppliers/`, data
+  `src/data/suppliers.ts`) and **Promotions** (`src/pages/promotions/`, data
+  `src/data/promotions.ts`) matching approved 15–18. **All 6 product modules
+  are now built.**
+  - Suppliers: KPIs computed from supplier rows, table least reliable first,
+    recent deliveries, worst supplier vs others trend; supplier panel with
+    log call / ask-for-earlier-delivery task, **"keep 1 extra day of safety
+    stock"** (`DemoContext.extraSafety`) which really raises that supplier's
+    order suggestions (`useOrders` → `extraSafety` on each line, shown in the
+    review reason and the Why? calculation), and "Copy" summary for head office.
+  - Promotions: set by head office; coming-up table with live readiness
+    (`usePromoReadiness`: order-suggestion steps count as done, task steps when
+    ticked off), running now, did past promotions pay off; panel with uplift
+    chart and get-ready steps. New step kinds `orderExtra` and `note`; new task
+    kind `clearSpace`; `existing` steps may have no product (price tags task).
+  Remaining placeholders: Settings, Help.

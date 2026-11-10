@@ -102,6 +102,7 @@ function WhyBody({ view, line }: { view: OrderView; line: LineView }) {
         <div className="overflow-hidden rounded-xl border border-line">
           <CalcRow op="" label={t("orders.why.expected", { from: md(start), to: md(view.order.coversUntil) })} value={l.expected} />
           <CalcRow op="+" label={t("orders.why.safety", { count: safetyDays })} value={l.safetyStock} />
+          {line.extraSafety > 0 && <CalcRow op="+" label={t("orders.why.extraSafety", { supplier: view.supplier.name })} value={line.extraSafety} />}
           <CalcRow op="−" label={t("orders.why.inStore")} value={l.inStore} />
           <CalcRow op="−" label={t("orders.why.onTheWay")} value={l.onTheWay} />
           <div className="flex justify-between bg-primary-50 px-3.5 py-2.5 font-bold text-primary">

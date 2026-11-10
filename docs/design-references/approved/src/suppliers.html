@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Suppliers — proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>td { padding-top: 12px; padding-bottom: 12px; } .sup { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+  .dl { display: flex; gap: 12px; align-items: flex-start; padding: 11px 0; border-bottom: 1px solid var(--border); } .dl:last-child { border-bottom: none; } .dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }</style>
+</head>
+<body data-page="suppliers" data-scope="store">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>Suppliers</h1>
+          <div class="subtitle">How reliable your deliveries are, and what late or short deliveries cost you</div>
+        </div>
+        <div class="segmented"><span class="on">Last 4 weeks</span><span>Last 12 weeks</span></div>
+      </div>
+
+      <section class="kpis">
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-good"><i data-lucide="clock"></i></div>On-time deliveries<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">87%</div>
+          <div class="kpi-foot"><span class="delta tone-good">↑ 3 pp</span>vs. prior 4 weeks</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-info"><i data-lucide="package-check"></i></div>Delivered in full<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">95.4%</div>
+          <div class="kpi-foot"><span class="delta tone-good">↑ 1.2 pp</span>of ordered units</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-warn"><i data-lucide="truck"></i></div>Late deliveries</div>
+          <div class="kpi-value">9 <small>of 68</small></div>
+          <div class="kpi-foot"><span class="delta tone-good">↓ 4</span>vs. prior 4 weeks</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-bad"><i data-lucide="banknote"></i></div>Cost of late deliveries<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">AMD 0.62M</div>
+          <div class="kpi-foot">lost sales from empty shelves</div>
+        </div>
+      </section>
+
+      <section class="card" style="margin-bottom: 24px">
+        <div class="card-head" style="padding-bottom: 14px">
+          <div>
+            <div class="card-title">Your suppliers</div>
+            <div class="card-sub">Least reliable first · click a supplier to see the details</div>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Supplier</th><th>On time</th><th class="num">Delivered in full</th><th class="num">Usual delay</th><th class="num">Lost sales</th><th>Status</th><th></th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </section>
+
+      <section class="row r-1-2" style="grid-template-columns: 1fr 1.3fr">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Recent deliveries</div>
+              <div class="card-sub">Last 3 days</div>
+            </div>
+          </div>
+          <div class="card-body" style="padding-top: 4px" id="deliveries"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">On-time deliveries, by week</div>
+              <div class="card-sub">AgriEggs compared with your other suppliers</div>
+            </div>
+            <div class="legend" style="white-space: nowrap"><span><i class="line" style="background:#d63b3b"></i>AgriEggs</span><span><i class="line" style="background:#5b3fe0"></i>Other suppliers</span></div>
+          </div>
+          <div class="card-body"><div style="height: 230px"><canvas id="trend"></canvas></div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="overlay"></div>
+  <aside class="drawer">
+    <div class="drawer-head">
+      <div class="sup tone-good" style="width:48px;height:48px">AE</div>
+      <div style="flex: 1">
+        <div class="drawer-title">AgriEggs</div>
+        <div class="meta">Eggs · delivers Mon & Thu · Aram B., sales rep</div>
+      </div>
+      <span class="pill tone-bad">Unreliable</span>
+      <div class="icon-btn" style="border: none"><i data-lucide="x"></i></div>
+    </div>
+    <div class="drawer-body" style="gap: 18px">
+      <div class="callout tone-bad">
+        <i data-lucide="truck" style="width: 20px; height: 20px; margin-top: 2px"></i>
+        <div>
+          <div class="callout-title">Late on 3 of the last 8 deliveries</div>
+          <p>Deliveries arrived on average 1.2 days late, and 12% of ordered packs didn't come. Eggs ran out 4 times because of it — about AMD 310K in lost sales over 4 weeks.</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-label">On time</div><div class="stat-value" style="color: var(--bad)">63%</div></div>
+        <div class="stat"><div class="stat-label">Delivered in full</div><div class="stat-value">88%</div></div>
+        <div class="stat"><div class="stat-label">Usual delay</div><div class="stat-value">1.2 days</div></div>
+      </div>
+      <div>
+        <div class="section-title">Last 8 deliveries</div>
+        <div class="legend" style="margin: 4px 0 6px"><span><i style="background:#cfc4fb"></i>On time</span><span><i style="background:#d63b3b"></i>Days late</span></div>
+        <div style="height: 150px"><canvas id="proj"></canvas></div>
+      </div>
+      <div>
+        <div class="section-title">What you can do</div>
+        <div class="step-item">
+          <div class="tile tone-bad"><i data-lucide="phone"></i></div>
+          <div style="flex:1"><div style="font-weight:600">Call AgriEggs about the late delivery</div><div class="meta">Was due Mon, Nov 9 · 240 packs</div></div>
+          <span class="btn">Log call</span>
+        </div>
+        <div class="step-item">
+          <div class="tile tone-primary"><i data-lucide="shield-check"></i></div>
+          <div style="flex:1"><div style="font-weight:600">Keep 1 extra day of eggs as safety stock</div><div class="meta">Order suggestions will add it until deliveries improve</div></div>
+          <span class="btn">Apply</span>
+        </div>
+        <div class="step-item">
+          <div class="tile tone-info"><i data-lucide="send"></i></div>
+          <div style="flex:1"><div style="font-weight:600">Share this with head office</div><div class="meta">A short summary for the AgriEggs buyer</div></div>
+          <span class="btn"><i data-lucide="copy"></i>Copy</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding: 16px 24px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr; gap: 10px">
+      <span class="btn btn-block">Close</span>
+    </div>
+  </aside>
+
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    const drawer = location.hash === "#drawer";
+    // [initials, tone, name, categories, onTime, full, delay, lost, status, statusTone]
+    const S = [
+      ["AE", "good", "AgriEggs", "Eggs · 8 deliveries, 3 late", 63, "88%", "1.2 days", "AMD 310K", "Unreliable", "bad"],
+      ["BC", "bad", "BevCo", "Soft drinks, water · 12 deliveries, 2 late", 83, "93%", "1.5 hours", "AMD 140K", "Watch", "warn"],
+      ["FB", "warn", "FreshBake", "Bread, pastries · 28 deliveries, 3 late", 89, "97%", "35 min", "AMD 95K", "Watch", "warn"],
+      ["DC", "info", "DairyCo", "Milk, kefir, cheese · 12 deliveries, 1 late", 92, "98%", "20 min", "AMD 45K", "Reliable", "good"],
+      ["CF", "info", "ColdFoods", "Frozen food · 4 deliveries", 100, "96%", "—", "AMD 20K", "Reliable", "good"],
+      ["GH", "primary", "GroceryHub", "Dry goods · 4 deliveries", 100, "99%", "—", "AMD 10K", "Reliable", "good"],
+    ];
+    const col = (v) => (v >= 95 ? "#138a4b" : v >= 85 ? "#e09b2d" : "#d63b3b");
+    document.getElementById("rows").innerHTML = S.map((r, i) => `
+      <tr class="${drawer && i === 0 ? "active" : ""}">
+        <td><div class="product"><div class="sup tone-${r[1]}">${r[0]}</div><div><div class="p-name">${r[2]}</div><div class="meta">${r[3]}</div></div></div></td>
+        <td><div class="bar-cell"><div class="bar-track" style="width:90px"><div class="bar-fill" style="width:${r[4]}%;background:${col(r[4])}"></div></div><b>${r[4]}%</b></div></td>
+        <td class="num">${r[5]}</td>
+        <td class="num">${r[6]}</td>
+        <td class="num">${r[7]}</td>
+        <td><span class="pill tone-${r[9]}">${r[8]}</span></td>
+        <td><i class="chev" data-lucide="chevron-right"></i></td>
+      </tr>`).join("");
+
+    const D = [
+      ["#138a4b", "FreshBake · today 07:00", "Arrived on time · 6 of 6 products"],
+      ["#d63b3b", "AgriEggs · due Mon, Nov 9", "Not arrived yet · 1 day late · 240 packs"],
+      ["#e09b2d", "BevCo · Mon, Nov 9", "On time · 12 of 64 Cola (1.5L) missing"],
+      ["#138a4b", "FreshBake · Mon, Nov 9", "Arrived on time"],
+      ["#138a4b", "DairyCo · Sun, Nov 8", "Arrived on time · 14 of 14 products"],
+    ];
+    document.getElementById("deliveries").innerHTML = D.map(([c, t, m]) => `<div class="dl"><span class="dot" style="background:${c}"></span><div><div style="font-weight:600">${t}</div><div class="meta" style="white-space:normal">${m}</div></div></div>`).join("");
+  </script>
+  <script src="common.js"></script>
+  <script>
+    document.fonts.ready.then(() => {
+      new Chart(document.getElementById("trend"), {
+        type: "line",
+        data: {
+          labels: ["Sep 14", "Sep 21", "Sep 28", "Oct 5", "Oct 12", "Oct 19", "Oct 26", "This wk"],
+          datasets: [
+            { data: [96, 92, 90, 84, 78, 72, 67, 63], borderColor: "#d63b3b", borderWidth: 2.5, pointRadius: 3, pointBackgroundColor: "#d63b3b", tension: 0.25 },
+            { data: [90, 91, 90, 92, 91, 93, 92, 93], borderColor: "#5b3fe0", borderWidth: 2.5, pointRadius: 3, pointBackgroundColor: "#5b3fe0", tension: 0.25 },
+          ],
+        },
+        options: { scales: { x: { grid: { display: false }, border: { display: false } }, y: { min: 50, max: 100, ticks: { stepSize: 10, callback: (v) => v + "%" }, grid: { color: "#f0f0f5" }, border: { display: false } } } },
+      });
+      if (location.hash === "#drawer") {
+        const late = [0, 0, 0, 1, 0, 2, 0, 1];
+        new Chart(document.getElementById("proj"), {
+          type: "bar",
+          data: {
+            labels: ["Sep 14", "Sep 17", "Sep 28", "Oct 1", "Oct 15", "Oct 22", "Nov 5", "Nov 9"],
+            datasets: [{ data: late.map((v) => (v === 0 ? 0.25 : v)), backgroundColor: late.map((v) => (v === 0 ? "#cfc4fb" : "#d63b3b")), borderRadius: 5, barPercentage: 0.6 }],
+          },
+          options: { scales: { x: { grid: { display: false }, border: { display: false } }, y: { beginAtZero: true, max: 2.5, ticks: { stepSize: 1, callback: (v) => (v === 0 ? "0" : v + "d") }, grid: { color: "#f0f0f5" }, border: { display: false } } } },
+        });
+      }
+    });
+  </script>
+</body>
+</html>

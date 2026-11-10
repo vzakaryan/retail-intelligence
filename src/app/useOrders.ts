@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { getOrders, suggestedQty, type LineReview, type OrderLine, type SupplierOrder } from "@/data/orders";
+import { coverDays, getOrders, suggestedQty, type LineReview, type OrderLine, type SupplierOrder } from "@/data/orders";
 import { getProduct, type Product } from "@/data/products";
 import type { Supplier } from "@/data/types";
 import { DEMO_NOW, SUPPLIERS } from "@/data/world";
@@ -9,6 +9,8 @@ export interface LineView {
   line: OrderLine;
   product: Product;
   suggested: number;
+  /** Extra units added because head office / the manager asked for extra safety stock */
+  extraSafety: number;
   /** Current review, or undefined while it still needs review */
   review?: LineReview;
 }
@@ -33,14 +35,15 @@ const sameDay = (a: Date, b: Date) => a.toDateString() === b.toDateString();
 
 /** Supplier orders for a store, merged with what the user did in the demo. */
 export function useOrders(storeId: string): OrderView[] {
-  const { lineReviews, placedOrders } = useDemo();
+  const { lineReviews, placedOrders, extraSafety } = useDemo();
   return useMemo(
     () =>
       getOrders(storeId).map((order) => {
         const lines = order.lines.map((line) => {
           const key = lineKey(order.id, line.productId);
           const review = key in lineReviews ? (lineReviews[key] ?? undefined) : line.initialReview;
-          return { line, product: getProduct(line.productId), suggested: suggestedQty(line), review };
+          const extra = extraSafety[order.supplierId] ? Math.round(line.expected / coverDays(order)) : 0;
+          return { line, product: getProduct(line.productId), suggested: suggestedQty(line) + extra, extraSafety: extra, review };
         });
         const reviewed = lines.filter((l) => l.review);
         const placedNow = !!placedOrders[order.id];
@@ -64,7 +67,7 @@ export function useOrders(storeId: string): OrderView[] {
           dueToday: !placed && sameDay(order.deadline, DEMO_NOW),
         };
       }),
-    [storeId, lineReviews, placedOrders]
+    [storeId, lineReviews, placedOrders, extraSafety]
   );
 }
 

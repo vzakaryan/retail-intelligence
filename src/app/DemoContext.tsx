@@ -38,6 +38,10 @@ interface DemoState {
   /** Online orders whose customer was contacted about a substitute */
   contactedOrders: Record<string, true>;
   toggleContacted: (orderKey: string) => void;
+
+  /** Suppliers for which order suggestions keep 1 extra day of safety stock */
+  extraSafety: Record<string, true>;
+  toggleExtraSafety: (supplierId: string) => void;
 }
 
 export interface AddedTask {
@@ -60,6 +64,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
   const [howItWorksDismissed, setDismissed] = useState(false);
   const [addedTasks, setAdded] = useState<Record<string, AddedTask>>({});
   const [contactedOrders, setContacted] = useState<Record<string, true>>({});
+  const [extraSafety, setExtraSafety] = useState<Record<string, true>>({});
 
   const setTaskDone = useCallback((taskId: string, done: boolean, via: TaskOverride["via"] = "done") => {
     setOverrides((prev) => ({ ...prev, [taskId]: { done, via } }));
@@ -78,6 +83,14 @@ export function DemoProvider({ children }: { children: ReactNode }) {
   const dismissHowItWorks = useCallback(() => setDismissed(true), []);
   const addTask = useCallback((id: string, storeId: string, task: NewTask) => {
     setAdded((prev) => (prev[id] ? prev : { ...prev, [id]: { storeId, task, seq: Object.keys(prev).length } }));
+  }, []);
+  const toggleExtraSafety = useCallback((supplierId: string) => {
+    setExtraSafety((prev) => {
+      const next = { ...prev };
+      if (next[supplierId]) delete next[supplierId];
+      else next[supplierId] = true;
+      return next;
+    });
   }, []);
   const toggleContacted = useCallback((orderKey: string) => {
     setContacted((prev) => {
@@ -105,8 +118,10 @@ export function DemoProvider({ children }: { children: ReactNode }) {
       addTask,
       contactedOrders,
       toggleContacted,
+      extraSafety,
+      toggleExtraSafety,
     }),
-    [storeId, taskOverrides, setTaskDone, lineReviews, setLineReview, setLineReviews, placedOrders, markPlaced, howItWorksDismissed, dismissHowItWorks, addedTasks, addTask, contactedOrders, toggleContacted]
+    [extraSafety, toggleExtraSafety, storeId, taskOverrides, setTaskDone, lineReviews, setLineReview, setLineReviews, placedOrders, markPlaced, howItWorksDismissed, dismissHowItWorks, addedTasks, addTask, contactedOrders, toggleContacted]
   );
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>;
 }

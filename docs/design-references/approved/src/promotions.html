@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Promotions — proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>td { padding-top: 12px; padding-bottom: 12px; } .emojis { font-size: 18px; letter-spacing: 2px; }</style>
+</head>
+<body data-page="promotions" data-scope="store">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>Promotions</h1>
+          <div class="subtitle">Get ready for upcoming promotions and see which ones paid off</div>
+        </div>
+      </div>
+
+      <section class="kpis">
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-primary"><i data-lucide="badge-percent"></i></div>Running now</div>
+          <div class="kpi-value">3 <small>promotions</small></div>
+          <div class="kpi-foot">2 more start this week</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-good"><i data-lucide="trending-up"></i></div>Extra sales this week<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">AMD 0.86M</div>
+          <div class="kpi-foot"><span class="delta tone-good">+18%</span>on promoted products</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-warn"><i data-lucide="list-checks"></i></div>Next promotion ready</div>
+          <div class="kpi-value">1 <small>of 3 steps</small></div>
+          <div class="kpi-foot">Weekend dairy starts Fri, Nov 13</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-info"><i data-lucide="scale"></i></div>Paid off<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">7 <small>of 10</small></div>
+          <div class="kpi-foot">promotions, last 3 months</div>
+        </div>
+      </section>
+
+      <section class="card" style="margin-bottom: 24px">
+        <div class="card-head" style="padding-bottom: 14px">
+          <div>
+            <div class="card-title">Coming up — get ready</div>
+            <div class="card-sub">Promotions set by head office · click one to see what to prepare</div>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Promotion</th><th>Dates</th><th>Products</th><th class="num">Expected extra sales</th><th>Ready?</th><th></th></tr></thead>
+          <tbody id="upcoming"></tbody>
+        </table>
+      </section>
+
+      <section class="row r-1-2" style="grid-template-columns: 1fr 1.3fr">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Running now</div>
+              <div class="card-sub">Sales compared with a normal week</div>
+            </div>
+          </div>
+          <div class="card-body" style="padding-top: 4px" id="running"></div>
+        </div>
+        <div class="card">
+          <div class="card-head" style="padding-bottom: 14px">
+            <div>
+              <div class="card-title">Did past promotions pay off?</div>
+              <div class="card-sub">Extra profit after the discount and any leftover stock</div>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Promotion</th><th class="num">Extra sales</th><th class="num">Discount cost</th><th>Result</th></tr></thead>
+            <tbody id="past"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="overlay"></div>
+  <aside class="drawer">
+    <div class="drawer-head">
+      <div class="tile lg tone-primary"><i data-lucide="badge-percent"></i></div>
+      <div style="flex: 1">
+        <div class="drawer-title">Weekend dairy −15%</div>
+        <div class="meta">Fri, Nov 13 – Sun, Nov 15 · 18 products · set by head office</div>
+      </div>
+      <span class="pill tone-warn">1 of 3 ready</span>
+      <div class="icon-btn" style="border: none"><i data-lucide="x"></i></div>
+    </div>
+    <div class="drawer-body" style="gap: 18px">
+      <div class="callout tone-primary">
+        <i data-lucide="trending-up" style="width: 20px; height: 20px; margin-top: 2px"></i>
+        <div>
+          <div class="callout-title">Expect about 35% more dairy sales this weekend</div>
+          <p>Based on the last two dairy promotions at your store. Milk 3.2% sells out first — about 160 extra liters over the 3 days.</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-label">Products</div><div class="stat-value">18</div></div>
+        <div class="stat"><div class="stat-label">Extra sales</div><div class="stat-value">AMD 0.42M</div></div>
+        <div class="stat"><div class="stat-label">Extra milk needed</div><div class="stat-value">160 L</div></div>
+      </div>
+      <div>
+        <div class="section-title">Milk 3.2% (1L): expected daily sales</div>
+        <div class="legend" style="margin: 4px 0 6px"><span><i style="background:#e4e5ec"></i>Normal weekend</span><span><i style="background:#5b3fe0"></i>With promotion</span></div>
+        <div style="height: 150px"><canvas id="proj"></canvas></div>
+      </div>
+      <div>
+        <div class="section-title">Get ready</div>
+        <div class="step-item">
+          <div class="tile tone-primary"><i data-lucide="clipboard-list"></i></div>
+          <div style="flex:1"><div style="font-weight:600">Order +160 Milk 3.2% (1L) in today's DairyCo order</div><div class="meta">Already added to the suggestion (300 units)</div></div>
+          <span class="pill tone-good">In order suggestions</span>
+        </div>
+        <div class="step-item">
+          <div class="tile tone-good"><i data-lucide="tag"></i></div>
+          <div style="flex:1"><div style="font-weight:600">Put up price tags for the weekend promotion</div><div class="meta">On today's tasks · 18 products</div></div>
+          <span class="btn">Mark done</span>
+        </div>
+        <div class="step-item">
+          <div class="tile tone-info"><i data-lucide="move-up"></i></div>
+          <div style="flex:1"><div style="font-weight:600">Clear space at the front of the dairy fridge</div><div class="meta">For the promoted milk, kefir and yogurt</div></div>
+          <span class="btn">Add task</span>
+        </div>
+        <div class="step-item">
+          <div class="tile tone-good"><i data-lucide="circle-check"></i></div>
+          <div style="flex:1"><div style="font-weight:600">Yogurt (500g) is already overstocked</div><div class="meta" style="white-space: normal">The promotion helps sell the 46 units expiring Thursday · no extra order needed</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="padding: 16px 24px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 2fr 1fr; gap: 10px">
+      <span class="btn btn-primary btn-block"><i data-lucide="list-plus"></i>Add 1 step to today's tasks</span>
+      <span class="btn btn-block">Close</span>
+    </div>
+  </aside>
+
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    const drawer = location.hash === "#drawer";
+    // [name, dates, emojis, products, extra, readyText, readyTone, readyMeta]
+    const U = [
+      ["Weekend dairy −15%", "Fri, Nov 13 – Sun, Nov 15", "🥛🍶🥣", "18 products", "AMD 0.42M", "1 of 3 steps", "warn", "price tags still to do"],
+      ["Bakery happy hour −30%", "Every day 19:00–21:00 from Mon, Nov 16", "🍞🥐🥯", "6 products", "AMD 0.12M", "Nothing to prepare", "good", "also cuts bakery write-offs"],
+      ["Black Friday snacks & drinks", "Fri, Nov 27 – Sun, Nov 29", "🥤🍝☕", "34 products", "AMD 1.1M", "Starts in 17 days", "neutral", "we'll remind you a week before"],
+    ];
+    document.getElementById("upcoming").innerHTML = U.map((r, i) => `
+      <tr class="${drawer && i === 0 ? "active" : ""}">
+        <td><div class="p-name">${r[0]}</div><div class="meta">set by head office</div></td>
+        <td>${r[1]}</td>
+        <td><span class="emojis">${r[2]}</span> <span class="meta">${r[3]}</span></td>
+        <td class="num"><b>${r[4]}</b></td>
+        <td><span class="pill tone-${r[6]}">${r[5]}</span><div class="meta" style="margin-top:3px">${r[7]}</div></td>
+        <td><i class="chev" data-lucide="chevron-right"></i></td>
+      </tr>`).join("");
+
+    const N = [
+      ["Matsun 2 for 1", "until Wed, Nov 11", 40, "warn", "Running low — may run out tomorrow"],
+      ["Coffee −20%", "until Sun, Nov 15", 25, "good", "Also clearing extra stock"],
+      ["Weekday bread −10%", "until Fri, Nov 13", 12, "good", ""],
+    ];
+    document.getElementById("running").innerHTML = N.map(([n, until, up, tone, note]) => `
+      <div class="mini-row" style="align-items:flex-start;padding:12px 0">
+        <div><div style="font-weight:600">${n}</div><div class="meta">${until}${note ? ` · <span style="color:var(--${tone === "warn" ? "warn" : "good"})">${note}</span>` : ""}</div></div>
+        <span class="pill tone-good">+${up}% sales</span>
+      </div>`).join("");
+
+    const P = [
+      ["Cola 3 for 2", "Oct 16–18", "AMD 210K", "AMD 70K", "Paid off", "good"],
+      ["Ice cream −20%", "Aug 21–27", "AMD 180K", "AMD 65K", "Paid off", "good"],
+      ["Olive oil −10%", "Oct 2–8", "AMD 40K", "AMD 55K", "Didn't pay off", "bad"],
+      ["Yogurt −15%", "Sep 25–27", "AMD 60K", "AMD 30K", "Left extra stock", "warn"],
+    ];
+    document.getElementById("past").innerHTML = P.map((r) => `
+      <tr><td><div class="p-name">${r[0]}</div><div class="meta">${r[1]}</div></td><td class="num">${r[2]}</td><td class="num">${r[3]}</td><td><span class="pill tone-${r[5]}">${r[4]}</span></td></tr>`).join("");
+  </script>
+  <script src="common.js"></script>
+  <script>
+    document.fonts.ready.then(() => {
+      if (location.hash === "#drawer") {
+        new Chart(document.getElementById("proj"), {
+          type: "bar",
+          data: {
+            labels: ["Fri", "Sat", "Sun"],
+            datasets: [
+              { data: [140, 170, 150], backgroundColor: "#e4e5ec", borderRadius: 5, barPercentage: 0.7 },
+              { data: [185, 230, 205], backgroundColor: "#5b3fe0", borderRadius: 5, barPercentage: 0.7 },
+            ],
+          },
+          options: { scales: { x: { grid: { display: false }, border: { display: false } }, y: { beginAtZero: true, max: 250, ticks: { stepSize: 50 }, grid: { color: "#f0f0f5" }, border: { display: false } } } },
+        });
+      }
+    });
+  </script>
+</body>
+</html>

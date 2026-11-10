@@ -39,7 +39,8 @@ export type TaskKind =
   | "weekendAside"
   | "sendToStore"
   | "promotion"
-  | "frontOfShelf";
+  | "frontOfShelf"
+  | "clearSpace";
 
 export type TaskTag = "online" | "ordering" | "expiry" | "supplier" | "promo";
 export type TaskAction = "markDone" | "review" | "logCall";

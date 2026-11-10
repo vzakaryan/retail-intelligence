@@ -20,7 +20,7 @@ export interface NewTask {
 
 export type StockStep =
   /** Points to a task that is already on today's list (falls back to adding `fallback`) */
-  | { kind: "existing"; taskKind: TaskKind; productId: string; fallback: NewTask }
+  | { kind: "existing"; taskKind: TaskKind; productId?: string; fallback: NewTask }
   /** Log a call with a supplier (completes the matching "call supplier" task if there is one) */
   | { kind: "call"; supplierId: string; params: Record<string, TaskParam> }
   /** A new task to add */
@@ -28,7 +28,11 @@ export type StockStep =
   /** Already covered by an upcoming supplier order */
   | { kind: "order"; supplierId: string }
   /** The next order from this supplier already suggests less (see Order suggestions) */
-  | { kind: "orderLess"; supplierId: string; qty: number; usual?: number; next?: Date };
+  | { kind: "orderLess"; supplierId: string; qty: number; usual?: number; next?: Date }
+  /** Extra units already added to the next supplier order suggestion */
+  | { kind: "orderExtra"; supplierId: string; productId: string; qty: number }
+  /** Information only, nothing to do */
+  | { kind: "note"; key: string; params?: Record<string, TaskParam> };
 
 export interface StockRow {
   productId: string;

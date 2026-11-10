@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useNavigate } from "react-router";
-import { ArrowLeftRight, ArrowRight, BadgePercent, CircleCheck, ClipboardList, ListPlus, MoveUp, Phone, Truck } from "lucide-react";
+import { ArrowLeftRight, ArrowRight, BadgePercent, CircleCheck, ClipboardList, Info, ListPlus, MoveUp, Phone, Tag, Truck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useDemo } from "@/app/DemoContext";
@@ -15,6 +15,8 @@ import { IconTile } from "@/components/ui/IconTile";
 import { Pill } from "@/components/ui/Pill";
 import { fmtDate } from "@/lib/format";
 import { useTaskText } from "@/pages/today/taskText";
+import { getProduct } from "@/data/products";
+import { useLocalized } from "@/lib/useLocalized";
 import { stepRef } from "./shared";
 import { useDayLabel } from "@/pages/orders/shared";
 
@@ -23,13 +25,14 @@ const supplierName = (id: string) => SUPPLIERS.find((s) => s.id === id)?.name ??
 const shortDay = (d: Date) => fmtDate(d, { weekday: "short", month: "short", day: "numeric" });
 
 function iconFor(step: StockStep): [LucideIcon, Tone] {
-  if (step.kind === "existing") return [CircleCheck, "good"];
+  if (step.kind === "existing") return step.taskKind === "promoTags" ? [Tag, "good"] : [CircleCheck, "good"];
   if (step.kind === "call") return [Phone, "bad"];
   if (step.kind === "order") return [Truck, "primary"];
-  if (step.kind === "orderLess") return [ClipboardList, "primary"];
+  if (step.kind === "orderLess" || step.kind === "orderExtra") return [ClipboardList, "primary"];
+  if (step.kind === "note") return [Info, "good"];
   const k = step.task.kind;
   if (k === "promotion" || k === "markdown") return [BadgePercent, "warn"];
-  if (k === "frontOfShelf") return [MoveUp, "info"];
+  if (k === "frontOfShelf" || k === "clearSpace") return [MoveUp, "info"];
   if (k === "moveToShelf" || k === "setAside") return [ClipboardList, "info"];
   return [ArrowLeftRight, "info"];
 }
@@ -81,9 +84,35 @@ function StepRow({ step }: { step: StockStep }) {
   const actions = useTaskActions(store.id);
   const taskText = useTaskText();
   const dayLabel = useDayLabel();
+  const loc = useLocalized();
   const ref = stepRef(step);
   const task = ref ? actions.find(ref) : undefined;
   const [Icon, tone] = iconFor(step);
+
+  if (step.kind === "note") {
+    return <Li icon={Icon} tone={tone} title={t(`stockouts.note.${step.key}.title`)} meta={t(`stockouts.note.${step.key}.text`, step.params as Record<string, string>)} />;
+  }
+
+  if (step.kind === "orderExtra") {
+    const order = getOrders(store.id).find((o) => o.supplierId === step.supplierId && o.status === "toPlace");
+    return (
+      <Li
+        icon={Icon}
+        tone={tone}
+        title={t("stockouts.drawer.orderExtra", { qty: step.qty, product: loc(getProduct(step.productId).name), supplier: supplierName(step.supplierId) })}
+        meta={t("stockouts.drawer.orderExtraMeta")}
+      >
+        {order ? (
+          <Button onClick={() => navigate(`/orders/${order.id}`)}>
+            {t("stockouts.drawer.viewOrder")}
+            <ArrowRight />
+          </Button>
+        ) : (
+          <Pill tone="good">{t("online.often.inOrderSuggestions")}</Pill>
+        )}
+      </Li>
+    );
+  }
 
   if (step.kind === "order" || step.kind === "orderLess") {
     const order = getOrders(store.id).find((o) => o.supplierId === step.supplierId && o.status === "toPlace");

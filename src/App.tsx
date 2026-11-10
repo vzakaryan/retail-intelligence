@@ -13,6 +13,8 @@ import { StockoutsPage } from "@/pages/stockouts/StockoutsPage";
 import { OnlinePage } from "@/pages/online/OnlinePage";
 import { OverstockPage } from "@/pages/overstock/OverstockPage";
 import { ExpiryPage } from "@/pages/expiry/ExpiryPage";
+import { SuppliersPage } from "@/pages/suppliers/SuppliersPage";
+import { PromotionsPage } from "@/pages/promotions/PromotionsPage";
 import type { PageId } from "@/app/navigation";
 import type { ReactElement } from "react";
 
@@ -25,6 +27,8 @@ const PAGES: Partial<Record<PageId, () => ReactElement>> = {
   onlineOrders: () => <OnlinePage />,
   overstock: () => <OverstockPage />,
   writeOffs: () => <ExpiryPage />,
+  suppliers: () => <SuppliersPage />,
+  promotions: () => <PromotionsPage />,
 };
 
 // Hash routing so deep links work on GitHub Pages without server rewrites.

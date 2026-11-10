@@ -320,3 +320,7 @@ tr.group td { background: #fafafc; font-size: 11.5px; font-weight: 600; letter-s
 .hbar-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99px; }
 .hbar-target { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--text); border-radius: 2px; }
 .done-row td { background: rgba(231, 246, 238, .45); }
+
+.step-item .tile { flex-shrink: 0; }
+.drawer-head .tile { flex-shrink: 0; }
+.step-item .meta { white-space: normal; }

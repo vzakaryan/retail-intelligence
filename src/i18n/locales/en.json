@@ -223,6 +223,11 @@
         "title": "Move {{product}} to the front of the shelf",
         "detail": "So the oldest units sell first",
         "doneDetail": "Done at {{at}}"
+      },
+      "clearSpace": {
+        "title": "Clear space at the front of the dairy fridge",
+        "detail": "For the promoted milk, kefir and yogurt",
+        "doneDetail": "Done at {{at}}"
       }
     },
     "online": {
@@ -350,7 +355,8 @@
       "ranOutSunday": "Ran out on Sunday",
       "sellingFaster": "Selling faster this week",
       "weekendBaking": "Weekend baking +{{pct}}%",
-      "lowStock": "Almost gone from the shelf"
+      "lowStock": "Almost gone from the shelf",
+      "extraSafety": "Includes 1 extra day of safety stock"
     },
     "status": {
       "accepted": "Accepted",
@@ -424,7 +430,8 @@
       "orderedN": "ordered {{count}}",
       "ranOut": "Ran out {{day}} {{time}}",
       "noStockout": "No stockout",
-      "changeNote": "If you change it, we'll ask why. It helps improve future suggestions."
+      "changeNote": "If you change it, we'll ask why. It helps improve future suggestions.",
+      "extraSafety": "Extra safety stock ({{supplier}} is often late)"
     },
     "place": {
       "yourOrder_one": "Your order · {{count}} product",
@@ -641,7 +648,15 @@
       "orderLess": "Order {{qty}} in the next {{supplier}} order",
       "usually": "Usually {{qty}}",
       "nextOrder": "next order {{date}}",
-      "orderBy": "order by {{when}}"
+      "orderBy": "order by {{when}}",
+      "orderExtra": "Order +{{qty}} {{product}} in the next {{supplier}} order",
+      "orderExtraMeta": "Already added to the order suggestion"
+    },
+    "note": {
+      "yogurtOverstocked": {
+        "title": "Yogurt (500g) is already overstocked",
+        "text": "The promotion helps sell the {{units}} units expiring Thursday · no extra order needed"
+      }
     }
   },
   "online": {
@@ -913,6 +928,190 @@
       "chartTitle": "Expected sales until {{day}}",
       "normalPrice": "Normal price",
       "markdownLegend": "With −{{cut}}% markdown"
+    }
+  },
+  "suppliers": {
+    "subtitle": "How reliable your deliveries are, and what late or short deliveries cost you",
+    "period": "Last 4 weeks",
+    "kpi": {
+      "onTime": "On-time deliveries",
+      "onTimeInfo": "Deliveries that arrived on the agreed day and time.",
+      "inFull": "Delivered in full",
+      "inFullInfo": "Share of ordered units that actually arrived.",
+      "inFullFoot": "of ordered units",
+      "late": "Late deliveries",
+      "of": "of {{total}}",
+      "cost": "Cost of late deliveries",
+      "costInfo": "Estimated lost sales while shelves were empty because a delivery was late or short.",
+      "costFoot": "lost sales from empty shelves"
+    },
+    "table": {
+      "title": "Your suppliers",
+      "subtitle": "Least reliable first · click a supplier to see the details",
+      "supplier": "Supplier",
+      "onTime": "On time",
+      "inFull": "Delivered in full",
+      "delay": "Usual delay",
+      "lost": "Lost sales",
+      "status": "Status",
+      "deliveries_one": "{{count}} delivery",
+      "deliveries_other": "{{count}} deliveries",
+      "lateCount": "{{count}} late",
+      "safetyOn": "+1 day safety stock"
+    },
+    "status": {
+      "unreliable": "Unreliable",
+      "watch": "Watch",
+      "reliable": "Reliable"
+    },
+    "delay": {
+      "days": "{{value}} days",
+      "hours": "{{value}} hours",
+      "minutes": "{{value}} min"
+    },
+    "days": {
+      "monThu": "delivers Mon & Thu",
+      "monWedFri": "delivers Mon, Wed & Fri",
+      "daily": "delivers daily",
+      "tueThuSat": "delivers Tue, Thu & Sat",
+      "weekly": "delivers weekly"
+    },
+    "recent": {
+      "title": "Recent deliveries",
+      "subtitle": "Last 3 days",
+      "due": "due {{when}}",
+      "onTimeAll": "Arrived on time · {{n}} of {{n}} products",
+      "onTime": "Arrived on time",
+      "notArrived": "Not arrived yet · {{days}} day late · {{qty}} packs",
+      "short": "On time · {{missing}} of {{ordered}} {{product}} missing"
+    },
+    "trend": {
+      "title": "On-time deliveries, by week",
+      "subtitle": "{{supplier}} compared with your other suppliers",
+      "others": "Other suppliers"
+    },
+    "drawer": {
+      "meta": "{{categories}} · {{days}} · {{rep}}, sales rep",
+      "title": "Late on {{late}} of the last {{total}} deliveries",
+      "titleGood": "On time on all {{total}} deliveries",
+      "lateText": "When late, deliveries arrived {{delay}} late on average, and {{missing}}% of ordered units didn't come.",
+      "goodText": "{{inFull}}% of ordered units arrived.",
+      "cost_one": "Shelves ran empty {{count}} time because of it — about {{value}} in lost sales over 4 weeks.",
+      "cost_other": "Shelves ran empty {{count}} times because of it — about {{value}} in lost sales over 4 weeks.",
+      "last8": "Last 8 deliveries",
+      "onTime": "On time",
+      "late": "Late",
+      "daysShort": "{{v}}d",
+      "hoursShort": "{{v}}h",
+      "askMeta": "So deliveries arrive in time for the shelves",
+      "safety": "Keep 1 extra day of safety stock for {{supplier}}",
+      "safetyMeta": "Order suggestions will add it until deliveries improve",
+      "safetyOn": "On · order suggestions now include 1 extra day",
+      "apply": "Apply",
+      "applied": "Applied",
+      "share": "Share this with head office",
+      "shareMeta": "A short summary for the {{supplier}} buyer",
+      "copy": "Copy"
+    },
+    "summary": {
+      "text": "{{supplier}} — delivery performance at {{store}}, last 4 weeks\n• Late on {{late}} of {{total}} deliveries ({{onTime}}% on time)\n• Delivered in full: {{inFull}}%\n• Usual delay when late: {{delay}}\n• Estimated lost sales from empty shelves: {{lost}}"
+    }
+  },
+  "promotions": {
+    "subtitle": "Get ready for upcoming promotions and see which ones paid off",
+    "name": {
+      "weekendDairy": "Weekend dairy −{{cut}}%",
+      "bakeryHour": "Bakery happy hour −{{cut}}%",
+      "blackFriday": "Black Friday snacks & drinks",
+      "matsun2for1": "Matsun 2 for 1",
+      "coffeeCut": "Coffee −{{cut}}%",
+      "breadCut": "Weekday bread −{{cut}}%",
+      "cola3for2": "Cola 3 for 2",
+      "iceCreamCut": "Ice cream −{{cut}}%",
+      "oliveCut": "Olive oil −{{cut}}%",
+      "yogurtCut": "Yogurt −{{cut}}%"
+    },
+    "dates": {
+      "daily": "Every day {{hours}} from {{from}}"
+    },
+    "unit": {
+      "l": "liters",
+      "lShort": "L",
+      "pcs": "units",
+      "pcsShort": "units"
+    },
+    "note": {
+      "cutsWriteOffs": "Also cuts bakery write-offs",
+      "remindLater": "We'll remind you a week before it starts"
+    },
+    "kpi": {
+      "running": "Running now",
+      "promotions_one": "promotion",
+      "promotions_other": "promotions",
+      "startThisWeek_one": "{{count}} more starts this week",
+      "startThisWeek_other": "{{count}} more start this week",
+      "extra": "Extra sales this week",
+      "extraInfo": "Sales on promoted products above a normal week.",
+      "extraFoot": "on promoted products",
+      "ready": "Next promotion ready",
+      "ofSteps": "of {{total}} steps",
+      "readyFoot": "{{name}} starts {{date}}",
+      "paidOff": "Paid off",
+      "paidOffInfo": "Promotions where extra sales were bigger than the discount cost.",
+      "of": "of {{total}}",
+      "paidOffFoot": "promotions, last 3 months"
+    },
+    "upcoming": {
+      "title": "Coming up — get ready",
+      "subtitle": "Promotions set by head office · click one to see what to prepare",
+      "promotion": "Promotion",
+      "dates": "Dates",
+      "products": "Products",
+      "extra": "Expected extra sales",
+      "ready": "Ready?",
+      "byHeadOffice": "set by head office",
+      "productCount_one": "{{count}} product",
+      "productCount_other": "{{count}} products",
+      "steps": "{{done}} of {{total}} steps",
+      "stepsLeft_one": "{{count}} step still to do",
+      "stepsLeft_other": "{{count}} steps still to do",
+      "allReady": "Ready",
+      "allDoneMeta": "all steps done",
+      "startsIn": "Starts in {{count}} days",
+      "nothing": "Nothing to prepare"
+    },
+    "running": {
+      "title": "Running now",
+      "subtitle": "Sales compared with a normal week",
+      "until": "until {{date}}",
+      "uplift": "+{{pct}}% sales",
+      "note": {
+        "runningLow": "Running low — may run out tomorrow",
+        "clearingExtra": "Also clearing extra stock"
+      }
+    },
+    "past": {
+      "title": "Did past promotions pay off?",
+      "subtitle": "Extra sales compared with the cost of the discount",
+      "extra": "Extra sales",
+      "cost": "Discount cost",
+      "result": "Result",
+      "yes": "Paid off",
+      "no": "Didn't pay off",
+      "leftover": "Left extra stock"
+    },
+    "drawer": {
+      "meta": "{{dates}} · {{count}} products · set by head office",
+      "ready": "{{done}} of {{total}} ready",
+      "title": "Expect about {{pct}}% more sales",
+      "text": "Based on the last similar promotions at your store. {{product}} sells out first — about {{extra}} extra {{unit}} over the {{days}} days.",
+      "products": "Products",
+      "extraSales": "Extra sales",
+      "extraNeeded": "Extra {{product}} needed",
+      "uplift": "Expected uplift",
+      "chartTitle": "{{product}}: expected daily sales",
+      "normal": "Normal",
+      "withPromo": "With promotion"
     }
   }
 }

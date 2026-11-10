@@ -5,7 +5,7 @@ import { fmtNumber } from "@/lib/format";
 /** Short reason under a suggested quantity, e.g. "Weekend demand +20%". */
 export function useReasonText() {
   const { t } = useTranslation();
-  return (l: LineView) => t(`orders.reason.${l.line.reason.key}`, { pct: l.line.reason.pct ?? 0 });
+  return (l: LineView) => (l.extraSafety ? t("orders.reason.extraSafety") : t(`orders.reason.${l.line.reason.key}`, { pct: l.line.reason.pct ?? 0 }));
 }
 
 /** Status label for a reviewed line. */
