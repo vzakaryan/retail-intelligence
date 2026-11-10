@@ -12,11 +12,12 @@ export function supplierName(id: string): string {
   return s ? pick(s.name) : id;
 }
 
-/** Two-letter badge from a name: "Aragil Dairy" → "AD", "Աննա Մ." → "ԱՄ" */
+/** Two-letter badge from a name: "Zov Water" → "ZW", "Hatseni" → "HA", "Աննա Մ." → "ԱՄ" */
 export function initials(text: Localized): string {
-  return pick(text)
-    .split(/\s+/)
-    .filter(Boolean)
+  const words = pick(text).split(/\s+/).filter(Boolean);
+  // One-word names ("Hatseni", "Կաթնաշխարհ") use their first two letters
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return words
     .slice(0, 2)
     .map((w) => w[0].toUpperCase())
     .join("");

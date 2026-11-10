@@ -86,12 +86,14 @@ assumes automation they don't have.
   08 Bagratunyats Ave · Shengavit, 09 Erebuni St · Erebuni, 10 Tevosyan St ·
   Davtashen, 11 Khudyakov St · Avan, 12 Halabyan St · Ajapnyak. (No stores in
   Kanaker-Zeytun, Nork-Marash, Nubarashen.)
-- Suppliers — **fictional Armenian-style brands** (not real companies, because
-  the demo rates them, e.g. one is "Unreliable"): Aragil Dairy / Արագիլ Կաթ
-  (id `dairyco`), Nairi Eggs / Նաիրի Ձու (`agrieggs`), Hrazdan Drinks /
-  Հրազդան Ըմպելիքներ (`bevco`), Tonir Bakery / Թոնիր Հացատուն (`freshbake`),
-  Masis Trade / Մասիս Թրեյդ (`groceryhub`, dry goods), Aragats Frost /
-  Արագած Ֆրոստ (`coldfoods`, frozen). Internal ids kept unchanged.
+- Suppliers — **fictional Armenian-style brands chosen by the user** (not real
+  companies, because the demo rates them, e.g. one is "Unreliable"):
+  Katnashkharh Dairy / Կաթնաշխարհ (id `dairyco`), Arevi Farm / Արևի Ֆերմա
+  (`agrieggs`, eggs), Zov Water / Զով Ջուր (`bevco`, drinks), Hatseni / Հացենի
+  (`freshbake`, bread), Agrovita / Ագրովիտա (`groceryhub`, dry goods),
+  Polaris Food / Պոլարիս Ֆուդ (`coldfoods`, frozen). Internal ids kept
+  unchanged. Keep suppliers fictional on the public site; real product names
+  are OK (no logos, no negative claims tied to a real brand).
 - "Today" in the demo = Tue, Nov 10.
 
 ## Working agreement (IMPORTANT)
@@ -416,3 +418,5 @@ top nav was replaced by a sidebar).
   live and remembered per browser.
 - **Step 13b (2026-11-10):** User's terminology corrections applied to menu,
   page titles and related links/text (see "Menu / page names approved" above).
+- **Step 13c (2026-11-10):** Suppliers renamed to the user's chosen names (see
+  Mock world). One-word names get a two-letter badge from their first letters.

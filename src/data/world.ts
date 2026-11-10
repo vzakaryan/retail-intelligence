@@ -62,12 +62,12 @@ export const STORES: Store[] = [
 ];
 
 export const SUPPLIERS: Supplier[] = [
-  { id: "dairyco", name: { en: "Aragil Dairy", hy: "Արագիլ Կաթ" }, tone: "info", categories: { en: "Milk, kefir, cheese", hy: "Կաթ, կեֆիր, պանիր" } },
-  { id: "freshbake", name: { en: "Tonir Bakery", hy: "Թոնիր Հացատուն" }, tone: "warn", categories: { en: "Bread, pastries", hy: "Հաց, թխվածքներ" } },
-  { id: "bevco", name: { en: "Hrazdan Drinks", hy: "Հրազդան Ըմպելիքներ" }, tone: "bad", categories: { en: "Soft drinks, water", hy: "Զովացուցիչ ըմպելիքներ, ջուր" } },
-  { id: "agrieggs", name: { en: "Nairi Eggs", hy: "Նաիրի Ձու" }, tone: "good", categories: { en: "Eggs", hy: "Ձու" } },
-  { id: "groceryhub", name: { en: "Masis Trade", hy: "Մասիս Թրեյդ" }, tone: "primary", categories: { en: "Dry goods", hy: "Չոր մթերք" } },
-  { id: "coldfoods", name: { en: "Aragats Frost", hy: "Արագած Ֆրոստ" }, tone: "info", categories: { en: "Frozen food", hy: "Սառեցված մթերք" } },
+  { id: "dairyco", name: { en: "Katnashkharh Dairy", hy: "Կաթնաշխարհ" }, tone: "info", categories: { en: "Milk, kefir, cheese", hy: "Կաթ, կեֆիր, պանիր" } },
+  { id: "freshbake", name: { en: "Hatseni", hy: "Հացենի" }, tone: "warn", categories: { en: "Bread, pastries", hy: "Հաց, թխվածքներ" } },
+  { id: "bevco", name: { en: "Zov Water", hy: "Զով Ջուր" }, tone: "bad", categories: { en: "Soft drinks, water", hy: "Զովացուցիչ ըմպելիքներ, ջուր" } },
+  { id: "agrieggs", name: { en: "Arevi Farm", hy: "Արևի Ֆերմա" }, tone: "good", categories: { en: "Eggs", hy: "Ձու" } },
+  { id: "groceryhub", name: { en: "Agrovita", hy: "Ագրովիտա" }, tone: "primary", categories: { en: "Dry goods", hy: "Չոր մթերք" } },
+  { id: "coldfoods", name: { en: "Polaris Food", hy: "Պոլարիս Ֆուդ" }, tone: "info", categories: { en: "Frozen food", hy: "Սառեցված մթերք" } },
 ];
 
 export const HEAD_OFFICE: Persona = { id: "davit", name: { en: "Davit S.", hy: "Դավիթ Ս." }, role: "headOffice" };
