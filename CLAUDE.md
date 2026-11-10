@@ -145,10 +145,13 @@ assumes automation they don't have.
   both files.** Plural keys (`_one` / `_other`) must exist in hy too.
 - Armenian wording uses **retail / accounting terms, not literal translations**:
   դուրսգրում (write-off), ապահովագրական պաշար (safety stock), ավելցուկային
-  պաշար (overstock), սպառման ռիսկ (stockout risk), պահեստ (backroom),
+  պաշարներ (overstock), ապրանքի բացակայության ռիսկ (stockout risk), պահեստ (backroom),
   առկայություն դարակում (shelf availability), կորսված վաճառք (lost sales),
-  ակցիա (promotion), զեղչ (markdown), հավաքում (order picking), պատվերի
-  առաջարկներ (order suggestions), տ.կ. (percentage points). Punctuation: «»
+  ակցիա (promotion), զեղչ (markdown), հավաքում (order picking), պատվերների
+  առաջարկներ (order suggestions), տ.կ. (percentage points).
+  **Menu / page names approved by the user:** Ապրանքներ և պահանջարկ (group),
+  Ապրանքի բացակայության ռիսկ, Պատվերների առաջարկներ, Պաշարների կարգավիճակ
+  (group), Ավելցուկային պաշարներ, Ժամկետանց ապրանքներ (Expiry & write-offs). Punctuation: «»
   quotes, «։» full stop, «՞» on the stressed vowel for questions. Variables are
   placed so they need no case endings (e.g. «{{supplier}}» մատակարարին,
   Լրացնել դարակը՝ {{product}}). "X of Y" is written «Y-ից X-ը».
@@ -411,3 +414,5 @@ top nav was replaced by a sidebar).
   suppliers renamed to fictional Armenian-style brands; hand-made Armenian
   number / money / date formatting; layout fixes for longer text. Switch is
   live and remembered per browser.
+- **Step 13b (2026-11-10):** User's terminology corrections applied to menu,
+  page titles and related links/text (see "Menu / page names approved" above).
