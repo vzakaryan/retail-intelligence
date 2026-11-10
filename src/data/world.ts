@@ -66,6 +66,8 @@ export const SUPPLIERS: Supplier[] = [
   { id: "freshbake", name: "FreshBake", initials: "FB", tone: "warn", categories: { en: "Bread, pastries" } },
   { id: "bevco", name: "BevCo", initials: "BC", tone: "bad", categories: { en: "Soft drinks, water" } },
   { id: "agrieggs", name: "AgriEggs", initials: "AE", tone: "good", categories: { en: "Eggs" } },
+  { id: "groceryhub", name: "GroceryHub", initials: "GH", tone: "primary", categories: { en: "Dry goods" } },
+  { id: "coldfoods", name: "ColdFoods", initials: "CF", tone: "info", categories: { en: "Frozen food" } },
 ];
 
 export const HEAD_OFFICE: Persona = { id: "davit", name: "Davit S.", initials: "DS", role: "headOffice" };

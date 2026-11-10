@@ -1,30 +1,20 @@
-import { useNavigate } from "react-router";
-import { ArrowLeftRight, ArrowRight, CircleCheck, ClipboardList, ListPlus, Phone, TriangleAlert, Truck } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Area, CartesianGrid, ComposedChart, Line, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import type { ReactNode } from "react";
 import { useDemo } from "@/app/DemoContext";
-import { useTaskActions } from "@/app/useTaskActions";
-import type { TaskState } from "@/app/useTasks";
 import { getOnline } from "@/data/online";
-import { getOrders } from "@/data/orders";
 import { getProduct } from "@/data/products";
-import type { NewTask, StockRow, StockStep } from "@/data/stockouts";
-import type { Tone } from "@/data/types";
+import type { StockRow } from "@/data/stockouts";
 import { SUPPLIERS } from "@/data/world";
-import { Button } from "@/components/ui/Button";
 import { Drawer } from "@/components/ui/Drawer";
-import { IconTile } from "@/components/ui/IconTile";
 import { Pill } from "@/components/ui/Pill";
 import { ProductThumb } from "@/components/ui/ProductThumb";
 import { TONE } from "@/components/ui/tone";
 import { fmtDate, fmtNumber } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
-import { useTaskText } from "@/pages/today/taskText";
-import { stepRef, useRunsOutText } from "./shared";
+import { useRunsOutText } from "./shared";
+import { StepList, StepsFooter } from "./StepList";
 
-const asTaskState = (t: NewTask): TaskState => ({ ...t, id: "", action: "markDone", done: false });
 const supplierName = (id: string) => SUPPLIERS.find((s) => s.id === id)?.name ?? id;
 
 /** Product panel — docs/design-references/approved/08-stockout-product-drawer.png */
@@ -32,9 +22,6 @@ export function ProductDrawer({ row, onClose }: { row?: StockRow; onClose: () =>
   const { t } = useTranslation();
   const loc = useLocalized();
   const runsOut = useRunsOutText();
-  const { store } = useDemo();
-  const actions = useTaskActions(store.id);
-  const addable = row ? row.steps.map(stepRef).filter((r): r is NonNullable<typeof r> => !!r && r.task.kind !== "callSupplier" && !actions.find(r)) : [];
   const product = row && getProduct(row.productId);
 
   return (
@@ -57,19 +44,7 @@ export function ProductDrawer({ row, onClose }: { row?: StockRow; onClose: () =>
           </div>
         )
       }
-      footer={
-        row && (
-          <div className="grid grid-cols-[2fr_1fr] gap-2.5">
-            <Button variant="primary" className="justify-center py-[11px] text-sm" disabled={!addable.length} onClick={() => addable.forEach((r) => actions.add(r))}>
-              <ListPlus />
-              {addable.length ? t("stockouts.drawer.addAll", { count: addable.length }) : t("stockouts.drawer.allAdded")}
-            </Button>
-            <Button className="justify-center py-[11px] text-sm" onClick={onClose}>
-              {t("common.close")}
-            </Button>
-          </div>
-        )
-      }
+      footer={row && <StepsFooter steps={row.steps} onClose={onClose} />}
     >
       {row && <Body row={row} />}
     </Drawer>
@@ -164,87 +139,7 @@ function Body({ row }: { row: StockRow }) {
         </div>
       </section>
 
-      <section>
-        <h3 className="mb-0.5 font-semibold">{t("stockouts.drawer.whatToDo")}</h3>
-        <ul>
-          {row.steps.map((s, i) => (
-            <StepRow key={i} step={s} />
-          ))}
-        </ul>
-      </section>
+      <StepList steps={row.steps} />
     </div>
-  );
-}
-
-const STEP_ICON: Record<StockStep["kind"], [LucideIcon, Tone]> = {
-  existing: [CircleCheck, "good"],
-  add: [ArrowLeftRight, "info"],
-  call: [Phone, "bad"],
-  order: [Truck, "primary"],
-};
-
-function StepRow({ step }: { step: StockStep }) {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { store } = useDemo();
-  const actions = useTaskActions(store.id);
-  const taskText = useTaskText();
-  const ref = stepRef(step);
-  const task = ref ? actions.find(ref) : undefined;
-
-  let [Icon, tone] = STEP_ICON[step.kind];
-  if (step.kind === "add" && (step.task.kind === "moveToShelf" || step.task.kind === "setAside")) [Icon, tone] = [ClipboardList, "info"];
-
-  let title: string;
-  let meta: string;
-  if (step.kind === "order") {
-    const order = getOrders(store.id).find((o) => o.supplierId === step.supplierId && o.status === "toPlace");
-    title = t("stockouts.drawer.coveredBy", { supplier: supplierName(step.supplierId) });
-    meta = order ? t("stockouts.drawer.coveredMeta", { delivery: fmtDate(order.delivery, { weekday: "short", month: "short", day: "numeric" }) }) : "";
-    return (
-      <Li icon={Icon} tone={tone} title={title} meta={meta}>
-        {order && (
-          <Button onClick={() => navigate(`/orders/${order.id}`)}>
-            {t("stockouts.drawer.viewOrder")}
-            <ArrowRight />
-          </Button>
-        )}
-      </Li>
-    );
-  }
-
-  const shown = task ?? (ref ? asTaskState(ref.task) : undefined);
-  title = shown ? taskText(shown).title : "";
-  if (step.kind === "call") meta = t("stockouts.drawer.callMeta", { due: fmtDate(step.params.due as Date, { weekday: "short", month: "short", day: "numeric" }), qty: step.params.qty });
-  else meta = task ? (task.done ? t("stockouts.drawer.doneMeta") : t("stockouts.drawer.onList")) : ref ? taskText(asTaskState(ref.task)).detail : "";
-
-  return (
-    <Li icon={Icon} tone={tone} title={title} meta={meta}>
-      {task?.done ? (
-        <Pill tone="good">{step.kind === "call" ? t("orders.list.callLogged") : t("stockouts.drawer.done")}</Pill>
-      ) : step.kind === "call" ? (
-        <Button onClick={() => ref && actions.complete(ref, true, "call")}>
-          <Phone />
-          {t("today.tasks.logCall")}
-        </Button>
-      ) : task ? (
-        <Pill tone="good">{t("stockouts.drawer.taskAdded")}</Pill>
-      ) : (
-        <Button onClick={() => ref && actions.add(ref)}>{t("stockouts.drawer.addTask")}</Button>
-      )}
-    </Li>
-  );
-}
-
-function Li({ icon, tone, title, meta, children }: { icon: LucideIcon; tone: Tone; title: string; meta: string; children?: ReactNode }) {
-  return (
-    <li className="flex items-start gap-3 border-b border-line py-3 last:border-0">
-      <IconTile icon={icon} tone={tone} />
-      <div className="min-w-0 flex-1">
-        <div className="font-semibold">{title}</div>
-        {meta && <div className="text-xs text-muted">{meta}</div>}
-      </div>
-      <div className="shrink-0">{children}</div>
-    </li>
   );
 }

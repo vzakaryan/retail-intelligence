@@ -26,7 +26,9 @@ export type StockStep =
   /** A new task to add */
   | { kind: "add"; task: NewTask }
   /** Already covered by an upcoming supplier order */
-  | { kind: "order"; supplierId: string };
+  | { kind: "order"; supplierId: string }
+  /** The next order from this supplier already suggests less (see Order suggestions) */
+  | { kind: "orderLess"; supplierId: string; qty: number; usual?: number; next?: Date };
 
 export interface StockRow {
   productId: string;

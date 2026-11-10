@@ -208,6 +208,21 @@
         "title": "Keep {{qty}} × {{product}} aside for online on weekend mornings",
         "detail": "Starting this Saturday",
         "doneDetail": "Done at {{at}}"
+      },
+      "sendToStore": {
+        "title": "Move {{qty}} × {{product}} to the {{store}} store",
+        "detail": "They sell about {{perDay}} a day",
+        "doneDetail": "Done at {{at}}"
+      },
+      "promotion": {
+        "title": "Put {{product}} on promotion −{{cut}}% until {{until}}",
+        "detail": "Helps sell the extra stock faster",
+        "doneDetail": "Done at {{at}}"
+      },
+      "frontOfShelf": {
+        "title": "Move {{product}} to the front of the shelf",
+        "detail": "So the oldest units sell first",
+        "doneDetail": "Done at {{at}}"
       }
     },
     "online": {
@@ -622,7 +637,11 @@
       "addTask": "Add task",
       "addAll_one": "Add {{count}} step to today's tasks",
       "addAll_other": "Add {{count}} steps to today's tasks",
-      "allAdded": "All steps are on today's tasks"
+      "allAdded": "All steps are on today's tasks",
+      "orderLess": "Order {{qty}} in the next {{supplier}} order",
+      "usually": "Usually {{qty}}",
+      "nextOrder": "next order {{date}}",
+      "orderBy": "order by {{when}}"
     }
   },
   "online": {
@@ -739,6 +758,161 @@
       "inOrderSuggestions": "In order suggestions",
       "added": "Added to tasks",
       "add": "Add to tasks"
+    }
+  },
+  "overstock": {
+    "subtitle": "Products you have too much of — free up shelf space and cash",
+    "filter": "Category",
+    "cat": {
+      "all": "All categories",
+      "dairy": "Dairy",
+      "frozen": "Frozen",
+      "dry": "Dry goods",
+      "beverages": "Beverages",
+      "bakery": "Bakery",
+      "eggs": "Eggs"
+    },
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "kpi": {
+      "extra": "Extra stock value",
+      "extraInfo": "Value of stock above what your store needs until the next delivery plus a safety margin.",
+      "days": "Days of stock",
+      "daysInfo": "How many days your current stock would last at normal sales.",
+      "daysUnit": "days",
+      "target": "target {{count}} days",
+      "count": "Products overstocked",
+      "expiring": "Expiring extra stock",
+      "expiringInfo": "Extra stock that expires within 7 days.",
+      "seeExpiry": "within 7 days · see Expiry"
+    },
+    "table": {
+      "title": "Products with too much stock",
+      "subtitle": "Biggest extra value first · click a product to see why and what to do",
+      "product": "Product",
+      "inStore": "In store",
+      "days": "Days of stock",
+      "extra": "Extra value",
+      "action": "What you can do",
+      "target": "target {{count}}",
+      "showMore": "Show {{count}} more",
+      "none": "No overstocked products in this category"
+    },
+    "action": {
+      "promotion": "Put on promotion −{{cut}}%",
+      "sendToStore": "Move {{qty}} to the {{store}} store",
+      "markdown": "Mark down −{{cut}}%",
+      "orderLess": "Order less next time",
+      "frontOfShelf": "Move to the front of the shelf"
+    },
+    "meta": {
+      "endOfAisle": "end-of-aisle display",
+      "salesDropped": "sales dropped {{pct}}% since October",
+      "expiresThu": "{{units}} expire on {{day}}",
+      "suggested": "suggested {{qty}} in the next {{supplier}} order",
+      "suggestedInstead": "suggested {{qty}} instead of {{usual}}"
+    },
+    "reason": {
+      "seasonal": "Sales dropped by {{pct}}% since mid-October as the weather got colder, but deliveries stayed the same.",
+      "slowSeller": "It sells more slowly than the shelf plan expects.",
+      "promoEnded": "Sales fell back after last month's promotion, but orders didn't.",
+      "overOrderedExpiring": "The last orders were bigger than what sells, and {{units}} units expire on {{day}}.",
+      "overOrdered": "Recent orders were bigger than what sells."
+    },
+    "drawer": {
+      "title": "You have enough for {{days}} days — usually {{target}} is plenty",
+      "extra": "{{extra}} of the {{total}} units are extra, about {{value}} of stock.",
+      "inStore": "In store",
+      "perDay": "Sells per day",
+      "extraUnits": "Extra",
+      "chartTitle": "Sold vs. delivered, by week",
+      "sold": "Sold",
+      "delivered": "Delivered"
+    },
+    "cats": {
+      "title": "Days of stock by category",
+      "subtitle": "Black line = target for your store"
+    },
+    "trend": {
+      "title": "Extra stock value over time",
+      "subtitle": "AMD millions, by week"
+    }
+  },
+  "expiry": {
+    "subtitle": "Sell products before they expire, and see what was thrown away",
+    "expires": {
+      "expiredToday": "expired today",
+      "todayAt": "today {{time}}"
+    },
+    "kpi": {
+      "week": "Write-offs this week",
+      "expiring": {
+        "3d": "Expiring in 3 days",
+        "7d": "Expiring in 7 days"
+      },
+      "products_one": "product",
+      "products_other": "products",
+      "expiringFoot": "about {{value}} of stock",
+      "rate": "Write-off rate",
+      "rateInfo": "Write-offs as a share of sales.",
+      "rateFoot": "of sales, last 4 weeks",
+      "saved": "Saved by markdowns",
+      "savedInfo": "Value of products sold at a markdown that would otherwise have been thrown away.",
+      "savedFoot": "this week, instead of writing off"
+    },
+    "table": {
+      "title": "Expiring soon",
+      "subtitle": "Soonest first · units you probably won't sell in time at the normal price",
+      "product": "Product",
+      "expires": "Expires",
+      "expiring": "Expiring",
+      "willSell": "Will likely sell",
+      "atRisk": "At risk",
+      "action": "What you can do",
+      "showMore": {
+        "3d": "Show {{count}} more (in 3 days)",
+        "7d": "Show {{count}} more (later this week)"
+      }
+    },
+    "groups": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "in2": "In 2 days",
+      "in3": "In 3 days",
+      "later": "Later this week"
+    },
+    "action": {
+      "removed": "Removed and written off",
+      "markdownAfter": "Mark down −{{cut}}% after {{time}}",
+      "markdown": "Mark down −{{cut}}%",
+      "frontOfShelf": "Move to the front of the shelf"
+    },
+    "reasons": {
+      "title": "Why products were written off",
+      "subtitle": "Last 4 weeks · {{total}} in total",
+      "expired": "Expired",
+      "damaged": "Damaged",
+      "spoiled": "Spoiled (fridge)",
+      "other": "Other",
+      "top": "Top expired products: {{names}}"
+    },
+    "trend": {
+      "title": "Write-offs at your store",
+      "subtitle": "AMD millions, by week"
+    },
+    "drawer": {
+      "expires": "Expires {{when}}",
+      "handled": "{{units}} units were removed and written off at {{at}}.",
+      "title": "{{risk}} of {{total}} units may be thrown away",
+      "normal": "At the normal price your store sells about {{perDay}} a day, so roughly {{sell}} will sell before {{day}}.",
+      "withMarkdown": "With a {{cut}}% markdown, past sales suggest you'd sell about {{sell}}.",
+      "tonight": "tonight",
+      "expiring": "Expiring",
+      "willSell": "Will likely sell",
+      "atRisk": "At risk",
+      "chartTitle": "Expected sales until {{day}}",
+      "normalPrice": "Normal price",
+      "markdownLegend": "With −{{cut}}% markdown"
     }
   }
 }

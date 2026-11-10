@@ -26,9 +26,12 @@ export function fmtPercent(value: number, digits = 1): string {
  * next to each other are easy to compare:
  * 1_420_000 → "AMD 1.42M", 610_000 → "AMD 0.61M", 49_300_000 → "AMD 49.3M", 85_000 → "AMD 85K"
  */
-export function fmtAmd(value: number, opts: { fixed?: boolean } = {}): string {
+export function fmtAmd(value: number, opts: { fixed?: boolean; thousands?: boolean } = {}): string {
   const abs = Math.abs(value);
   if (abs === 0) return "AMD 0";
+  // `thousands`: keep amounts under 1M in K so a table column reads consistently (115K, 97K, 2.8K)
+  if (opts.thousands && abs < 1e6)
+    return `AMD ${new Intl.NumberFormat(currentLocale(), { maximumFractionDigits: abs < 1e4 ? 1 : 0 }).format(value / 1e3)}K`;
   // `fixed` keeps trailing zeros (3.0M) so amounts line up in table columns
   const n = (v: number, max: number) =>
     new Intl.NumberFormat(currentLocale(), { maximumFractionDigits: max, minimumFractionDigits: opts.fixed ? max : 0 }).format(v);

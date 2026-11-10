@@ -313,3 +313,10 @@ tr.group td { background: #fafafc; font-size: 11.5px; font-weight: 600; letter-s
 .order-card .row-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .item-line { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0 0; font-size: 13px; }
 .badge-num { display: inline-grid; place-items: center; height: 24px; min-width: 24px; padding: 0 6px; border-radius: 8px; background: #f0f0f5; font-weight: 600; font-size: 11px; color: var(--text-2); }
+
+/* ---------- v5: overstock + expiry proposals ---------- */
+.hbar { display: grid; grid-template-columns: 110px 1fr 70px; gap: 12px; align-items: center; padding: 9px 0; }
+.hbar-track { position: relative; height: 10px; border-radius: 99px; background: #eeeef4; }
+.hbar-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99px; }
+.hbar-target { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--text); border-radius: 2px; }
+.done-row td { background: rgba(231, 246, 238, .45); }

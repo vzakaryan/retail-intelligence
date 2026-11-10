@@ -60,8 +60,8 @@ export const NAV: NavGroup[] = [
   {
     groupKey: "inventoryHealth",
     items: [
-      { id: "overstock", path: "/overstock", icon: Boxes, design: "planned" },
-      { id: "writeOffs", path: "/write-offs", icon: CalendarClock, design: "planned" },
+      { id: "overstock", path: "/overstock", icon: Boxes, design: "approved" },
+      { id: "writeOffs", path: "/write-offs", icon: CalendarClock, design: "approved" },
     ],
   },
   {

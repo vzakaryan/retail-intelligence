@@ -7,7 +7,7 @@ export interface Product {
   /** Placeholder picture until real product images exist */
   emoji: string;
   supplierId: string;
-  category: "dairy" | "eggs" | "bakery" | "beverages";
+  category: "dairy" | "eggs" | "bakery" | "beverages" | "frozen" | "dry";
   /** Purchase price per unit, AMD (used for order value) */
   price: number;
 }
@@ -60,6 +60,13 @@ export const PRODUCTS: Product[] = [
   p("matnakash", "BRD-030", "Matnakash (500g)", "🥖", "freshbake", "bakery", 400),
   p("croissant", "BRD-040", "Croissant", "🥐", "freshbake", "bakery", 350),
   p("buns", "BRD-050", "Buns (6-pack)", "🥯", "freshbake", "bakery", 600),
+  // GroceryHub (dry goods)
+  p("olive", "DRY-010", "Olive oil (1L)", "🫒", "groceryhub", "dry", 3200),
+  p("coffee", "DRY-020", "Coffee (250g)", "☕", "groceryhub", "dry", 2900),
+  p("cornflakes", "DRY-030", "Cornflakes (500g)", "🌽", "groceryhub", "dry", 1600),
+  p("pasta", "DRY-040", "Pasta (500g)", "🍝", "groceryhub", "dry", 600),
+  // ColdFoods (frozen)
+  p("icecream", "FRZ-010", "Ice cream (1L)", "🍦", "coldfoods", "frozen", 1800),
 ];
 
 export function getProduct(id: string): Product {

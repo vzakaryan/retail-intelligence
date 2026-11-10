@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Expiry & write-offs — proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Armenian:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>td { padding-top: 12px; padding-bottom: 12px; }</style>
+</head>
+<body data-page="writeoffs" data-scope="store">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>Expiry & write-offs</h1>
+          <div class="subtitle">Sell products before they expire, and see what was thrown away</div>
+        </div>
+        <div class="segmented"><span class="on">Next 3 days</span><span>Next 7 days</span></div>
+      </div>
+
+      <section class="kpis">
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-warn"><i data-lucide="trash-2"></i></div>Write-offs this week<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">AMD 0.61M</div>
+          <div class="kpi-foot"><span class="delta tone-bad">↑ 4.2%</span>vs. last week</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-bad"><i data-lucide="calendar-clock"></i></div>Expiring in 3 days</div>
+          <div class="kpi-value">7 <small>products</small></div>
+          <div class="kpi-foot">about AMD 0.18M of stock</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-info"><i data-lucide="percent"></i></div>Write-off rate<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">2.9%</div>
+          <div class="kpi-foot"><span class="delta tone-good">↓ 0.3 pp</span>of sales, last 4 weeks</div>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-top"><div class="tile tone-good"><i data-lucide="badge-percent"></i></div>Saved by markdowns<i class="info" data-lucide="info"></i></div>
+          <div class="kpi-value">AMD 0.24M</div>
+          <div class="kpi-foot">this week, instead of writing off</div>
+        </div>
+      </section>
+
+      <section class="card" style="margin-bottom: 24px">
+        <div class="card-head" style="padding-bottom: 14px">
+          <div>
+            <div class="card-title">Expiring soon</div>
+            <div class="card-sub">Soonest first · units you probably won't sell in time at the normal price</div>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Product</th><th>Expires</th><th class="num">Expiring</th><th class="num">Will likely sell</th><th class="num">At risk</th><th>What you can do</th><th></th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div class="table-foot"><span class="link">Show 2 more (in 3 days)<i data-lucide="chevron-down"></i></span><span></span></div>
+      </section>
+
+      <section class="row r-1-2" style="grid-template-columns: 1fr 1.3fr">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Why products were written off</div>
+              <div class="card-sub">Last 4 weeks · AMD 2.38M in total</div>
+            </div>
+          </div>
+          <div class="card-body" style="padding-top: 8px" id="reasons"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Write-offs at your store</div>
+              <div class="card-sub">AMD millions, by week</div>
+            </div>
+            <div class="legend" style="white-space: nowrap"><span><i style="background:#e4e5ec"></i>Before</span><span><i style="background:#cfc4fb"></i>With Retail Intelligence</span></div>
+          </div>
+          <div class="card-body"><div style="height: 200px"><canvas id="trend"></canvas></div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="overlay"></div>
+  <aside class="drawer">
+    <div class="drawer-head">
+      <div class="thumb">🥣</div>
+      <div style="flex: 1">
+        <div class="drawer-title">Yogurt (500g)</div>
+        <div class="meta">YOG-002 · DairyCo</div>
+      </div>
+      <span class="pill tone-warn">Expires Thu, Nov 12</span>
+      <div class="icon-btn" style="border: none"><i data-lucide="x"></i></div>
+    </div>
+    <div class="drawer-body" style="gap: 18px">
+      <div class="callout tone-warn">
+        <i data-lucide="calendar-clock" style="width: 20px; height: 20px; margin-top: 2px"></i>
+        <div>
+          <div class="callout-title">26 of 46 units may be thrown away</div>
+          <p>At the normal price your store sells about 10 a day, so roughly 20 will sell before Thursday. With a 30% markdown, past sales suggest you'd sell about 44.</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-label">Expiring</div><div class="stat-value">46</div></div>
+        <div class="stat"><div class="stat-label">Will likely sell</div><div class="stat-value">20</div></div>
+        <div class="stat"><div class="stat-label">At risk</div><div class="stat-value" style="color: var(--warn)">AMD 18K</div></div>
+      </div>
+      <div>
+        <div class="section-title">Expected sales until Thursday</div>
+        <div class="legend" style="margin: 4px 0 6px"><span><i style="background:#e4e5ec"></i>Normal price</span><span><i style="background:#5b3fe0"></i>With −30% markdown</span></div>
+        <div style="height: 150px"><canvas id="proj"></canvas></div>
+      </div>
+      <div>
+        <div class="section-title">What you can do</div>
+        <div class="step-item">
+          <div class="tile tone-good"><i data-lucide="circle-check"></i></div>
+          <div style="flex:1"><div style="font-weight:600">Mark down Yogurt (500g) by 30%</div><div class="meta">Already on today's tasks</div></div>
+          <span class="pill tone-good">Task added</span>
+        </div>
+        <div class="step-item">
+          <div class="tile tone-info"><i data-lucide="arrow-left-right"></i></div>
+          <div style="flex:1"><div style="font-weight:600">Move 10 to the Baghramyan Ave store</div><div class="meta">They sell yogurt about 2× faster</div></div>
+          <span class="btn">Add task</span>
+        </div>
+        <div class="step-item">
+          <div class="tile tone-primary"><i data-lucide="clipboard-list"></i></div>
+          <div style="flex:1"><div style="font-weight:600">Order 0 in today's DairyCo order</div><div class="meta">Already set in order suggestions</div></div>
+          <span class="pill tone-good">In order suggestions</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding: 16px 24px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 2fr 1fr; gap: 10px">
+      <span class="btn btn-primary btn-block"><i data-lucide="list-plus"></i>Add 1 step to today's tasks</span>
+      <span class="btn btn-block">Close</span>
+    </div>
+  </aside>
+
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    const drawer = location.hash === "#drawer";
+    // [group] | [emoji, name, supplier, expires, tone, expiring, sell, atRisk, action, meta, done]
+    const R = [
+      ["Today"],
+      ["🍶", "Kefir (1L)", "DairyCo", "expired today", "neutral", 12, 0, "—", "Removed and written off", "done at 08:55", true],
+      ["🥐", "Croissant", "FreshBake", "today 20:00", "bad", 14, 6, "AMD 2.8K", "Mark down −50% after 17:00", "", false],
+      ["Tomorrow"],
+      ["🫓", "Lavash (pack)", "FreshBake", "Wed, Nov 11", "warn", 18, 12, "AMD 1.8K", "Move to the front of the shelf", "", false],
+      ["🥛", "Cream 10% (500ml)", "DairyCo", "Wed, Nov 11", "warn", 8, 3, "AMD 5K", "Mark down −25%", "", false],
+      ["In 2 days"],
+      ["🥣", "Yogurt (500g)", "DairyCo", "Thu, Nov 12", "warn", 46, 20, "AMD 18K", "Mark down −30%", "on today's tasks", false],
+      ["🧀", "Lori cheese (300g)", "DairyCo", "Thu, Nov 12", "neutral", 5, 3, "AMD 3.4K", "Move to the front of the shelf", "", false],
+    ];
+    document.getElementById("rows").innerHTML = R.map((r) => r.length === 1
+      ? `<tr class="group"><td colspan="7">${r[0]}</td></tr>`
+      : `<tr class="${r[10] ? "done-row" : drawer && r[1].startsWith("Yogurt") ? "active" : ""}">
+          <td><div class="product"><div class="thumb">${r[0]}</div><div><div class="p-name">${r[1]}</div><div class="meta">${r[2]}</div></div></div></td>
+          <td><span class="pill tone-${r[4]}">${r[3]}</span></td>
+          <td class="num">${r[5]}</td>
+          <td class="num">${r[6]}</td>
+          <td class="num">${r[7]}</td>
+          <td class="act"${r[10] ? ' style="color:var(--good)"' : ""}>${r[10] ? "✓ " : ""}${r[8]}${r[9] ? `<div class="meta"${r[10] ? ' style="color:var(--good)"' : ""}>${r[9]}</div>` : ""}</td>
+          <td><i class="chev" data-lucide="chevron-right"></i></td>
+        </tr>`).join("");
+
+    const W = [["Expired", "AMD 1.38M", 58, "#e09b2d"], ["Damaged", "AMD 0.52M", 22, "#7a7f93"], ["Spoiled (fridge)", "AMD 0.33M", 14, "#d63b3b"], ["Other", "AMD 0.15M", 6, "#b3b6c4"]];
+    document.getElementById("reasons").innerHTML = W.map(([n, v, pct, col]) => `
+      <div class="hbar" style="grid-template-columns: 120px 1fr 86px">
+        <span style="font-weight:500">${n}</span>
+        <div class="hbar-track"><div class="hbar-fill" style="width:${pct}%;background:${col}"></div></div>
+        <span class="num" style="font-weight:600">${v}</span>
+      </div>`).join("") + `<div class="mini-row" style="margin-top:6px;border-top:1px solid var(--border);padding-top:12px"><span class="meta" style="white-space:normal">Top expired products: Kefir (1L), Yogurt (500g), Croissant</span></div>`;
+  </script>
+  <script src="common.js"></script>
+  <script>
+    document.fonts.ready.then(() => {
+      const before = [0.79, 0.76, 0.81, 0.77];
+      const after = [0.74, 0.71, 0.68, 0.66, 0.63, 0.6, 0.585, 0.61];
+      const data = [...before, ...after];
+      const labels = ["Aug 17", "Aug 24", "Aug 31", "Sep 7", "Sep 14", "Sep 21", "Sep 28", "Oct 5", "Oct 12", "Oct 19", "Oct 26", "This wk"];
+      const lbl = { id: "lbl", afterDatasetsDraw(c) { const { ctx } = c; ctx.save(); ctx.font = "600 11px Inter, system-ui"; ctx.textAlign = "center"; c.getDatasetMeta(0).data.forEach((b, i) => { ctx.fillStyle = i >= before.length ? "#5b3fe0" : "#7a7f93"; ctx.fillText(data[i].toFixed(2), b.x, b.y - 6); }); ctx.restore(); } };
+      new Chart(document.getElementById("trend"), {
+        type: "bar",
+        data: { labels, datasets: [{ data, backgroundColor: data.map((_, i) => (i >= before.length ? (i === data.length - 1 ? "#5b3fe0" : "#cfc4fb") : "#e4e5ec")), borderRadius: 6, barPercentage: 0.62 }] },
+        options: { layout: { padding: { top: 18 } }, scales: { x: { grid: { display: false }, border: { display: false }, ticks: { font: { size: 10.5 } } }, y: { display: false, beginAtZero: true, max: 0.9 } } },
+        plugins: [lbl],
+      });
+      if (location.hash === "#drawer") {
+        new Chart(document.getElementById("proj"), {
+          type: "bar",
+          data: {
+            labels: ["Today", "Wed", "Thu"],
+            datasets: [
+              { data: [7, 7, 6], backgroundColor: "#e4e5ec", borderRadius: 5, barPercentage: 0.7 },
+              { data: [13, 16, 15], backgroundColor: "#5b3fe0", borderRadius: 5, barPercentage: 0.7 },
+            ],
+          },
+          options: { scales: { x: { grid: { display: false }, border: { display: false } }, y: { beginAtZero: true, max: 20, ticks: { stepSize: 5 }, grid: { color: "#f0f0f5" }, border: { display: false } } } },
+        });
+      }
+    });
+  </script>
+</body>
+</html>

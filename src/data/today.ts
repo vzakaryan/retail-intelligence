@@ -36,7 +36,10 @@ export type TaskKind =
   | "askSupplier"
   | "moveToShelf"
   | "setAside"
-  | "weekendAside";
+  | "weekendAside"
+  | "sendToStore"
+  | "promotion"
+  | "frontOfShelf";
 
 export type TaskTag = "online" | "ordering" | "expiry" | "supplier" | "promo";
 export type TaskAction = "markDone" | "review" | "logCall";

@@ -86,7 +86,7 @@ assumes automation they don't have.
   08 Bagratunyats Ave · Shengavit, 09 Erebuni St · Erebuni, 10 Tevosyan St ·
   Davtashen, 11 Khudyakov St · Avan, 12 Halabyan St · Ajapnyak. (No stores in
   Kanaker-Zeytun, Nork-Marash, Nubarashen.)
-- Suppliers (fictional): DairyCo, AgriEggs, BevCo, FreshBake.
+- Suppliers (fictional): DairyCo, AgriEggs, BevCo, FreshBake GroceryHub (dry goods), ColdFoods (frozen).
 - "Today" in the demo = Tue, Nov 10.
 
 ## Working agreement (IMPORTANT)
@@ -106,7 +106,7 @@ assumes automation they don't have.
 | Data | 100% mocked, consistent across screens | Agreed |
 | Tech stack | React 19 + TS + Vite 7, Tailwind 4, React Router 7 (hash), react-i18next, Recharts, Lucide | **Agreed 2026-11-10** |
 | Client name / branding | — | TBD |
-| Target design | `docs/design-references/approved/` (10 screens) | **Approved 2026-11-10** |
+| Target design | `docs/design-references/approved/` (14 screens) | **Approved 2026-11-10** |
 | Language | English first, then Armenian + EN/HY switcher; i18n-ready from day one | Agreed |
 
 ## Codebase (how the app is built)
@@ -148,7 +148,7 @@ assumes automation they don't have.
 
 ### Approved target design (SOURCE OF TRUTH — build to match these)
 
-Approved by the user on 2026-11-10 (01–06, then 07–10). Files in `docs/design-references/approved/`.
+Approved by the user on 2026-11-10 (01–06, then 07–10, then 11–14). Files in `docs/design-references/approved/`.
 The HTML/CSS mockup source is in `approved/src/` (`styles.css` holds the design
 tokens: colors, radii, type sizes) — reuse it when building the real app.
 
@@ -164,6 +164,10 @@ tokens: colors, radii, type sizes) — reuse it when building the real app.
 | `08-stockout-product-drawer.png` | Stockout product panel | Store manager | Why it may run out (plain sentence), on shelf / backroom / expected, what-if stock chart, manual steps (refill, call supplier, ask nearby store) → add to today's tasks |
 | `09-online-orders.png` | Online orders | Store manager | KPIs, full-width "prepare before picking" checklist, today's delivery slots with at-risk counts, often-missing products with fixes |
 | `10-online-orders-slot-drawer.png` | Delivery slot panel | Store manager | Orders at risk in a slot, which fix resolves them, substitute suggestion + "customer contacted" |
+| `11-overstock.png` | Overstock | Store manager | KPIs (extra stock value, days of stock vs target, products overstocked, extra stock expiring), full-width "products with too much stock" with one action each, days of stock by category vs target, extra stock value trend |
+| `12-overstock-product-drawer.png` | Overstock product panel | Store manager | Why there's too much (plain sentence), sold vs delivered chart, steps: move to another store, order less (order suggestions), promotion |
+| `13-expiry-writeoffs.png` | Expiry & write-offs | Store manager | KPIs (write-offs, expiring soon, write-off rate, saved by markdowns), full-width "expiring soon" grouped by day with will-sell / at-risk, write-offs by reason, weekly trend |
+| `14-expiry-product-drawer.png` | Expiry product panel | Store manager | Units likely thrown away, normal vs markdown sales chart, steps: markdown (existing task), move to another store, order 0 |
 
 Shell (all screens): **left sidebar** with grouped modules (My store today ·
 Stock & demand · Inventory health · Partners & sales · Head office), top bar
@@ -327,3 +331,29 @@ top nav was replaced by a sidebar).
     setAside, weekendAside.
   Remaining placeholders: Overstock, Expiry & write-offs, Suppliers, Promotions,
   Settings, Help (designs to be agreed first).
+- **Step 9 (2026-11-10):** Mockups for **Overstock** and **Expiry & write-offs**
+  in `docs/design-proposals/`: `11-overstock`, `12-overstock-product-drawer`,
+  `13-expiry-writeoffs`, `14-expiry-product-drawer`. Same layout rule (full-width
+  action table, two cards below), same "one next step + panel with manual
+  steps" pattern; mock world extended with dry-goods / frozen products
+  (fictional suppliers GroceryHub, ColdFoods). **Approved** and filed in
+  `design-references/approved/`.
+- **Step 10 (2026-11-10):** Built **Overstock** (`src/pages/overstock/`, data
+  `src/data/overstock.ts`) and **Expiry & write-offs** (`src/pages/expiry/`,
+  data `src/data/expiry.ts`) matching approved 11–14.
+  - Overstock: category filter, KPIs computed from rows (extra value, count,
+    expiring extra stock → link to Expiry), table by extra value, days of stock
+    by category vs target, extra-value trend, product panel (reason, sold vs
+    delivered chart, steps).
+  - Expiry: 3 / 7-day switch, rows grouped Today / Tomorrow / In 2 / In 3 days /
+    Later, will-sell and at-risk value, handled rows in green, reasons card,
+    write-off trend, product panel (normal vs markdown sales, steps).
+  - Shared: `StepList` / `StepsFooter` (`src/pages/stockouts/StepList.tsx`) used by
+    all product panels; new step kind `orderLess` (links to the supplier order);
+    new task kinds sendToStore, promotion, frontOfShelf; `BeforeAfterChart` and
+    `HBar` UI components; `fmtAmd(v, { thousands: true })` for table columns.
+  - The same suggestion is one task across screens (e.g. yogurt markdown and
+    "move 10 yogurt to Baghramyan Ave" on Overstock, Expiry and My store today).
+  Overstock KPIs now come from the rows (AMD 0.41M across 10 products) rather
+  than the mockup's illustrative AMD 3.4M / 18 products.
+  Remaining placeholders: Suppliers, Promotions, Settings, Help.
