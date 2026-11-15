@@ -3,7 +3,7 @@ import { Navigate, useNavigate, useParams } from "react-router";
 import { ArrowRight, Check, CheckCheck, ChevronDown, ChevronUp, CircleCheck, Pencil } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useDemo } from "@/app/DemoContext";
-import { useOrder, type LineView, type OrderView } from "@/app/useOrders";
+import { isPlaced, useOrder, type LineView, type OrderView } from "@/app/useOrders";
 import type { ChangeReason, LineReview } from "@/data/orders";
 import { shortDate, OrderHeader } from "./shared";
 import { useReasonText, useStatusText } from "./lineText";
@@ -29,7 +29,7 @@ export function OrderReviewPage() {
   const { store } = useDemo();
   const view = useOrder(store.id, orderId);
   if (!view) return <OrderNotFound />;
-  if (view.stage === "placed") return <Navigate to={`/orders/${view.order.id}/done`} replace />;
+  if (isPlaced(view)) return <Navigate to={`/orders/${view.order.id}/done`} replace />;
   return <Review key={view.order.id} view={view} />;
 }
 

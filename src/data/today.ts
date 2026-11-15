@@ -40,6 +40,8 @@ export type TaskKind =
   | "reviewOrder"
   | "markdown"
   | "callSupplier"
+  /** "Did the <supplier> order arrive?" — from a placed order whose check day has come */
+  | "checkDelivery"
   | "promoTags"
   // Added during the demo from Stockout risk / Online orders:
   | "askStore"
@@ -53,7 +55,7 @@ export type TaskKind =
   | "clearSpace";
 
 export type TaskTag = "online" | "ordering" | "expiry" | "supplier" | "promo";
-export type TaskAction = "markDone" | "review" | "logCall";
+export type TaskAction = "markDone" | "review" | "logCall" | "checkDelivery";
 export type TaskParam = string | number | Date;
 
 export interface Task {
@@ -104,7 +106,7 @@ const TASKS_S03: Omit<Task, "id">[] = [
   { kind: "refillOnline", productId: "eggs10", params: { time: "11:00", onShelf: 9, backroom: 40, orders: 9 }, tag: "online", action: "markDone" },
   { kind: "reviewOrder", supplierId: "dairyco", params: { deadline: "16:00", count: 14, delivery: nov(12) }, tag: "ordering", action: "review" },
   { kind: "markdown", productId: "yogurt", params: { units: 46, date: nov(12), cut: 30 }, tag: "expiry", action: "markDone" },
-  { kind: "callSupplier", supplierId: "agrieggs", params: { due: nov(9), days: 2 }, tag: "supplier", action: "logCall" },
+  { kind: "checkDelivery", supplierId: "agrieggs", params: { due: nov(9), days: 2 }, tag: "supplier", action: "checkDelivery" },
   { kind: "checkExpiry", params: { found: 4 }, action: "markDone", doneAt: "07:30", extra: true },
   { kind: "promoTags", params: { count: 18, starts: nov(13) }, tag: "promo", action: "markDone", extra: true },
 ];

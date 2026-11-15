@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { coverDays, getOrders, suggestedQty, type LineReview, type OrderLine, type SupplierOrder } from "@/data/orders";
+import { coverDays, getOrders, suggestedQty, type LineReview, type OrderLine, type Receipt, type SupplierOrder } from "@/data/orders";
 import { getProduct, type Product } from "@/data/products";
 import type { Supplier } from "@/data/types";
 import { DEMO_NOW, SUPPLIERS } from "@/data/world";
@@ -15,7 +15,7 @@ export interface LineView {
   review?: LineReview;
 }
 
-export type OrderStage = "notStarted" | "inReview" | "ready" | "placed";
+export type OrderStage = "notStarted" | "inReview" | "ready" | "placed" | "received";
 
 export interface OrderView {
   order: SupplierOrder;
@@ -29,13 +29,25 @@ export interface OrderView {
   /** Placed during the demo (not before it) */
   placedNow: boolean;
   dueToday: boolean;
+  /** Placed orders: day to check the delivery arrived (after any "not yet" reminders) */
+  checkOn?: Date;
+  /** Placed, not received, and the check day has come */
+  needsCheck: boolean;
+  /** Days past the check day (0 = check is today) */
+  checkOverdue: number;
+  /** Times the manager answered "not yet" */
+  snoozed: number;
+  receipt?: Receipt;
 }
 
 const sameDay = (a: Date, b: Date) => a.toDateString() === b.toDateString();
+const startOfDay = (x: Date) => new Date(x.getFullYear(), x.getMonth(), x.getDate());
+/** Whole days from a to b */
+export const daysBetween = (a: Date, b: Date) => Math.round((startOfDay(b).getTime() - startOfDay(a).getTime()) / 86_400_000);
 
 /** Supplier orders for a store, merged with what the user did in the demo. */
 export function useOrders(storeId: string): OrderView[] {
-  const { lineReviews, placedOrders, extraSafety } = useDemo();
+  const { lineReviews, placedOrders, extraSafety, receipts, snoozes } = useDemo();
   return useMemo(
     () =>
       getOrders(storeId).map((order) => {
@@ -48,7 +60,14 @@ export function useOrders(storeId: string): OrderView[] {
         const reviewed = lines.filter((l) => l.review);
         const placedNow = !!placedOrders[order.id];
         const placed = order.status === "placed" || placedNow;
-        const stage: OrderStage = placed
+        const receipt = receipts[order.id];
+        const sn = snoozes[order.id];
+        const snoozed = sn?.count ?? 0;
+        const checkOn = placed ? (sn?.until ?? placedOrders[order.id]?.checkOn ?? order.checkOn ?? order.delivery) : undefined;
+        const overdue = checkOn ? daysBetween(checkOn, DEMO_NOW) : -1;
+        const stage: OrderStage = receipt
+          ? "received"
+          : placed
           ? "placed"
           : reviewed.length === lines.length
             ? "ready"
@@ -65,11 +84,19 @@ export function useOrders(storeId: string): OrderView[] {
           units: reviewed.reduce((sum, l) => sum + l.review!.qty, 0),
           placedNow,
           dueToday: !placed && sameDay(order.deadline, DEMO_NOW),
+          checkOn,
+          needsCheck: placed && !receipt && overdue >= 0,
+          checkOverdue: Math.max(0, overdue),
+          snoozed,
+          receipt,
         };
       }),
-    [storeId, lineReviews, placedOrders, extraSafety]
+    [storeId, lineReviews, placedOrders, extraSafety, receipts, snoozes]
   );
 }
+
+/** Placed or already received */
+export const isPlaced = (v: OrderView) => v.stage === "placed" || v.stage === "received";
 
 export function useOrder(storeId: string, orderId: string | undefined): OrderView | undefined {
   return useOrders(storeId).find((o) => o.order.id === orderId);

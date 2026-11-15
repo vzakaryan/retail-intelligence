@@ -469,3 +469,26 @@ top nav was replaced by a sidebar).
   "Your results so far", `recoveredWeek` in `impact.ts`). Removed "products at risk"
   and forecast accuracy (data fields dropped). The OOS change now comes from the same
   number as My store today; store 03's trend tweaked so the chart agrees (−0.9 pp).
+- **Step 16 (2026-11-15): UX pass — Order suggestions: closing the loop.** The page still
+  shows **only suggested orders** (user's choice; no "log an outside order").
+  - Placing an order asks **"Check delivery on"** (Tomorrow / In 2 days / Pick a date),
+    pre-filled from the order's scheduled delivery — no exact delivery date needed.
+  - List sections: Due today · Coming up · **Needs your check** (check day reached) ·
+    **Placed · waiting** ("Check on …", small Received) · **Received · last 7 days**
+    (folded, Undo). The "how it works" strip became a **How it works** button + panel
+    (incl. the line "orders not confirmed within 7 days close automatically" — text
+    only, no logic, because the demo date never moves).
+  - **Received** opens "Did everything arrive?": all arrived / some items short (edit
+    received qty per line) / not yet. **Not yet** moves the check to tomorrow; after 2
+    it suggests calling. Order page has 4 steps (Review · Place · Placed · Received) and
+    shows ordered vs received.
+  - My store today: task **"Did the <supplier> order arrive?"** (kind `checkDelivery`)
+    with Received / Not yet / Log call / "Some items short?". Arevi Farm's old
+    "call about the late delivery" task became this task; Log call still creates the
+    shared `callSupplier` task (`callRef` in `pages/orders/shared.tsx`), so Stockout
+    risk and Suppliers stay in sync. Orders placed in the demo with a check day of
+    today get the task too. State: `placedOrders[id].checkOn`, `receipts`, `snoozes`
+    in `DemoContext`.
+  - **Later ideas (agreed, not built):** quality check on receiving (expiry, cold chain,
+    damage); per-supplier usual delivery time in Settings; receiving by staff other
+    than the manager; feeding received deliveries into Suppliers → recent deliveries.

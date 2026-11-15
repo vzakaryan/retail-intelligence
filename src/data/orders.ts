@@ -54,7 +54,17 @@ export interface SupplierOrder {
   lines: OrderLine[];
   /** For orders placed before the demo starts */
   placedOn?: Date;
-  late?: { daysLate: number; daysOfStockLeft: number };
+  /** Placed orders: the day the manager wants to check the delivery arrived ("Check delivery on") */
+  checkOn?: Date;
+  /** Placed orders that are overdue: roughly how long the stock in store lasts */
+  late?: { daysOfStockLeft: number };
+}
+
+/** What the manager confirmed when the delivery arrived. */
+export interface Receipt {
+  on: Date;
+  /** Received quantity for lines that came short (missing = arrived in full) */
+  short: Record<string, number>;
 }
 
 const d = (day: number, h = 0, m = 0) => new Date(2026, 10, day, h, m);
@@ -143,8 +153,9 @@ const S03_ORDERS: Omit<SupplierOrder, "id" | "storeId">[] = [
     placedOn: d(6),
     deadline: d(6, 12),
     delivery: d(9),
+    checkOn: d(9),
     coversUntil: d(13),
-    late: { daysLate: 1, daysOfStockLeft: 2 },
+    late: { daysOfStockLeft: 2 },
     lines: [
       L("eggs10", 49, 0, 260, 40, "usual", ok(240)),
       L("eggs6", 30, 0, 90, 15, "usual", ok(80)),
@@ -157,6 +168,7 @@ const S03_ORDERS: Omit<SupplierOrder, "id" | "storeId">[] = [
     placedOn: d(9),
     deadline: d(9, 12),
     delivery: d(11),
+    checkOn: d(11),
     deliveryTime: "09:00",
     coversUntil: d(12),
     lines: [

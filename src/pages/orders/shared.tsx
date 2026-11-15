@@ -6,6 +6,7 @@ import { DEMO_NOW } from "@/data/world";
 import { TONE } from "@/components/ui/tone";
 import { fmtDate } from "@/lib/format";
 import type { OrderView } from "@/app/useOrders";
+import type { TaskRef } from "@/app/useTaskActions";
 import { pick, initials } from "@/lib/names";
 
 export function SupplierTile({ supplier }: { supplier: Supplier }) {
@@ -28,17 +29,23 @@ export function useDayLabel() {
   };
 }
 
+/** The "call the supplier about the delivery" task (same task as on Stockout risk / Suppliers). */
+export const callRef = (supplierId: string, due: Date): TaskRef => ({
+  task: { kind: "callSupplier", supplierId, params: { due, days: 2 }, tag: "supplier" },
+  linked: { kind: "callSupplier", supplierId },
+});
+
 export const shortDate = (date: Date) => fmtDate(date, { weekday: "short", month: "short", day: "numeric" });
 
 /** Hours from "now" in the demo until a deadline */
 export const hoursUntil = (date: Date) => Math.round((date.getTime() - DEMO_NOW.getTime()) / 3_600_000);
 
 /** Breadcrumb + title + subtitle + stepper shared by the steps of one order. */
-export function OrderHeader({ view, step }: { view: OrderView; step: 1 | 2 | 3 }) {
+export function OrderHeader({ view, step }: { view: OrderView; step: 1 | 2 | 3 | 4 }) {
   const { t } = useTranslation();
   const dayLabel = useDayLabel();
   const o = view.order;
-  const steps = [t("orders.steps.review"), t("orders.steps.place"), t("orders.steps.done")];
+  const steps = [t("orders.steps.review"), t("orders.steps.place"), t("orders.steps.placed"), t("orders.steps.received")];
 
   return (
     <>
@@ -51,8 +58,10 @@ export function OrderHeader({ view, step }: { view: OrderView; step: 1 | 2 | 3 }
       </nav>
       <h1 className="text-[26px] font-bold leading-tight tracking-tight">{t("orders.order.title", { supplier: pick(view.supplier.name) })}</h1>
       <p className="mt-1 text-[15px] text-muted">
-        {view.stage === "placed" ? (
-          t("orders.order.subtitlePlaced", { delivery: dayLabel(o.delivery, o.deliveryTime) })
+        {view.receipt ? (
+          t("orders.order.subtitleReceived", { date: shortDate(view.receipt.on) })
+        ) : view.stage === "placed" ? (
+          t("orders.order.subtitleCheck", { date: shortDate(view.checkOn!) })
         ) : (
           <>
             {t("orders.order.orderBy")} <b className={hoursUntil(o.deadline) < 6 ? "text-bad" : "text-ink"}>{dayLabel(o.deadline, undefined, true)}</b>
@@ -65,7 +74,7 @@ export function OrderHeader({ view, step }: { view: OrderView; step: 1 | 2 | 3 }
       <ol className="mb-5 mt-[18px] flex flex-wrap items-center gap-3">
         {steps.map((label, i) => {
           const n = i + 1;
-          const done = n < step || (step === 3 && n === 3);
+          const done = n < step || (n === 4 && !!view.receipt);
           const on = n === step && !done;
           return (
             <li key={label} className="flex items-center gap-3">

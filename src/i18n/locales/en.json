@@ -154,7 +154,10 @@
       "doneToday_one": "{{count}} done today",
       "doneToday_other": "{{count}} done today",
       "doneToast": "Done: {{title}}",
-      "undoShort": "Undo"
+      "undoShort": "Undo",
+      "receivedNow": "Delivery received just now",
+      "remindToast": "We'll remind you tomorrow",
+      "someShort": "Some items short?"
     },
     "tags": {
       "online": "Online orders",
@@ -248,6 +251,13 @@
         "title": "Clear space at the front of the dairy fridge",
         "detail": "For the promoted milk, kefir and yogurt",
         "doneDetail": "Done at {{at}}"
+      },
+      "checkDelivery": {
+        "title": "Did the {{supplier}} order arrive?",
+        "detail": "Check was due {{due}} · about {{days}} days of stock left",
+        "detailShort": "Check delivery set for {{due}}",
+        "detailCall": "Still not here after 2 reminders · call the supplier",
+        "doneDetail": "Received · {{at}}"
       }
     },
     "online": {
@@ -322,26 +332,27 @@
       "tomorrow": "Tomorrow"
     },
     "how": {
+      "link": "How it works",
+      "title": "How order suggestions work",
       "1": {
         "title": "Review the quantities",
         "text": "We suggest how much to order. Accept or change each one."
       },
       "2": {
         "title": "Order as you do today",
-        "text": "Phone, email or Excel. We prepare the list for you."
+        "text": "Phone, email or Excel. Then tell us it's placed and when to check the delivery."
       },
       "3": {
-        "title": "Tell us it's placed",
-        "text": "We'll check the delivery and learn from the results."
+        "title": "Confirm the delivery",
+        "text": "On that day we remind you in today's tasks: received, some items short, or not yet."
       },
-      "gotIt": "Got it"
+      "autoClose": "Orders not confirmed within 7 days of their check date close automatically, so this list never piles up."
     },
     "list": {
       "dueToday_one": "Due today · {{count}} order",
       "dueToday_other": "Due today · {{count}} orders",
       "noneDueToday": "Nothing left to order today. Well done!",
       "comingUp": "Coming up",
-      "placed": "Placed · waiting for delivery",
       "meta_one": "{{categories}} · {{count}} product",
       "meta_other": "{{categories}} · {{count}} products",
       "placedMeta_one": "Placed {{date}} · {{count}} product",
@@ -354,8 +365,6 @@
       "start": "Start review",
       "continue": "Continue review",
       "placeOrder": "Place the order",
-      "wasDue": "Was due {{date}}",
-      "due": "Due {{when}}",
       "daysLate_one": "{{count}} day late",
       "daysLate_other": "{{count}} days late",
       "stockLeft_one": "About {{count}} day of stock left",
@@ -369,18 +378,37 @@
         "orderBy": "Order by",
         "delivery": "Delivery",
         "progress": "Progress"
-      }
+      },
+      "needsCheck_one": "Needs your check · {{count}} order",
+      "needsCheck_other": "Needs your check · {{count}} orders",
+      "waiting": "Placed · waiting for delivery",
+      "received_one": "Received · last 7 days ({{count}})",
+      "received_other": "Received · last 7 days ({{count}})",
+      "checkWasDue": "Check was due {{date}}",
+      "checkToday": "Check today",
+      "checkOn": "Check on {{date}}",
+      "checkNow": "Check now",
+      "notYet": "Not yet",
+      "receivedBtn": "Received",
+      "remindedCount_one": "Reminded once",
+      "remindedCount_other": "Reminded {{count}} times",
+      "receivedMeta": "Received {{date}}",
+      "shortCount_one": "{{count}} product short",
+      "shortCount_other": "{{count}} products short",
+      "allArrived": "All arrived"
     },
     "steps": {
       "review": "Review quantities",
       "place": "Place the order",
-      "done": "Done"
+      "placed": "Placed",
+      "received": "Received"
     },
     "order": {
       "title": "{{supplier}} order",
       "orderBy": "Order by",
       "subtitle": "delivery {{delivery}} · should last until the next delivery on {{until}}",
-      "subtitlePlaced": "Delivery {{delivery}}"
+      "subtitleCheck": "Check delivery on {{date}}",
+      "subtitleReceived": "Received {{date}}"
     },
     "reason": {
       "weekend": "Weekend demand +{{pct}}%",
@@ -488,20 +516,35 @@
       "confirmSub": "Once you confirm, we will:",
       "benefit": {
         "tasks": "Take it off today's tasks",
-        "late": "Remind you if the delivery is late",
+        "late": "Remind you to check that the delivery arrived",
         "learn": "Compare what you ordered with what sold, to improve the next suggestions"
       },
       "confirm": "I've placed the order with {{supplier}}",
-      "partial": "Supplier can't deliver everything? You can update the quantities when the delivery arrives."
+      "partial": "Supplier can't deliver everything? You can update the quantities when the delivery arrives.",
+      "checkOn": "Check delivery on",
+      "in2days": "In 2 days",
+      "pickDate": "Pick a date",
+      "checkOnHint": "We'll remind you on {{date}} to check that it arrived. Change it if the supplier gave you a date."
     },
     "done": {
       "placedTitle": "Order placed with {{supplier}}",
       "placedBefore": "Order placed on {{date}}",
-      "deliveryText": "Delivery expected {{delivery}}. We'll remind you if it's late.",
-      "lateText_one": "It was due {{date}} and hasn't arrived. About {{count}} day of stock left.",
-      "lateText_other": "It was due {{date}} and hasn't arrived. About {{count}} days of stock left.",
       "backToOrders": "Back to order suggestions",
-      "backToToday": "Back to today's tasks"
+      "backToToday": "Back to today's tasks",
+      "checkOn": "We'll remind you on {{date}} to check that it arrived.",
+      "checkToday": "Check today that it arrived.",
+      "checkOverdue": "The check was due {{date}} and the delivery isn't confirmed yet.",
+      "checkOverdueStock_one": "It was due {{date}} and hasn't arrived. About {{count}} day of stock left.",
+      "checkOverdueStock_other": "It was due {{date}} and hasn't arrived. About {{count}} days of stock left.",
+      "receivedTitle": "Received from {{supplier}} · {{date}}",
+      "receivedAll": "Everything arrived as ordered.",
+      "receivedShort_one": "{{count}} product came short.",
+      "receivedShort_other": "{{count}} products came short.",
+      "receivedLines_one": "Ordered vs. received · {{count}} product",
+      "receivedLines_other": "Ordered vs. received · {{count}} products",
+      "colProduct": "Product",
+      "colOrdered": "Ordered",
+      "colReceived": "Received"
     },
     "notFound": {
       "title": "Order not found",
@@ -515,6 +558,18 @@
       "colSku": "SKU",
       "colProduct": "Product",
       "colQty": "Quantity"
+    },
+    "receive": {
+      "title": "Did everything from {{supplier}} arrive?",
+      "text": "Confirming the delivery keeps the next suggestions right.",
+      "all": "Yes, everything arrived",
+      "someShort": "Some items short",
+      "notYet": "Not yet, remind me tomorrow",
+      "shortText": "Change the quantities that came short.",
+      "ordered": "ordered {{qty}}",
+      "receivedOf": "Received: {{product}}",
+      "back": "Back",
+      "save": "Save delivery"
     }
   },
   "stores": {

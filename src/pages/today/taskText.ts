@@ -25,6 +25,9 @@ export function useTaskText() {
     let detail: string;
     if (task.doneNow) detail = t(`today.tasks.${task.doneNow}Now`);
     else if (task.done && task.doneAt) detail = t(`today.task.${task.kind}.doneDetail`, { ...vars, at: task.doneAt });
+    else if (task.kind === "checkDelivery")
+      // After 2 "not yet" answers, suggest calling; without a stock estimate, a shorter line
+      detail = t(`today.task.checkDelivery.${(task.snoozed ?? 0) >= 2 ? "detailCall" : "days" in task.params ? "detail" : "detailShort"}`, vars);
     else detail = t(`today.task.${task.kind}.detail`, vars);
     return { title, detail };
   };

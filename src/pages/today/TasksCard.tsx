@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Check, ChevronDown, ChevronUp, PartyPopper, Phone, Printer, Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useDemo } from "@/app/DemoContext";
 import { orderIdForTask, useTasks, type TaskState } from "@/app/useTasks";
+import { useTaskActions } from "@/app/useTaskActions";
+import { DEMO_NOW } from "@/data/world";
+import { callRef } from "@/pages/orders/shared";
+import { Pill } from "@/components/ui/Pill";
 import type { TaskTag } from "@/data/today";
 import type { Tone } from "@/data/types";
 import { Button } from "@/components/ui/Button";
@@ -24,12 +28,12 @@ const timeOf = (task: TaskState) => {
 
 export function TasksCard() {
   const { t } = useTranslation();
-  const { store, setTaskDone } = useDemo();
+  const { store, setTaskDone, setReceipt, snooze } = useDemo();
   const { tasks, doneCount, total, openCount } = useTasks(store.id);
   const text = useTaskText();
   const [showAll, setShowAll] = useState(false);
   const [showDone, setShowDone] = useState(false);
-  const [undo, setUndo] = useState<{ id: string; title: string }>();
+  const [undo, setUndo] = useState<{ message: string; run: () => void }>();
   const timer = useRef<number>(undefined);
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
@@ -38,11 +42,26 @@ export function TasksCard() {
   const done = tasks.filter((x) => x.done);
   const hiddenCount = Math.max(0, open.length - VISIBLE);
 
-  const complete = (task: TaskState, via?: "call") => {
-    setTaskDone(task.id, true, via);
-    setUndo({ id: task.id, title: text(task).title });
+  const showUndo = (message: string, run: () => void) => {
+    setUndo({ message, run });
     window.clearTimeout(timer.current);
     timer.current = window.setTimeout(() => setUndo(undefined), 6000);
+  };
+  const complete = (task: TaskState, via?: "call") => {
+    const title = text(task).title;
+    if (task.kind === "checkDelivery" && task.orderId) {
+      // Ticking "did it arrive?" = everything arrived
+      const id = task.orderId;
+      setReceipt(id, { on: DEMO_NOW, short: {} });
+      return showUndo(t("today.tasks.doneToast", { title }), () => setReceipt(id, null));
+    }
+    setTaskDone(task.id, true, via);
+    showUndo(t("today.tasks.doneToast", { title }), () => setTaskDone(task.id, false));
+  };
+  const notYet = (task: TaskState) => {
+    const id = task.orderId!;
+    snooze(id);
+    showUndo(t("today.tasks.remindToast"), () => snooze(id, true));
   };
 
   return (
@@ -67,7 +86,7 @@ export function TasksCard() {
 
       <ul>
         {open.map((task, i) => (
-          <TaskRow key={task.id} task={task} onDone={complete} hidden={!showAll && i >= VISIBLE} />
+          <TaskRow key={task.id} task={task} onDone={complete} onNotYet={notYet} hidden={!showAll && i >= VISIBLE} />
         ))}
       </ul>
 
@@ -75,12 +94,12 @@ export function TasksCard() {
         <div role="status" className="mx-5 mb-3 mt-1 flex items-center justify-between gap-3 rounded-ctl bg-ink px-3.5 py-2.5 text-[13px] text-white print:hidden">
           <span className="flex min-w-0 items-center gap-2">
             <Check className="size-4 shrink-0 text-[#7ee2a8]" strokeWidth={3} />
-            <span className="truncate">{t("today.tasks.doneToast", { title: undo.title })}</span>
+            <span className="truncate">{undo.message}</span>
           </span>
           <button
             className="inline-flex shrink-0 items-center gap-1 font-semibold text-[#c9bcff] hover:text-white"
             onClick={() => {
-              setTaskDone(undo.id, false);
+              undo.run();
               setUndo(undefined);
             }}
           >
@@ -123,11 +142,16 @@ export function TasksCard() {
   );
 }
 
-function TaskRow({ task, onDone, hidden }: { task: TaskState; onDone: (task: TaskState, via?: "call") => void; hidden: boolean }) {
+function TaskRow({ task, onDone, onNotYet, hidden }: { task: TaskState; onDone: (task: TaskState, via?: "call") => void; onNotYet: (task: TaskState) => void; hidden: boolean }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { store } = useDemo();
+  const actions = useTaskActions(store.id);
   const text = useTaskText()(task);
+  const check = task.action === "checkDelivery";
+  const call = check ? callRef(task.supplierId!, task.params.due as Date) : undefined;
+  const callDone = call && actions.find(call)?.done;
+  const suggestCall = check && ((task.checkOverdue ?? 0) > 0 || (task.snoozed ?? 0) >= 2);
 
   return (
     // Rows past the first 5 are hidden on screen but still printed
@@ -144,9 +168,33 @@ function TaskRow({ task, onDone, hidden }: { task: TaskState; onDone: (task: Tas
           {task.tag && <Tag tone={TAG_TONE[task.tag]}>{t(`today.tags.${task.tag}`)}</Tag>}
         </div>
         <div className="mt-0.5 text-[13px] text-muted">{text.detail}</div>
+        {check && (
+          <Link to={`/orders/${task.orderId}/done?receive=short`} className="mt-1 inline-block text-[13px] font-semibold text-primary hover:underline print:hidden">
+            {t("today.tasks.someShort")}
+          </Link>
+        )}
       </div>
 
-      <div className="ml-9 shrink-0 sm:ml-0 print:hidden">
+      <div className="ml-9 flex shrink-0 flex-wrap gap-2 sm:ml-0 sm:justify-end print:hidden">
+        {check && (
+          <>
+            {suggestCall &&
+              (callDone ? (
+                <Pill tone="good" className="self-center">
+                  {t("orders.list.callLogged")}
+                </Pill>
+              ) : (
+                <Button onClick={() => actions.complete(call!, true, "call")}>
+                  <Phone />
+                  {t("today.tasks.logCall")}
+                </Button>
+              ))}
+            <Button onClick={() => onNotYet(task)}>{t("orders.list.notYet")}</Button>
+            <Button variant="primary" onClick={() => onDone(task)}>
+              {t("orders.list.receivedBtn")}
+            </Button>
+          </>
+        )}
         {task.action === "review" && (
           <Button variant="primary" onClick={() => navigate(`/orders/${orderIdForTask(store.id, task) ?? ""}`)}>
             {t("today.tasks.review")}
@@ -167,13 +215,13 @@ function TaskRow({ task, onDone, hidden }: { task: TaskState; onDone: (task: Tas
 /** Compact row in the folded "done today" list; the tick can be undone. */
 function DoneRow({ task }: { task: TaskState }) {
   const { t } = useTranslation();
-  const { setTaskDone } = useDemo();
+  const { setTaskDone, setReceipt } = useDemo();
   const text = useTaskText()(task);
 
   return (
     <li className="flex items-center gap-3 border-b border-line px-5 py-2.5 last:border-0">
       <button
-        onClick={() => setTaskDone(task.id, false)}
+        onClick={() => (task.kind === "checkDelivery" && task.orderId ? setReceipt(task.orderId, null) : setTaskDone(task.id, false))}
         aria-label={t("today.tasks.undo")}
         title={t("today.tasks.undo")}
         className="grid size-[20px] shrink-0 place-items-center rounded-[6px] border-[1.5px] border-good bg-good text-white"

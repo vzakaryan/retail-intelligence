@@ -5,7 +5,10 @@ import { useTranslation } from "react-i18next";
 import type { LucideIcon } from "lucide-react";
 import type { Tone } from "@/data/types";
 import { useDemo } from "@/app/DemoContext";
-import { useOrder } from "@/app/useOrders";
+import { daysBetween, isPlaced, useOrder } from "@/app/useOrders";
+import { DEMO_NOW } from "@/data/world";
+import { Segmented } from "@/components/ui/Segmented";
+import { shortDate } from "./shared";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { IconTile } from "@/components/ui/IconTile";
@@ -25,9 +28,13 @@ export function OrderPlacePage() {
   const { store, markPlaced } = useDemo();
   const view = useOrder(store.id, orderId);
   const [copied, setCopied] = useState(false);
+  // "Check delivery on": filled in from the supplier's usual delivery day for this order
+  const usual = view ? Math.max(1, daysBetween(DEMO_NOW, view.order.delivery)) : 1;
+  const [checkIn, setCheckIn] = useState<"1" | "2" | "pick">(usual === 1 ? "1" : usual === 2 ? "2" : "pick");
+  const [picked, setPicked] = useState(() => toInput(addDays(DEMO_NOW, usual)));
 
   if (!view) return <OrderNotFound />;
-  if (view.stage === "placed") return <Navigate to={`/orders/${view.order.id}/done`} replace />;
+  if (isPlaced(view)) return <Navigate to={`/orders/${view.order.id}/done`} replace />;
   if (view.stage !== "ready") return <Navigate to={`/orders/${view.order.id}`} replace />;
 
   const copy = async () => {
@@ -39,8 +46,9 @@ export function OrderPlacePage() {
       setCopied(false);
     }
   };
+  const checkOn = checkIn === "pick" ? fromInput(picked) : addDays(DEMO_NOW, Number(checkIn));
   const place = () => {
-    markPlaced(view.order.id);
+    markPlaced(view.order.id, checkOn);
     navigate(`/orders/${view.order.id}/done`);
   };
 
@@ -89,6 +97,32 @@ export function OrderPlacePage() {
                 </li>
               ))}
             </ul>
+            <div className="mt-4 rounded-ctl border border-line bg-subtle px-3.5 py-3">
+              <div className="font-semibold">{t("orders.place.checkOn")}</div>
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                <Segmented
+                  label={t("orders.place.checkOn")}
+                  value={checkIn}
+                  onChange={setCheckIn}
+                  options={[
+                    { value: "1", label: t("orders.day.tomorrow") },
+                    { value: "2", label: t("orders.place.in2days") },
+                    { value: "pick", label: t("orders.place.pickDate") },
+                  ]}
+                />
+                {checkIn === "pick" && (
+                  <input
+                    type="date"
+                    value={picked}
+                    min={toInput(DEMO_NOW)}
+                    onChange={(e) => e.target.value && setPicked(e.target.value)}
+                    aria-label={t("orders.place.pickDate")}
+                    className="rounded-ctl border border-line bg-white px-2.5 py-1.5"
+                  />
+                )}
+              </div>
+              <p className="mt-2 text-xs text-muted">{t("orders.place.checkOnHint", { date: shortDate(checkOn) })}</p>
+            </div>
             <Button variant="primary" className="mt-4 w-full justify-center py-[11px] text-sm" onClick={place}>
               <Check />
               {t("orders.place.confirm", { supplier: pick(view.supplier.name) })}
@@ -100,6 +134,15 @@ export function OrderPlacePage() {
     </>
   );
 }
+
+const addDays = (x: Date, n: number) => new Date(x.getFullYear(), x.getMonth(), x.getDate() + n);
+const pad = (n: number) => String(n).padStart(2, "0");
+/** Date ↔ "2026-11-12" for the date input (local time) */
+const toInput = (x: Date) => `${x.getFullYear()}-${pad(x.getMonth() + 1)}-${pad(x.getDate())}`;
+const fromInput = (v: string) => {
+  const [y, m, d] = v.split("-").map(Number);
+  return new Date(y, m - 1, d);
+};
 
 function Option({ icon, tone, title, text, end: End, onClick }: { icon: LucideIcon; tone: Tone; title: string; text: string; end: LucideIcon; onClick: () => void }) {
   return (
