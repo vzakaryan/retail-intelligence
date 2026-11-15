@@ -196,7 +196,7 @@ tokens: colors, radii, type sizes) — reuse it when building the real app.
 | `04-order-why-suggestion.png` | "Why?" drawer | Store manager | Transparent math (expected sales + safety stock − in store − on the way), daily sales chart with stockout day, past suggestions vs outcome, Accept / change |
 | `05-order-place.png` | One order, step 2: Place the order | Store manager | Final order list; Download Excel / Copy as text / Print; "I've placed the order with <supplier>" + what happens next |
 | `06-all-stores-yerevan.png` | All stores · Yerevan | Head office | Chain KPIs incl. "suggestions acted on", schematic Yerevan district tile map, stores ranked by availability, insight "stores that act on suggestions do better" |
-| `07-stockout-risk.png` | Stockout risk | Store manager | KPIs (products at risk, OOS rate, lost sales, forecast accuracy), full-width "products that may run out" grouped Today / Tomorrow with one next step each, OOS-rate trend before vs. with the product, biggest misses last week |
+| `07-stockout-risk.png` | Stockout risk | Store manager | KPIs (OOS rate, lost sales, sales at risk today, recovered sales — changed in step 15), full-width "products that may run out" grouped Today / Tomorrow with one next step each, OOS-rate trend before vs. with the product, biggest misses last week |
 | `08-stockout-product-drawer.png` | Stockout product panel | Store manager | Why it may run out (plain sentence), on shelf / backroom / expected, what-if stock chart, manual steps (refill, call supplier, ask nearby store) → add to today's tasks |
 | `09-online-orders.png` | Online orders | Store manager | KPIs, full-width "prepare before picking" checklist, today's delivery slots with at-risk counts, often-missing products with fixes |
 | `10-online-orders-slot-drawer.png` | Delivery slot panel | Store manager | Orders at risk in a slot, which fix resolves them, substitute suggestion + "customer contacted" |
@@ -461,3 +461,11 @@ top nav was replaced by a sidebar).
     complete, suggestions acted on. No forecast accuracy. Math in
     `src/data/impact.ts`, derived from the Stockout / Expiry / Overstock trend charts,
     whose "before" weeks now follow each store's go-live (`trendWeeksBefore`).
+- **Step 15 (2026-11-15): UX pass — Stockout risk.** Key numbers changed (rest of the
+  page unchanged, approved by the user): Out-of-stock rate, Lost sales this week,
+  **Sales at risk today** (today's expected sales the shelf can't cover × product
+  value, with product count and the part fixable from the backroom; updates live
+  when a refill task is done) and **Recovered sales this week** (same method as
+  "Your results so far", `recoveredWeek` in `impact.ts`). Removed "products at risk"
+  and forecast accuracy (data fields dropped). The OOS change now comes from the same
+  number as My store today; store 03's trend tweaked so the chart agrees (−0.9 pp).

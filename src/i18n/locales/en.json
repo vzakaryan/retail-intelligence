@@ -578,14 +578,16 @@
       "7d": "Next 7 days"
     },
     "kpi": {
-      "atRisk": "Products at risk",
-      "atRiskInfo": "Products that may run out before their next delivery.",
       "oos": "Out-of-stock rate",
       "oosInfo": "Share of time products were missing from the shelf this week.",
       "lostSales": "Lost sales this week",
-      "accuracy": "Forecast accuracy",
-      "accuracyInfo": "How close our sales forecast was to what actually sold.",
-      "last4w": "last 4 weeks"
+      "atRiskToday": "Sales at risk today",
+      "atRiskTodayInfo": "Today's expected sales that the shelf can't cover if nothing is done, at product value. Refilling from the backroom fixes part of it.",
+      "atRiskTodaySub_one": "{{count}} product · {{amount}} can be fixed from the backroom",
+      "atRiskTodaySub_other": "{{count}} products · {{amount}} can be fixed from the backroom",
+      "atRiskTodayFoot": "if nothing is done today",
+      "recovered": "Recovered sales this week",
+      "recoveredInfo": "Sales saved because suggestions were acted on: refills done in time and suggested orders. Estimated from how much your out-of-stock rate fell compared with before you started."
     },
     "table": {
       "title": "Products that may run out",

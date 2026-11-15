@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Banknote, ChevronDown, ChevronRight, ChevronUp, CircleOff, PackageX, Target } from "lucide-react";
+import { ChevronDown, ChevronRight, ChevronUp, CircleOff, Clock, ShieldCheck, TrendingDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useDemo } from "@/app/DemoContext";
 import { useTaskActions } from "@/app/useTaskActions";
 import { getProduct } from "@/data/products";
-import { getStockouts, type Horizon, type RiskGroup, type StockRow } from "@/data/stockouts";
+import { recoveredWeek } from "@/data/impact";
+import { useRefilled } from "@/pages/today/useRefilled";
+import { getStockouts, shortToday, type Horizon, type RiskGroup, type StockRow } from "@/data/stockouts";
 import { getStoreDay } from "@/data/today";
 import { Card } from "@/components/ui/Card";
 import { KpiCard, deltaTone } from "@/components/ui/KpiCard";
@@ -28,6 +30,7 @@ export function StockoutsPage() {
   const { t } = useTranslation();
   const { store } = useDemo();
   const data = getStockouts(store.id);
+  const refilled = useRefilled(store.id);
   const day = getStoreDay(store.id).kpis.week;
   const [horizon, setHorizon] = useState<Horizon>("3d");
   const [expanded, setExpanded] = useState(false);
@@ -39,6 +42,24 @@ export function StockoutsPage() {
   const shownRows = expanded ? inHorizon : inHorizon.filter((r) => visibleGroups.includes(r.group));
   const groups = (["today", "tomorrow", "soon", "later"] as RiskGroup[]).filter((g) => shownRows.some((r) => r.group === g));
   const oos = 100 - day.availability.value;
+
+  // Sales at risk today: today's expected sales the shelf can't cover if nothing is done.
+  // A product refilled from the backroom on "My store today" no longer counts.
+  const risk = data.rows
+    .filter((r) => r.group === "today")
+    .reduce(
+      (acc, r) => {
+        const price = getProduct(r.productId).price;
+        const backroom = refilled.has(r.productId) ? 0 : r.backroom;
+        const short = Math.max(0, shortToday(r) - (r.backroom - backroom));
+        if (!short) return acc;
+        const fixable = Math.min(short, backroom);
+        return { value: acc.value + short * price, fixable: acc.fixable + fixable * price, count: acc.count + 1 };
+      },
+      { value: 0, fixable: 0, count: 0 }
+    );
+  const recovered = recoveredWeek(store.id);
+  const recoveredDelta = recovered.prev ? Math.round(((recovered.value - recovered.prev) / recovered.prev) * 1000) / 10 : 0;
 
   return (
     <>
@@ -61,11 +82,28 @@ export function StockoutsPage() {
         }
       />
 
-      <section className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <KpiCard icon={PackageX} iconTone="bad" label={t("stockouts.kpi.atRisk")} info={t("stockouts.kpi.atRiskInfo")} value={fmtNumber(inHorizon.length)} delta={{ text: `${data.atRiskDelta < 0 ? "↓" : "↑"} ${Math.abs(data.atRiskDelta)}`, tone: deltaTone(data.atRiskDelta, false) }} foot={t("today.vs.week")} />
-        <KpiCard icon={CircleOff} iconTone="warn" label={t("stockouts.kpi.oos")} info={t("stockouts.kpi.oosInfo")} value={fmtPercent(oos)} delta={{ text: fmtDeltaPp(data.oosDeltaPp), tone: deltaTone(data.oosDeltaPp, false) }} foot={t("today.vs.week")} />
-        <KpiCard icon={Banknote} iconTone="bad" label={t("stockouts.kpi.lostSales")} info={t("today.kpi.lostSalesInfo")} value={fmtAmd(day.lostSales.value)} delta={{ text: fmtDeltaPct(day.lostSales.delta), tone: deltaTone(day.lostSales.delta, false) }} foot={t("today.vs.week")} />
-        <KpiCard icon={Target} iconTone="primary" label={t("stockouts.kpi.accuracy")} info={t("stockouts.kpi.accuracyInfo")} value={fmtPercent(data.forecastAccuracy.value)} delta={{ text: fmtDeltaPp(data.forecastAccuracy.delta), tone: deltaTone(data.forecastAccuracy.delta, true) }} foot={t("stockouts.kpi.last4w")} />
+      <section className="mb-6 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+        <KpiCard icon={CircleOff} iconTone="bad" label={t("stockouts.kpi.oos")} info={t("stockouts.kpi.oosInfo")} value={fmtPercent(oos)} delta={{ text: fmtDeltaPp(-day.availability.delta), tone: deltaTone(-day.availability.delta, false) }} foot={t("today.vs.week")} />
+        <KpiCard icon={TrendingDown} iconTone="bad" label={t("stockouts.kpi.lostSales")} info={t("today.kpi.lostSalesInfo")} value={fmtAmd(day.lostSales.value)} delta={{ text: fmtDeltaPct(day.lostSales.delta), tone: deltaTone(day.lostSales.delta, false) }} foot={t("today.vs.week")} />
+        <KpiCard
+          icon={Clock}
+          iconTone="warn"
+          label={t("stockouts.kpi.atRiskToday")}
+          info={t("stockouts.kpi.atRiskTodayInfo")}
+          value={fmtAmd(risk.value, { thousands: true })}
+          sub={t("stockouts.kpi.atRiskTodaySub", { count: risk.count, amount: fmtAmd(risk.fixable, { thousands: true }) })}
+          foot={t("stockouts.kpi.atRiskTodayFoot")}
+        />
+        <KpiCard
+          icon={ShieldCheck}
+          iconTone="good"
+          label={t("stockouts.kpi.recovered")}
+          info={t("stockouts.kpi.recoveredInfo")}
+          value={fmtAmd(recovered.value)}
+          delta={{ text: fmtDeltaPct(recoveredDelta), tone: deltaTone(recoveredDelta, true) }}
+          foot={t("today.vs.week")}
+          to="/today"
+        />
       </section>
 
       <Card className="mb-6 overflow-hidden">

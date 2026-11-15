@@ -59,11 +59,11 @@ export interface Miss {
   lost: number;
 }
 
+/** Units of today's expected sales the shelf can't cover if nothing is done. */
+export const shortToday = (r: StockRow) => Math.max(0, r.expectedToday - r.onShelf);
+
 export interface StoreStockouts {
   rows: StockRow[];
-  forecastAccuracy: { value: number; delta: number };
-  atRiskDelta: number;
-  oosDeltaPp: number;
   misses: Miss[];
   missesTotal: number;
   /** Weekly out-of-stock rate, oldest first; the first `before` weeks are before the product */
@@ -190,9 +190,6 @@ const S03_ROWS: StockRow[] = [
 
 const S03: StoreStockouts = {
   rows: S03_ROWS,
-  forecastAccuracy: { value: 91.8, delta: 2.1 },
-  atRiskDelta: -3,
-  oosDeltaPp: -0.6,
   misses: [
     { productId: "eggs10", what: { key: "emptyHoursDays", params: { hours: 9, days: 2 } }, lost: 310_000 },
     { productId: "cola15", what: { key: "emptyHoursOn", params: { hours: 7, day: d(7) } }, lost: 140_000 },
@@ -202,7 +199,7 @@ const S03: StoreStockouts = {
   missesTotal: 1_550_000,
   trend: {
     weeks: Array.from({ length: 12 }, (_, i) => new Date(2026, 7, 17 + i * 7)),
-    values: [6.9, 6.6, 6.8, 6.7, 6.4, 6.1, 5.6, 5.2, 4.9, 5.1, 4.8, 4.2],
+    values: [6.9, 6.6, 6.8, 6.7, 6.4, 6.1, 5.6, 5.2, 4.9, 5.2, 5.1, 4.2],
     before: 4,
   },
 };
@@ -232,7 +229,6 @@ function derive(storeId: string): StoreStockouts {
       action: { ...r.action, params: r.action.params && fixStore(r.action.params) },
       steps: r.steps.map((st) => (st.kind === "add" ? { ...st, task: { ...st.task, params: fixStore(st.task.params) } } : st)),
     })),
-    forecastAccuracy: { value: Math.round((88 + ((n * 13) % 60) / 10) * 10) / 10, delta: Math.round((((n * 7) % 30) / 10) * 10) / 10 },
     misses: S03.misses.map((m) => ({ ...m, lost: Math.round((m.lost * scale) / 5000) * 5000 })),
     missesTotal: Math.round((S03.missesTotal * scale) / 10000) * 10000,
     trend: { ...S03.trend, values: S03.trend.values.map((v) => Math.round((v - last + oos) * 10) / 10), before: trendWeeksBefore(getStore(storeId).goLive) },

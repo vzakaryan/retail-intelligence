@@ -37,6 +37,21 @@ export function excessKpi(storeId: string, weeksBack: 1 | 4) {
   return { value: now, delta: Math.round(((now - then) / then) * 1000) / 10, days: data.daysOfStock.value, target: data.daysOfStock.target };
 }
 
+/**
+ * Recovered sales in one week (same method as the total in getImpact):
+ * drop in OOS rate vs. the "before" average × lost sales per OOS point.
+ * `value` = this week, `prev` = last week.
+ */
+export function recoveredWeek(storeId: string) {
+  const week = getStoreDay(storeId).kpis.week;
+  const oos = getStockouts(storeId).trend;
+  const oosBefore = avg(oos.values.slice(0, oos.before));
+  const lostPerPoint = week.lostSales.value / (100 - week.availability.value);
+  const at = (v: number) => round(Math.max(0, oosBefore - v) * lostPerPoint, 10_000);
+  const v = oos.values;
+  return { value: at(v[v.length - 1]), prev: at(v[v.length - 2]) };
+}
+
 export interface BeforeNow {
   before: number;
   now: number;

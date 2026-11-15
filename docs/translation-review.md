@@ -23,6 +23,7 @@ write your own wording, and the app will be updated everywhere the term appears.
 | 46 | Recovered sales | Վերականգնված վաճառք | New; meaning "sales not lost" | Փրկված վաճառք |
 | 47 | Write-offs avoided | Կանխված դուրսգրումներ | New | keep |
 | 48 | Estimated impact of using the product | Համակարգի կիրառման գնահատված օգուտը | New headline on "Your results so far" | Գնահատված արդյունքը համակարգի շնորհիվ |
+| 49 | Sales at risk today | Ռիսկի տակ գտնվող վաճառք այսօր | New (Stockout risk) | Վաճառքի ռիսկ այսօր |
 | 10 | Suggestions acted on | Կիրառված առաջարկներ | «Կիրառված» may sound technical | Կատարված առաջարկներ |
 | 12 | Out-of-stock rate | Բացակայության տոկոս | May need «դարակից» for clarity | Դարակից բացակայության տոկոս |
 | 13 | Forecast accuracy | Կանխատեսման ճշգրտություն | Probably fine | keep |
