@@ -99,7 +99,7 @@ const nov = (day: number) => new Date(2026, 10, day);
 // ---------------------------------------------------------------- Store 03
 
 const TASKS_S03: Omit<Task, "id">[] = [
-  { kind: "refill", productId: "milk32", params: { moved: 60, aisle: 3 }, action: "markDone", doneAt: "08:40" },
+  { kind: "refill", productId: "milk32", params: { onShelf: 6, backroom: 84, moved: 60, aisle: 3 }, action: "markDone", doneAt: "08:40" },
   { kind: "removeExpired", productId: "kefir", params: { units: 12 }, action: "markDone", doneAt: "08:55" },
   { kind: "refillOnline", productId: "eggs10", params: { time: "11:00", onShelf: 9, backroom: 40, orders: 9 }, tag: "online", action: "markDone" },
   { kind: "reviewOrder", supplierId: "dairyco", params: { deadline: "16:00", count: 14, delivery: nov(12) }, tag: "ordering", action: "review" },
@@ -166,11 +166,11 @@ const OPEN_TASK_POOL: Omit<Task, "id">[] = [
   TASKS_S03[3],
   TASKS_S03[4],
   TASKS_S03[5],
-  { kind: "refill", productId: "sourcream", params: { onShelf: 6, backroom: 14, aisle: 3 }, action: "markDone" },
+  { kind: "refill", productId: "sourcream", params: { onShelf: 6, backroom: 14, moved: 14, aisle: 3 }, action: "markDone" },
   { kind: "reviewOrder", supplierId: "freshbake", params: { deadline: "20:00", count: 6, delivery: nov(11) }, tag: "ordering", action: "review" },
   TASKS_S03[7],
   { kind: "markdown", productId: "kefir", params: { units: 18, date: nov(11), cut: 25 }, tag: "expiry", action: "markDone" },
-  { kind: "refill", productId: "cola15", params: { onShelf: 8, backroom: 24, aisle: 7 }, action: "markDone" },
+  { kind: "refill", productId: "cola15", params: { onShelf: 8, backroom: 24, moved: 24, aisle: 7 }, action: "markDone" },
 ];
 
 function deriveDay(storeId: string): StoreDay {
