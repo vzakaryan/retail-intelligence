@@ -492,3 +492,19 @@ top nav was replaced by a sidebar).
   - **Later ideas (agreed, not built):** quality check on receiving (expiry, cold chain,
     damage); per-supplier usual delivery time in Settings; receiving by staff other
     than the manager; feeding received deliveries into Suppliers → recent deliveries.
+- **Step 17 (2026-11-15): UX pass — Online orders.** "Often missing" is what the client
+  cares about most, so the page now leads with it.
+  - Key numbers: **Orders with missing items** (5.9%, "7 of 119 · 94.1% delivered
+    complete" — reverse of My store today's "complete"), **Lost online sales** (week,
+    items missing), **Orders at risk today** ("6 of 38", live), **Online sales this week**.
+  - **Often missing** moved to the top, full width: missing in orders (4 weeks), lost
+    online sales, why, suggested fix, Add to tasks; sorted by lost sales.
+  - **Prepare before picking** is synced: today's prep items are tasks on My store today
+    (`useTasks` adds them with `newTaskId`, linked ones like the eggs refill aren't
+    repeated); tomorrow's items keep "Add to tasks". The Today / Tomorrow switch now
+    lives on this card only.
+  - Delivery slots + slot panel + "customer contacted" removed (cola order #4830 is
+    now fixed by the cola set-aside task; substitute stays as a hint). Replaced by
+    **Why items go missing** (causes, share, lost sales, links to Stockout risk /
+    Suppliers / Order suggestions / Expiry) and a **before vs with the product trend**
+    of % orders with missing items (`StoreOnline.reasons`, `.trend`).

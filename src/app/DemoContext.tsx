@@ -41,9 +41,6 @@ interface DemoState {
   addedTasks: Record<string, AddedTask>;
   addTask: (id: string, storeId: string, task: NewTask) => void;
 
-  /** Online orders whose customer was contacted about a substitute */
-  contactedOrders: Record<string, true>;
-  toggleContacted: (orderKey: string) => void;
 
   /** Suppliers for which order suggestions keep 1 extra day of safety stock */
   extraSafety: Record<string, true>;
@@ -77,7 +74,6 @@ export function DemoProvider({ children }: { children: ReactNode }) {
   const [receipts, setReceipts] = useState<Record<string, Receipt>>({});
   const [snoozes, setSnoozes] = useState<Record<string, Snooze>>({});
   const [addedTasks, setAdded] = useState<Record<string, AddedTask>>({});
-  const [contactedOrders, setContacted] = useState<Record<string, true>>({});
   const [extraSafety, setExtraSafety] = useState<Record<string, true>>({});
 
   const setTaskDone = useCallback((taskId: string, done: boolean, via: TaskOverride["via"] = "done") => {
@@ -130,14 +126,6 @@ export function DemoProvider({ children }: { children: ReactNode }) {
       return next;
     });
   }, []);
-  const toggleContacted = useCallback((orderKey: string) => {
-    setContacted((prev) => {
-      const next = { ...prev };
-      if (next[orderKey]) delete next[orderKey];
-      else next[orderKey] = true;
-      return next;
-    });
-  }, []);
 
   const value = useMemo(
     () => ({
@@ -156,12 +144,10 @@ export function DemoProvider({ children }: { children: ReactNode }) {
       snooze,
       addedTasks,
       addTask,
-      contactedOrders,
-      toggleContacted,
       extraSafety,
       toggleExtraSafety,
     }),
-    [extraSafety, toggleExtraSafety, storeId, taskOverrides, setTaskDone, lineReviews, setLineReview, setLineReviews, placedOrders, markPlaced, receipts, setReceipt, snoozes, snooze, addedTasks, addTask, contactedOrders, toggleContacted]
+    [extraSafety, toggleExtraSafety, storeId, taskOverrides, setTaskDone, lineReviews, setLineReview, setLineReviews, placedOrders, markPlaced, receipts, setReceipt, snoozes, snooze, addedTasks, addTask]
   );
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>;
 }

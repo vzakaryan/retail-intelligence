@@ -1,5 +1,7 @@
 import { useMemo } from "react";
+import { getOnline } from "@/data/online";
 import { getOrders } from "@/data/orders";
+import { newTaskId } from "@/data/stockouts";
 import { getStoreDay, type Task } from "@/data/today";
 import { useDemo, type TaskOverride } from "./DemoContext";
 import { useOrders } from "./useOrders";
@@ -41,8 +43,16 @@ export function useTasks(storeId: string) {
       .filter((o) => !planned.some((t) => t.kind === "checkDelivery" && t.supplierId === o.order.supplierId))
       .map((o) => ({ id: `${o.order.id}-check`, kind: "checkDelivery", supplierId: o.order.supplierId, params: { due: o.checkOn! }, tag: "supplier", action: "checkDelivery" }));
 
+    // Today's "prepare before picking" items from Online orders are tasks too (one list).
+    // Items that point to a task already on the list (e.g. the eggs refill) aren't repeated.
+    const prep: Task[] = getOnline(storeId)
+      .days.today.prep.filter((p) => !p.linkedTask || !planned.some((t) => t.kind === p.linkedTask!.kind && t.productId === p.linkedTask!.productId))
+      .map((p) => ({ id: newTaskId(storeId, p.task), ...p.task, action: "markDone" as const, doneAt: p.doneAt }));
+    const seen = new Set<string>();
+    const all = [...planned, ...checks, ...prep, ...added].filter((t) => (seen.has(t.id) ? false : (seen.add(t.id), true)));
+
     const tasks: TaskState[] = [];
-    for (const t of [...planned, ...checks, ...added]) {
+    for (const t of all) {
       if (t.kind === "checkDelivery") {
         const o = orders.find((x) => x.order.supplierId === t.supplierId && x.stage !== "notStarted" && x.stage !== "inReview" && x.stage !== "ready");
         if (!o) continue;

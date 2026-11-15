@@ -262,7 +262,7 @@
     },
     "online": {
       "title": "Online orders today",
-      "subtitleKpis": "Open for delivery slots and what to prepare",
+      "subtitleKpis": "Open for what to prepare and what's often missing",
       "orders": "Orders today",
       "slots_one": "{{count}} delivery slot",
       "slots_other": "{{count}} delivery slots",
@@ -755,30 +755,27 @@
     "subtitle": "Make sure online orders can be picked complete",
     "dayLabel": "Day",
     "kpi": {
-      "orders": {
-        "today": "Orders today",
-        "tomorrow": "Orders tomorrow"
-      },
-      "vsLastWeek": {
-        "today": "vs. last Tuesday",
-        "tomorrow": "vs. last Wednesday"
-      },
-      "atRisk": "May be incomplete",
-      "atRiskInfo": "Orders with items the shelf may not have at picking time.",
-      "ordersUnit_one": "order",
-      "ordersUnit_other": "orders",
-      "atRiskFoot": "items may be missing at picking time",
+      "atRiskInfo": "Today's orders with items the shelf may not have at picking time. Goes down as you prepare.",
       "allReady": "all orders can be picked complete",
-      "complete": "Complete this week",
-      "missing": "Missing items last week",
-      "missingFoot": "vs. the week before"
+      "missingOrders": "Orders with missing items",
+      "missingOrdersInfo": "Online orders this week delivered without every item the customer ordered.",
+      "missingOrdersSub_one": "{{count}} of {{total}} orders · {{complete}} delivered complete",
+      "missingOrdersSub_other": "{{count}} of {{total}} orders · {{complete}} delivered complete",
+      "lost": "Lost online sales",
+      "lostInfo": "Value of items customers ordered online but didn't get this week.",
+      "lostSub_one": "{{count}} item missing",
+      "lostSub_other": "{{count}} items missing",
+      "atRiskToday": "Orders at risk today",
+      "ofOrders": "{{count}} of {{total}}",
+      "atRiskSub": "fix before picking at {{time}}",
+      "sales": "Online sales this week",
+      "salesInfo": "Net sales from online orders this week."
     },
     "prep": {
       "title": {
         "today": "Prepare before picking starts at {{time}}",
         "tomorrow": "Prepare for tomorrow's picking at {{time}}"
       },
-      "subtitle": "Products online orders need that the shelf may not have",
       "col": {
         "product": "Product",
         "needs": "Online needs",
@@ -802,54 +799,21 @@
         "nextDelivery": "next delivery {{time}}",
         "agriLate": "{{supplier}} delivery is late, none left for tomorrow",
         "afterDelivery": "{{supplier}} delivers at {{time}}, just before picking"
-      }
-    },
-    "slots": {
-      "title": {
-        "today": "Today's delivery slots",
-        "tomorrow": "Tomorrow's delivery slots"
       },
-      "subtitle": "Click a slot to see the orders at risk",
-      "orders_one": "{{count}} order",
-      "orders_other": "{{count}} orders",
-      "atRisk": "{{count}} at risk",
-      "legendRisk": "May be incomplete"
-    },
-    "slot": {
-      "title": "Delivery {{from}} – {{to}}",
-      "meta_one": "{{count}} order · picking starts {{time}}",
-      "meta_other": "{{count}} orders · picking starts {{time}}",
-      "mayBeIncomplete": "{{count}} may be incomplete",
-      "ready": "Ready",
-      "addFixes_one": "Add {{count}} fix to today's tasks",
-      "addFixes_other": "Add {{count}} fixes to today's tasks",
-      "fixesAdded": "Fixes are on today's tasks",
-      "bestFix": "{{product}}: {{action}} — fixes {{count}} of the {{total}} orders at risk",
-      "substituteHint": "Order {{id}} needs {{product}}, which runs out before picking. Offer {{sub}} instead.",
-      "allReady": "All orders in this slot can now be picked complete.",
-      "order": "Order {{id}}",
-      "items_one": "{{count}} item",
-      "items_other": "{{count}} items",
-      "contacted": "Customer contacted",
-      "markContacted": "Mark customer contacted",
-      "substituteAgreed": "Customer contacted",
-      "fixed": "Fixed",
-      "fixWith": "Fix: {{action}}",
-      "notEnough": "Not enough in store",
-      "suggestion": "Suggestion: offer {{sub}} instead",
-      "others_one": "{{count}} other order in this slot is ready to pick.",
-      "others_other": "{{count}} other orders in this slot are ready to pick."
+      "subtitleSync": {
+        "today": "Products today's online orders need that the shelf may not have · these are also on My store today",
+        "tomorrow": "Add the ones you want to tomorrow's tasks"
+      }
     },
     "often": {
       "title": "Often missing from online orders",
-      "subtitle": "Last 4 weeks · fixing these few products prevents most incomplete orders",
       "col": {
         "product": "Product",
-        "reason": "Usual reason",
-        "suggestion": "Suggestion"
+        "reason": "Why it's missing",
+        "suggestion": "Suggested fix",
+        "orders": "Missing in orders",
+        "lost": "Lost online sales"
       },
-      "missingIn_one": "missing in {{count}} order",
-      "missingIn_other": "missing in {{count}} orders",
       "reason": {
         "shelfEmpty": "Shelf empty before picking",
         "lateDelivery": "Delivery arrives after picking",
@@ -864,7 +828,28 @@
       },
       "inOrderSuggestions": "In order suggestions",
       "added": "Added to tasks",
-      "add": "Add to tasks"
+      "add": "Add to tasks",
+      "subtitleLost": "Last 4 weeks · these {{count}} products account for {{total}} of the {{all}} lost online sales · fixing them prevents most incomplete orders",
+      "ordersUnit_one": "order",
+      "ordersUnit_other": "orders"
+    },
+    "reasons": {
+      "title": "Why items go missing",
+      "subtitle": "Last 4 weeks · {{total}} of online sales lost",
+      "shelfEmpty": "Shelf empty at picking time",
+      "lateDelivery": "Late supplier delivery",
+      "outOfStock": "Out of stock in the whole store",
+      "damaged": "Damaged or expired when picked",
+      "link": {
+        "shelfEmpty": "Fix on Stockout risk",
+        "lateDelivery": "See Suppliers",
+        "outOfStock": "See Order suggestions",
+        "damaged": "See Expiry & write-offs"
+      }
+    },
+    "trend": {
+      "title": "Orders with missing items, by week",
+      "subtitle": "% of online orders · grey = before you started"
     }
   },
   "overstock": {
