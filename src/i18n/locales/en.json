@@ -109,22 +109,35 @@
       "4w": "vs. prior 4 weeks"
     },
     "kpi": {
-      "availability": "Shelf availability",
-      "availabilityInfo": "How often products were on the shelf when shoppers looked for them.",
-      "online": "Online orders complete",
-      "onlineInfo": "Online orders delivered with every item the customer ordered.",
-      "onlineFoot": "{{done}} of {{total}} orders",
       "lostSales": "Lost sales (est.)",
       "lostSalesInfo": "Sales we estimate were missed because products were not on the shelf.",
       "writeOffs": "Write-offs",
-      "writeOffsInfo": "Value of products thrown away: expired, spoiled or damaged."
+      "writeOffsInfo": "Value of products thrown away: expired, spoiled or damaged.",
+      "group": {
+        "sales": "Sales",
+        "stock": "Stock"
+      },
+      "netSales": "Net sales",
+      "netSalesInfo": "Sales after discounts and returns, without VAT.",
+      "basket": "Average basket",
+      "basketInfo": "Net sales ÷ number of receipts.",
+      "receipts": "Receipts",
+      "receiptsInfo": "Number of purchases (till receipts), in store and online.",
+      "onlineShare": "Online share of sales",
+      "onlineShareInfo": "Part of net sales that came from online orders.",
+      "onlineShareSub": "{{amount}} online",
+      "oosRate": "Out-of-stock rate",
+      "oosRateInfo": "Share of the time products were missing from the shelf.",
+      "excess": "Excess inventory",
+      "excessInfo": "Value of stock above what is needed until the next delivery, plus safety stock.",
+      "excessSub": "{{days}} days of stock · target {{target}}",
+      "availabilityInfo": "How often products were on the shelf when shoppers looked for them.",
+      "onlineInfo": "Online orders delivered with every item the customer ordered.",
+      "onlineFoot": "{{done}} of {{total}} orders"
     },
     "tasks": {
       "title": "Today's tasks",
-      "subtitle": "Suggested from today's forecast · you decide what to do",
       "progress": "{{done}} of {{total}} done",
-      "showMore_one": "Show {{count}} more task",
-      "showMore_other": "Show {{count}} more tasks",
       "showLess": "Show fewer tasks",
       "print": "Print today's list",
       "markDone": "Mark done",
@@ -134,7 +147,14 @@
       "allDone": "All done for today. Nice work!",
       "doneNow": "Done just now",
       "callNow": "Call logged just now",
-      "orderNow": "Order placed just now"
+      "orderNow": "Order placed just now",
+      "subtitleOpen_one": "{{count}} open task · suggested from today's forecast, you decide",
+      "subtitleOpen_other": "{{count}} open tasks · suggested from today's forecast, you decide",
+      "showAll": "Show all {{count}} open tasks",
+      "doneToday_one": "{{count}} done today",
+      "doneToday_other": "{{count}} done today",
+      "doneToast": "Done: {{title}}",
+      "undoShort": "Undo"
     },
     "tags": {
       "online": "Online orders",
@@ -232,22 +252,33 @@
     },
     "online": {
       "title": "Online orders today",
-      "subtitle": "{{orders}} orders · {{atRisk}} include items that may be missing",
-      "meta": "in {{orders}} orders · {{onShelf}} on shelf",
-      "level": {
-        "refill": "Refill",
-        "low": "Low",
-        "refilled": "Refilled"
-      },
-      "open": "Open online orders"
+      "subtitleKpis": "Open for delivery slots and what to prepare",
+      "orders": "Orders today",
+      "slots_one": "{{count}} delivery slot",
+      "slots_other": "{{count}} delivery slots",
+      "atRisk": "May have missing items",
+      "atRiskNote": "fix before picking at {{time}}",
+      "allReady": "all can be picked in full",
+      "complete": "Complete in full",
+      "sales": "Online sales"
     },
     "results": {
       "title": "Your results so far",
-      "subtitle": "Last 8 weeks vs. the 8 weeks before",
-      "availability": "Shelf availability",
-      "lostSales": "Lost sales",
-      "writeOffs": "Write-offs",
-      "actedOn": "Suggestions acted on"
+      "lostSales": "Lost sales / week",
+      "writeOffs": "Write-offs / week",
+      "actedOn": "Suggestions acted on",
+      "since_one": "Since you started on {{date}} ({{count}} week)",
+      "since_other": "Since you started on {{date}} ({{count}} weeks)",
+      "impact": "Estimated impact of using the product",
+      "impactInfo": "Recovered sales plus write-offs avoided since you started. Lost sales go down as the out-of-stock rate goes down: each week we count the drop compared with your average before. Less excess stock frees up money but is not counted here.",
+      "recovered": "Recovered sales",
+      "avoided": "Write-offs avoided",
+      "before": "Before",
+      "now": "This week",
+      "oosRate": "Out-of-stock rate",
+      "excess": "Excess inventory",
+      "onlineComplete": "Online orders complete",
+      "note": "Before = weekly average before you started. Estimates based on your store's sales."
     },
     "atRisk": {
       "title": "Products that may run out today",
@@ -272,6 +303,10 @@
         "askEarlier": "consider asking earlier",
         "done": "Refilled from backroom"
       }
+    },
+    "vsAgo": {
+      "week": "vs. a week ago",
+      "4w": "vs. 4 weeks ago"
     }
   },
   "common": {

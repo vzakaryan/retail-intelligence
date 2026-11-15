@@ -439,3 +439,25 @@ top nav was replaced by a sidebar).
 - **Step 13e (2026-11-10):** Third round of Armenian corrections (15 items) applied
   everywhere, incl. «հազ.» for thousands and «նոյեմբերի 10» dates. Review list
   split into "Still open" and "Decided".
+- **Step 14 (2026-11-15): UX pass — My store today** (agreed with the user point by point,
+  then built). Working mode from now on: go page by page; agree the changes, then ask
+  before building and again before commit/deploy.
+  - **Key numbers:** two labelled rows of 4. Sales: Net sales, Average basket,
+    Receipts, Online share of sales. Stock: Out-of-stock rate, Estimated lost sales,
+    Excess inventory (+ days of stock vs target), Write-offs. Change vs previous
+    period only (user rejected sparklines). Stock cards link to their module page.
+    Sales totals live in `DayKpis.sales {now, prev}` (`src/data/today.ts`).
+    `KpiCard` (all pages): dark semibold title, optional `sub` line and `to` link;
+    2 per row with no icon on phones.
+  - **Tasks:** open tasks only, sorted by time, 5 visible + "Show all"; Mark done
+    removes the row with an Undo bar; done tasks folded into "N done today".
+  - **Online orders today:** 4 numbers (orders + slots, may have missing items
+    (live), complete in full, online sales); whole card opens Online orders.
+  - **Your results so far** (name kept): headline **Estimated impact of using the
+    product** = recovered sales + write-offs avoided, counted **since the store's
+    go-live** (`Store.goLive` in `world.ts`, Komitas Ave = Sep 14; others Aug 24 –
+    Oct 12). Before → this week rows: OOS rate, lost sales/week, write-offs/week,
+    excess inventory (not added to the total: freed cash, not profit), online
+    complete, suggestions acted on. No forecast accuracy. Math in
+    `src/data/impact.ts`, derived from the Stockout / Expiry / Overstock trend charts,
+    whose "before" weeks now follow each store's go-live (`trendWeeksBefore`).

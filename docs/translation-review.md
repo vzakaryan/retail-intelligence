@@ -16,6 +16,13 @@ write your own wording, and the app will be updated everywhere the term appears.
 | 7 | Markdown (price cut) | Զեղչել / զեղչ | Fine for shoppers; internally some say «գնի իջեցում» | Գնի իջեցում |
 | 8 | Promotion | Ակցիա | Common in Armenian retail | keep |
 | 9 | Write-off | Դուրսգրում | Accounting term; check store staff use it | keep |
+| 42 | Net sales | Զուտ վաճառք | New (My store today, Nov 15) | Զուտ հասույթ |
+| 43 | Average basket | Միջին չեկ | Retail usage; «միջին զամբյուղ» is the literal form | Միջին զամբյուղ |
+| 44 | Receipts (number of purchases) | Չեկերի քանակ | New | Գնումների քանակ |
+| 45 | Online share of sales | Առցանց վաճառքի մասնաբաժին | New | keep |
+| 46 | Recovered sales | Վերականգնված վաճառք | New; meaning "sales not lost" | Փրկված վաճառք |
+| 47 | Write-offs avoided | Կանխված դուրսգրումներ | New | keep |
+| 48 | Estimated impact of using the product | Համակարգի կիրառման գնահատված օգուտը | New headline on "Your results so far" | Գնահատված արդյունքը համակարգի շնորհիվ |
 | 10 | Suggestions acted on | Կիրառված առաջարկներ | «Կիրառված» may sound technical | Կատարված առաջարկներ |
 | 12 | Out-of-stock rate | Բացակայության տոկոս | May need «դարակից» for clarity | Դարակից բացակայության տոկոս |
 | 13 | Forecast accuracy | Կանխատեսման ճշգրտություն | Probably fine | keep |

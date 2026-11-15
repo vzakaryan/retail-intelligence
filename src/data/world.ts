@@ -9,6 +9,20 @@ import type { District, Persona, Store, Supplier } from "./types";
 export const DEMO_NOW = new Date(2026, 10, 10, 11, 0);
 export const DATA_REFRESHED_AT = "06:00";
 
+/** First week (Monday) of the 12-week trend charts (Stockout risk, Overstock, Expiry). */
+export const TREND_START = new Date(2026, 7, 17);
+const WEEK_MS = 7 * 24 * 3600 * 1000;
+
+/** Full weeks a store has used the product, up to "today". */
+export function weeksSinceGoLive(goLive: Date): number {
+  return Math.floor((DEMO_NOW.getTime() - goLive.getTime()) / WEEK_MS);
+}
+
+/** How many of the 12 trend-chart weeks were before the store's go-live. */
+export function trendWeeksBefore(goLive: Date): number {
+  return Math.round((goLive.getTime() - TREND_START.getTime()) / WEEK_MS);
+}
+
 export const DISTRICTS: District[] = [
   { id: "davtashen", name: { en: "Davtashen", hy: "Դավթաշեն" }, grid: { col: 1, row: 1 } },
   { id: "arabkir", name: { en: "Arabkir", hy: "Արաբկիր" }, grid: { col: 2, row: 1 } },
@@ -30,7 +44,8 @@ const store = (
   districtId: string,
   manager: [en: string, hy: string],
   kpis: [availability: number, online: number, lostSalesM: number, actedOn: number],
-  today: [openTasks: number, ordersDueToday: number]
+  today: [openTasks: number, ordersDueToday: number],
+  goLive: [month: number, day: number]
 ): Store => ({
   id: `s${String(n).padStart(2, "0")}`,
   number: String(n).padStart(2, "0"),
@@ -44,21 +59,22 @@ const store = (
     suggestionsActedOn: kpis[3],
   },
   today: { openTasks: today[0], ordersDueToday: today[1] },
+  goLive: new Date(2026, goLive[0] - 1, goLive[1]),
 });
 
 export const STORES: Store[] = [
-  store(1, ["Mashtots Ave", "Մաշտոցի պողոտա"], "kentron", ["Narine H.", "Նարինե Հ."], [97.9, 97.2, 3.1, 93], [3, 1]),
-  store(2, ["Tumanyan St", "Թումանյան փողոց"], "kentron", ["Tigran A.", "Տիգրան Ա."], [97.3, 96.9, 3.3, 89], [4, 2]),
-  store(3, ["Komitas Ave", "Կոմիտասի պողոտա"], "arabkir", ["Anna M.", "Աննա Մ."], [95.8, 94.1, 5.6, 86], [5, 2]),
-  store(4, ["Baghramyan Ave", "Բաղրամյան պողոտա"], "arabkir", ["Lilit S.", "Լիլիթ Ս."], [97.0, 96.4, 3.0, 90], [3, 1]),
-  store(5, ["Gai Ave", "Գայի պողոտա"], "nor-nork", ["Armen K.", "Արմեն Կ."], [96.3, 95.6, 3.6, 84], [4, 2]),
-  store(6, ["Vilnius St", "Վիլնյուսի փողոց"], "nor-nork", ["Mariam G.", "Մարիամ Գ."], [95.5, 95.0, 4.1, 80], [6, 2]),
-  store(7, ["Raffi St", "Րաֆֆու փողոց"], "malatia-sebastia", ["Hayk P.", "Հայկ Պ."], [96.8, 96.1, 3.2, 88], [3, 1]),
-  store(8, ["Bagratunyats Ave", "Բագրատունյաց պողոտա"], "shengavit", ["Ani V.", "Անի Վ."], [94.9, 94.2, 4.8, 72], [7, 2]),
-  store(9, ["Erebuni St", "Էրեբունու փողոց"], "erebuni", ["Gor T.", "Գոռ Թ."], [93.6, 92.8, 6.2, 54], [9, 3]),
-  store(10, ["Tevosyan St", "Թևոսյան փողոց"], "davtashen", ["Sona B.", "Սոնա Բ."], [97.1, 96.5, 2.9, 91], [2, 1]),
-  store(11, ["Khudyakov St", "Խուդյակովի փողոց"], "avan", ["Karen D.", "Կարեն Դ."], [94.4, 93.9, 5.1, 61], [8, 2]),
-  store(12, ["Halabyan St", "Հալաբյան փողոց"], "ajapnyak", ["Elen R.", "Էլեն Ռ."], [95.2, 94.6, 4.4, 77], [6, 2]),
+  store(1, ["Mashtots Ave", "Մաշտոցի պողոտա"], "kentron", ["Narine H.", "Նարինե Հ."], [97.9, 97.2, 3.1, 93], [3, 1], [8, 31]),
+  store(2, ["Tumanyan St", "Թումանյան փողոց"], "kentron", ["Tigran A.", "Տիգրան Ա."], [97.3, 96.9, 3.3, 89], [4, 2], [9, 7]),
+  store(3, ["Komitas Ave", "Կոմիտասի պողոտա"], "arabkir", ["Anna M.", "Աննա Մ."], [95.8, 94.1, 5.6, 86], [5, 2], [9, 14]),
+  store(4, ["Baghramyan Ave", "Բաղրամյան պողոտա"], "arabkir", ["Lilit S.", "Լիլիթ Ս."], [97.0, 96.4, 3.0, 90], [3, 1], [8, 31]),
+  store(5, ["Gai Ave", "Գայի պողոտա"], "nor-nork", ["Armen K.", "Արմեն Կ."], [96.3, 95.6, 3.6, 84], [4, 2], [9, 21]),
+  store(6, ["Vilnius St", "Վիլնյուսի փողոց"], "nor-nork", ["Mariam G.", "Մարիամ Գ."], [95.5, 95.0, 4.1, 80], [6, 2], [9, 28]),
+  store(7, ["Raffi St", "Րաֆֆու փողոց"], "malatia-sebastia", ["Hayk P.", "Հայկ Պ."], [96.8, 96.1, 3.2, 88], [3, 1], [9, 7]),
+  store(8, ["Bagratunyats Ave", "Բագրատունյաց պողոտա"], "shengavit", ["Ani V.", "Անի Վ."], [94.9, 94.2, 4.8, 72], [7, 2], [10, 5]),
+  store(9, ["Erebuni St", "Էրեբունու փողոց"], "erebuni", ["Gor T.", "Գոռ Թ."], [93.6, 92.8, 6.2, 54], [9, 3], [10, 12]),
+  store(10, ["Tevosyan St", "Թևոսյան փողոց"], "davtashen", ["Sona B.", "Սոնա Բ."], [97.1, 96.5, 2.9, 91], [2, 1], [8, 24]),
+  store(11, ["Khudyakov St", "Խուդյակովի փողոց"], "avan", ["Karen D.", "Կարեն Դ."], [94.4, 93.9, 5.1, 61], [8, 2], [10, 12]),
+  store(12, ["Halabyan St", "Հալաբյան փողոց"], "ajapnyak", ["Elen R.", "Էլեն Ռ."], [95.2, 94.6, 4.4, 77], [6, 2], [9, 28]),
 ];
 
 export const SUPPLIERS: Supplier[] = [

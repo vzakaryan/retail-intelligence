@@ -43,13 +43,13 @@ export function TodayPage() {
         }
       />
 
-      <TodayKpis kpis={day.kpis[period]} period={period} />
+      <TodayKpis storeId={store.id} kpis={day.kpis[period]} period={period} />
 
-      <section className="mb-6 grid grid-cols-1 gap-4 xl:grid-cols-[2fr_1fr]">
+      <section className="mb-6 grid grid-cols-1 items-start gap-4 xl:grid-cols-[2fr_1fr]">
         <TasksCard />
         <div className="flex flex-col gap-4">
-          <OnlineOrdersCard online={day.online} refilled={refilled} />
-          <ResultsCard results={day.results} />
+          <OnlineOrdersCard storeId={store.id} kpis={day.kpis[period]} period={period} />
+          <ResultsCard storeId={store.id} />
         </div>
       </section>
 

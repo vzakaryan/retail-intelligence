@@ -38,6 +38,8 @@ export interface Store {
   kpis: StoreKpis;
   /** Counts shown in navigation badges for "today". */
   today: { openTasks: number; ordersDueToday: number };
+  /** Monday the store started using the product ("Your results so far" counts from here). */
+  goLive: Date;
 }
 
 export type Tone = "good" | "bad" | "warn" | "info" | "primary" | "neutral";

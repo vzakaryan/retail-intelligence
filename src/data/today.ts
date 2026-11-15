@@ -15,7 +15,17 @@ export interface Kpi {
   delta: number;
 }
 
+/** Till totals for a period (net = after discounts and returns, excl. VAT). */
+export interface SalesTotals {
+  netSales: number;
+  receipts: number;
+  /** Part of net sales that came from online orders */
+  onlineSales: number;
+}
+
 export interface DayKpis {
+  /** This period and the period before, so every sales KPI and its change come from the same numbers */
+  sales: { now: SalesTotals; prev: SalesTotals };
   availability: Kpi;
   onlineComplete: Kpi & { done: number; total: number };
   lostSales: Kpi;
@@ -60,13 +70,6 @@ export interface Task {
   extra?: boolean;
 }
 
-export interface OnlineItem {
-  productId: string;
-  inOrders: number;
-  onShelf: number;
-  level: "refill" | "low";
-}
-
 export type RiskAction =
   | { kind: "refill"; taskAdded: boolean }
   | { kind: "noneInBackroom"; supplierId: string }
@@ -85,8 +88,9 @@ export interface RiskRow {
 export interface StoreDay {
   kpis: Record<Period, DayKpis>;
   tasks: Task[];
-  online: { orders: number; atRisk: number; items: OnlineItem[] };
-  results: { availabilityPp: number; lostSalesPct: number; writeOffsPct: number; actedOnPct: number };
+  online: { orders: number };
+  /** Online orders completed in full (%) in the weeks before the store started using the product */
+  results: { onlineCompleteBefore: number };
   atRisk: { total: number; rows: RiskRow[] };
 }
 
@@ -108,12 +112,20 @@ const TASKS_S03: Omit<Task, "id">[] = [
 const S03: StoreDay = {
   kpis: {
     week: {
+      sales: {
+        now: { netSales: 89_650_000, receipts: 13_900, onlineSales: 2_140_000 },
+        prev: { netSales: 86_950_000, receipts: 13_740, onlineSales: 2_000_000 },
+      },
       availability: { value: 95.8, delta: 0.9 },
       onlineComplete: { value: 94.1, delta: 1.6, done: 112, total: 119 },
       lostSales: { value: 1_420_000, delta: -8.5 },
       writeOffs: { value: 610_000, delta: 4.2 },
     },
     "4w": {
+      sales: {
+        now: { netSales: 349_600_000, receipts: 54_800, onlineSales: 8_520_000 },
+        prev: { netSales: 341_400_000, receipts: 54_360, onlineSales: 8_050_000 },
+      },
       availability: { value: 95.8, delta: 1.1 },
       onlineComplete: { value: 94.1, delta: 1.2, done: 451, total: 479 },
       lostSales: { value: 5_600_000, delta: -12.4 },
@@ -121,16 +133,8 @@ const S03: StoreDay = {
     },
   },
   tasks: TASKS_S03.map((t, i) => ({ ...t, id: `s03-t${i + 1}` })),
-  online: {
-    orders: 38,
-    atRisk: 6,
-    items: [
-      { productId: "eggs10", inOrders: 9, onShelf: 9, level: "refill" },
-      { productId: "cola15", inOrders: 4, onShelf: 6, level: "low" },
-      { productId: "sourcream", inOrders: 3, onShelf: 7, level: "low" },
-    ],
-  },
-  results: { availabilityPp: 2.4, lostSalesPct: -18, writeOffsPct: -11, actedOnPct: 86 },
+  online: { orders: 38 },
+  results: { onlineCompleteBefore: 91.2 },
   atRisk: {
     total: 11,
     rows: [
@@ -175,7 +179,22 @@ function deriveDay(storeId: string): StoreDay {
   const k = store.kpis;
   const total = Math.round(r(90, 140, 0));
   const weekLost = Math.round((k.lostSales4w / 4) * r(0.9, 1.1, 2));
-  const weekWriteOffs = Math.round(r(400_000, 800_000, 0) / 10_000) * 10_000;
+  // Same size factor as the derived Expiry / Overstock data, so the numbers match those pages
+  const scale = 0.75 + ((Number(storeId.slice(1)) * 37) % 50) / 100;
+  const weekWriteOffs = Math.round((610_000 * scale) / 10_000) * 10_000;
+  // Weekly till totals; 4 weeks ≈ 3.9 × this week (this week is a little busier)
+  const onlineShare = r(1.8, 3.2);
+  const baseNet = 89_650_000 * scale * r(0.9, 1.1, 2);
+  const baseBasket = 6_450 * r(0.9, 1.1, 2);
+  const salesWeek = (k: number): DayKpis["sales"] => {
+    const net = Math.round((baseNet * k) / 10_000) * 10_000;
+    const receipts = Math.round(net / baseBasket);
+    const online = Math.round((net * (onlineShare / 100)) / 10_000) * 10_000;
+    const netPrev = Math.round(net / (1 + r(-2, 5) / 100) / 10_000) * 10_000;
+    const receiptsPrev = Math.round(receipts / (1 + r(-2, 3) / 100));
+    const onlinePrev = Math.round(online / (1 + r(-3, 10) / 100) / 10_000) * 10_000;
+    return { now: { netSales: net, receipts, onlineSales: online }, prev: { netSales: netPrev, receipts: receiptsPrev, onlineSales: onlinePrev } };
+  };
 
   const open = OPEN_TASK_POOL.slice(0, store.today.openTasks).map((t) => ({ ...t, extra: false }));
   const done = [TASKS_S03[0], TASKS_S03[1]];
@@ -184,12 +203,14 @@ function deriveDay(storeId: string): StoreDay {
   return {
     kpis: {
       week: {
+        sales: salesWeek(1),
         availability: { value: k.availability, delta: r(-0.6, 1.4) },
         onlineComplete: { value: k.onlineFulfillment, delta: r(-0.8, 2), done: Math.round((total * k.onlineFulfillment) / 100), total },
         lostSales: { value: weekLost, delta: r(-15, 8) },
         writeOffs: { value: weekWriteOffs, delta: r(-10, 8) },
       },
       "4w": {
+        sales: salesWeek(3.9),
         availability: { value: k.availability, delta: r(-0.5, 1.8) },
         onlineComplete: { value: k.onlineFulfillment, delta: r(-0.5, 2), done: Math.round((total * 4 * k.onlineFulfillment) / 100), total: total * 4 },
         lostSales: { value: k.lostSales4w, delta: r(-20, 5) },
@@ -197,17 +218,8 @@ function deriveDay(storeId: string): StoreDay {
       },
     },
     tasks,
-    online: {
-      orders: Math.round(r(25, 45, 0)),
-      atRisk: Math.round(r(3, 8, 0)),
-      items: S03.online.items.map((it) => ({ ...it, inOrders: Math.round(r(2, 10, 0)), onShelf: Math.round(r(4, 12, 0)) })),
-    },
-    results: {
-      availabilityPp: r(0.5, 3),
-      lostSalesPct: Math.round(r(-22, -5, 0)),
-      writeOffsPct: Math.round(r(-15, -3, 0)),
-      actedOnPct: k.suggestionsActedOn,
-    },
+    online: { orders: Math.round(r(25, 45, 0)) },
+    results: { onlineCompleteBefore: Math.round((k.onlineFulfillment - r(1, 4)) * 10) / 10 },
     atRisk: {
       total: Math.round(r(6, 15, 0)),
       rows: S03.atRisk.rows.map((row) => ({

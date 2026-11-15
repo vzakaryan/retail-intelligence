@@ -1,5 +1,5 @@
 import { getStoreDay, type TaskKind, type TaskParam, type TaskTag } from "./today";
-import { getStore } from "./world";
+import { getStore, trendWeeksBefore } from "./world";
 
 /**
  * Stockout risk per store — docs/design-references/approved/07–08.
@@ -235,7 +235,7 @@ function derive(storeId: string): StoreStockouts {
     forecastAccuracy: { value: Math.round((88 + ((n * 13) % 60) / 10) * 10) / 10, delta: Math.round((((n * 7) % 30) / 10) * 10) / 10 },
     misses: S03.misses.map((m) => ({ ...m, lost: Math.round((m.lost * scale) / 5000) * 5000 })),
     missesTotal: Math.round((S03.missesTotal * scale) / 10000) * 10000,
-    trend: { ...S03.trend, values: S03.trend.values.map((v) => Math.round((v - last + oos) * 10) / 10) },
+    trend: { ...S03.trend, values: S03.trend.values.map((v) => Math.round((v - last + oos) * 10) / 10), before: trendWeeksBefore(getStore(storeId).goLive) },
   };
 }
 

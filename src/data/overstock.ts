@@ -1,3 +1,4 @@
+import { getStore, trendWeeksBefore } from "./world";
 import { getProduct, type Product } from "./products";
 import { helperStoreId, type StockStep } from "./stockouts";
 import type { TaskParam } from "./today";
@@ -157,7 +158,7 @@ function derive(storeId: string): StoreOverstock {
       steps: r.steps.map((s) => (s.kind === "add" ? { ...s, task: { ...s.task, params: fix(s.task.params)! } } : s)),
     })),
     daysOfStock: { ...S03.daysOfStock, value: Math.round(S03.daysOfStock.value * (0.85 + scale * 0.2) * 10) / 10 },
-    trend: { ...S03.trend, values: S03.trend.values.map((v) => Math.round(v * scale)) },
+    trend: { ...S03.trend, values: S03.trend.values.map((v) => Math.round(v * scale)), before: trendWeeksBefore(getStore(storeId).goLive) },
   };
 }
 
