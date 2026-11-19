@@ -28,13 +28,14 @@ export function excessNow(storeId: string): number {
   return getOverstock(storeId).rows.reduce((s, r) => s + extraValue(r), 0);
 }
 
-/** Excess stock now, change vs. 1 or 4 weeks ago (%), and days of stock vs. target. */
+/** Excess stock now, change vs. 1 or 4 weeks ago (%), and its share of all stock (%). */
 export function excessKpi(storeId: string, weeksBack: 1 | 4) {
   const data = getOverstock(storeId);
   const now = excessNow(storeId);
   const v = data.trend.values;
   const then = v[v.length - 1 - weeksBack] * (now / v[v.length - 1]);
-  return { value: now, delta: Math.round(((now - then) / then) * 1000) / 10, days: data.daysOfStock.value, target: data.daysOfStock.target };
+  const stock = Object.values(data.stockValue).reduce((a, b) => a + b, 0);
+  return { value: now, delta: Math.round(((now - then) / then) * 1000) / 10, share: Math.round((now / stock) * 1000) / 10 };
 }
 
 /**
@@ -71,6 +72,8 @@ export interface StoreImpact {
   /** AMD, stock above target */
   excess: BeforeNow;
   onlineComplete: BeforeNow;
+  /** AMD per week */
+  netSales: BeforeNow;
   actedOnPct: number;
 }
 
@@ -113,6 +116,7 @@ export function getImpact(storeId: string): StoreImpact {
     writeOffs: { before: round(woBefore, 10_000), now: week.writeOffs.value },
     excess: { before: round(exBefore, 10_000), now: exNow },
     onlineComplete: { before: getStoreDay(storeId).results.onlineCompleteBefore, now: week.onlineComplete.value },
+    netSales: { before: getStoreDay(storeId).results.netSalesBefore, now: week.sales.now.netSales },
     actedOnPct: store.kpis.suggestionsActedOn,
   };
   cache.set(storeId, impact);

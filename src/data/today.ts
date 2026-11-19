@@ -91,8 +91,8 @@ export interface StoreDay {
   kpis: Record<Period, DayKpis>;
   tasks: Task[];
   online: { orders: number };
-  /** Online orders completed in full (%) in the weeks before the store started using the product */
-  results: { onlineCompleteBefore: number };
+  /** Before the store started using the product: online orders completed in full (%) and weekly net sales (AMD) */
+  results: { onlineCompleteBefore: number; netSalesBefore: number };
   atRisk: { total: number; rows: RiskRow[] };
 }
 
@@ -136,7 +136,7 @@ const S03: StoreDay = {
   },
   tasks: TASKS_S03.map((t, i) => ({ ...t, id: `s03-t${i + 1}` })),
   online: { orders: 38 },
-  results: { onlineCompleteBefore: 91.2 },
+  results: { onlineCompleteBefore: 91.2, netSalesBefore: 86_200_000 },
   atRisk: {
     total: 11,
     rows: [
@@ -221,7 +221,11 @@ function deriveDay(storeId: string): StoreDay {
     },
     tasks,
     online: { orders: Math.round(r(25, 45, 0)) },
-    results: { onlineCompleteBefore: Math.round((k.onlineFulfillment - r(1, 4)) * 10) / 10 },
+    results: {
+      onlineCompleteBefore: Math.round((k.onlineFulfillment - r(1, 4)) * 10) / 10,
+      // Weekly net sales before go-live: 2–6% below this week
+      netSalesBefore: Math.round(salesWeek(1).now.netSales / (1 + (2 + ((Number(storeId.slice(1)) * 13) % 5)) / 100) / 100_000) * 100_000,
+    },
     atRisk: {
       total: Math.round(r(6, 15, 0)),
       rows: S03.atRisk.rows.map((row) => ({

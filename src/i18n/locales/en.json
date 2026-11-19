@@ -130,7 +130,7 @@
       "oosRateInfo": "Share of the time products were missing from the shelf.",
       "excess": "Excess inventory",
       "excessInfo": "Value of stock above what is needed until the next delivery, plus safety stock.",
-      "excessSub": "{{days}} days of stock · target {{target}}",
+      "excessSub": "{{share}} of all stock",
       "availabilityInfo": "How often products were on the shelf when shoppers looked for them.",
       "onlineInfo": "Online orders delivered with every item the customer ordered.",
       "onlineFoot": "{{done}} of {{total}} orders"
@@ -862,21 +862,23 @@
       "dry": "Dry goods",
       "beverages": "Beverages",
       "bakery": "Bakery",
-      "eggs": "Eggs"
+      "eggs": "Eggs",
+      "allCount": "All categories ({{count}})",
+      "withCount": "{{name}} ({{count}})"
     },
     "days_one": "{{count}} day",
     "days_other": "{{count}} days",
     "kpi": {
       "extra": "Extra stock value",
       "extraInfo": "Value of stock above what your store needs until the next delivery plus a safety margin.",
-      "days": "Days of stock",
-      "daysInfo": "How many days your current stock would last at normal sales.",
-      "daysUnit": "days",
-      "target": "target {{count}} days",
-      "count": "Products overstocked",
       "expiring": "Expiring extra stock",
       "expiringInfo": "Extra stock that expires within 7 days.",
-      "seeExpiry": "within 7 days · see Expiry"
+      "seeExpiry": "within 7 days · see Expiry",
+      "share": "Share of stock that's extra",
+      "shareInfo": "Extra stock value as a part of all the stock in your store (or in the selected category).",
+      "shareSub": "{{extra}} of {{stock}} in stock",
+      "cleared": "Extra stock cleared this week",
+      "clearedInfo": "Value of extra stock you cleared this week by moving it to another store, a promotion or ordering less. Grows as you complete the steps in a product's panel."
     },
     "table": {
       "title": "Products with too much stock",
@@ -922,12 +924,22 @@
       "delivered": "Delivered"
     },
     "cats": {
-      "title": "Days of stock by category",
-      "subtitle": "Black line = target for your store"
+      "title": "Extra stock by category",
+      "subtitle": "Value of extra stock · click a category to see its products",
+      "showAll": "Show all",
+      "products_one": "{{count}} product",
+      "products_other": "{{count}} products"
     },
     "trend": {
       "title": "Extra stock value over time",
       "subtitle": "AMD millions, by week"
+    },
+    "same": {
+      "title": "Less stock, same sales",
+      "subtitle": "Whole store · before you started vs. this week",
+      "extra": "Extra stock",
+      "oos": "Out-of-stock rate",
+      "sales": "Weekly net sales"
     }
   },
   "expiry": {

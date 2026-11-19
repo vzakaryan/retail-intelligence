@@ -72,7 +72,7 @@ export function TodayKpis({ storeId, kpis, period }: { storeId: string; kpis: Da
           label={t("today.kpi.excess")}
           info={t("today.kpi.excessInfo")}
           value={fmtAmd(excess.value)}
-          sub={t("today.kpi.excessSub", { days: fmtNumber(excess.days, 1), target: fmtNumber(excess.target) })}
+          sub={t("today.kpi.excessSub", { share: fmtPercent(excess.share) })}
           delta={{ text: fmtDeltaPct(excess.delta), tone: deltaTone(excess.delta, false) }}
           foot={t(`today.vsAgo.${period}`)}
           to="/overstock"

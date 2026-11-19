@@ -1,47 +1,82 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { Boxes, CalendarClock, CalendarRange, ChevronDown, ChevronRight, ChevronUp, PackagePlus } from "lucide-react";
+import { Boxes, CalendarClock, ChevronDown, ChevronRight, ChevronUp, PackageCheck, PieChart } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useDemo } from "@/app/DemoContext";
+import { getImpact } from "@/data/impact";
 import { daysOfStock, extraValue, getOverstock, type OverRow } from "@/data/overstock";
 import { getProduct, type Product } from "@/data/products";
 import { BeforeAfterChart } from "@/components/ui/BeforeAfterChart";
 import { Card } from "@/components/ui/Card";
-import { HBar } from "@/components/ui/HBar";
 import { KpiCard, deltaTone } from "@/components/ui/KpiCard";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Pill } from "@/components/ui/Pill";
 import { ProductThumb } from "@/components/ui/ProductThumb";
-import { Segmented } from "@/components/ui/Segmented";
-import { fmtAmd, fmtDeltaPct, fmtNumber } from "@/lib/format";
+import { fmtAmd, fmtDeltaPct, fmtDeltaPp, fmtNumber, fmtPercent, fmtPp, fmtSignedPct } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
 import { useParamText } from "@/pages/stockouts/shared";
 import { OverstockDrawer, overTone } from "./OverstockDrawer";
 import { useStepStatus } from "./useStepStatus";
 import { supplierName } from "@/lib/names";
 
-type Filter = "all" | "dairy" | "frozen" | "dry";
+type Category = Product["category"];
+type Filter = "all" | Category;
 const VISIBLE = 6;
 const th = "whitespace-nowrap border-b border-line bg-subtle px-4 py-2.5 text-left text-xs font-semibold text-muted first:pl-5 last:pr-5";
 const td = "border-b border-line px-4 py-3 align-middle first:pl-5 last:pr-5";
-const CAT_COLOR = (days: number, target: number) => (days / target >= 1.8 ? "#d63b3b" : days > target ? "#e09b2d" : "#138a4b");
 
-/** docs/design-references/approved/11-overstock.png */
+/** Value of extra stock a row's steps clear once they're done (moved units, or all of it). */
+function clearedValue(row: OverRow): number {
+  const p = getProduct(row.productId);
+  const moved = row.steps.find((s) => s.kind === "add" && typeof s.task.params.qty === "number");
+  const qty = moved && moved.kind === "add" ? Number(moved.task.params.qty) : row.extraUnits;
+  return Math.min(row.extraUnits, qty) * p.price;
+}
+
+/** docs/design-references/approved/11-overstock.png, reworked in step 18 */
 export function OverstockPage() {
   const { t } = useTranslation();
   const { store } = useDemo();
+  const status = useStepStatus();
   const data = getOverstock(store.id);
   const [filter, setFilter] = useState<Filter>("all");
   const [expanded, setExpanded] = useState(false);
   const [open, setOpen] = useState<string>();
 
+  const cat = (r: OverRow) => getProduct(r.productId).category;
   const sorted = [...data.rows].sort((a, b) => extraValue(b) - extraValue(a));
-  const filtered = sorted.filter((r) => filter === "all" || getProduct(r.productId).category === filter);
+  const filtered = sorted.filter((r) => filter === "all" || cat(r) === filter);
   const shown = expanded ? filtered : filtered.slice(0, VISIBLE);
-  const total = data.rows.reduce((s, r) => s + extraValue(r), 0);
-  const expiring = data.rows.filter((r) => r.expiringSoon).reduce((s, r) => s + extraValue(r), 0);
-  const trend = [...data.trend.values.slice(0, -1), total];
-  const catMax = Math.max(...data.categories.map((c) => Math.max(c.days, c.target))) * 1.15;
+  const sum = (rows: OverRow[]) => rows.reduce((s, r) => s + extraValue(r), 0);
+
+  // Categories that have extra stock, largest first
+  const cats = (Object.keys(data.stockValue) as Category[])
+    .map((key) => ({ key, rows: sorted.filter((r) => cat(r) === key) }))
+    .filter((c) => c.rows.length)
+    .map((c) => ({ ...c, extra: sum(c.rows) }))
+    .sort((a, b) => b.extra - a.extra);
+
+  const total = sum(data.rows);
+  const extra = sum(filtered);
+  const part = total ? extra / total : 0;
+  const expiring = sum(filtered.filter((r) => r.expiringSoon));
+  // Week-on-week change: the store's extra stock trend, applied to the selection
+  const v = data.trend.values;
+  const prevExtra = extra * (v[v.length - 2] / v[v.length - 1]);
+  const stock = filter === "all" ? Object.values(data.stockValue).reduce((a, b) => a + b, 0) : data.stockValue[filter];
+  const share = (extra / stock) * 100;
+  const shareDelta = Math.round((share - (prevExtra / stock) * 100) * 10) / 10;
+  // Cleared this week: before the demo + rows with a step completed during it (live)
+  const clearedLive = filtered.filter((r) => status(r.steps).anyDone).reduce((s, r) => s + clearedValue(r), 0);
+  const cleared = Math.round(data.cleared.week * part) + clearedLive;
+  const clearedLast = Math.round(data.cleared.lastWeek * part);
+  const clearedDelta = clearedLast ? Math.round(((cleared - clearedLast) / clearedLast) * 1000) / 10 : 0;
+  const trend = [...v.slice(0, -1), total];
+
+  const pickFilter = (f: Filter) => {
+    setFilter(f);
+    setExpanded(false);
+  };
 
   return (
     <>
@@ -49,40 +84,51 @@ export function OverstockPage() {
         title={t("pages.overstock.title")}
         subtitle={t("overstock.subtitle")}
         actions={
-          <Segmented
-            label={t("overstock.filter")}
-            value={filter}
-            onChange={(f) => {
-              setFilter(f);
-              setExpanded(false);
-            }}
-            options={(["all", "dairy", "frozen", "dry"] as Filter[]).map((f) => ({ value: f, label: t(`overstock.cat.${f}`) }))}
-          />
+          <label className="flex items-center gap-2 text-[13px] font-semibold text-ink-2">
+            {t("overstock.filter")}
+            <select
+              value={filter}
+              onChange={(e) => pickFilter(e.target.value as Filter)}
+              className="rounded-ctl border border-line bg-white py-2 pl-3 pr-8 text-[13px] font-semibold text-ink hover:border-primary/40"
+            >
+              <option value="all">{t("overstock.cat.allCount", { count: data.rows.length })}</option>
+              {cats.map((c) => (
+                <option key={c.key} value={c.key}>
+                  {t("overstock.cat.withCount", { name: t(`overstock.cat.${c.key}`), count: c.rows.length })}
+                </option>
+              ))}
+            </select>
+          </label>
         }
       />
 
-      <section className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <KpiCard icon={Boxes} iconTone="warn" label={t("overstock.kpi.extra")} info={t("overstock.kpi.extraInfo")} value={fmtAmd(total)} delta={{ text: fmtDeltaPct(data.extraDeltaPct, 0), tone: deltaTone(data.extraDeltaPct, false) }} foot={t("today.vs.week")} />
+      <section className="mb-6 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+        <KpiCard icon={Boxes} iconTone="warn" label={t("overstock.kpi.extra")} info={t("overstock.kpi.extraInfo")} value={fmtAmd(extra)} delta={{ text: fmtDeltaPct(data.extraDeltaPct, 0), tone: deltaTone(data.extraDeltaPct, false) }} foot={t("today.vs.week")} />
         <KpiCard
-          icon={CalendarRange}
+          icon={PieChart}
           iconTone="info"
-          label={t("overstock.kpi.days")}
-          info={t("overstock.kpi.daysInfo")}
-          value={
-            <>
-              {fmtNumber(data.daysOfStock.value, 1)} <small className="ml-0.5 text-base font-semibold text-ink-2">{t("overstock.kpi.daysUnit")}</small>
-            </>
-          }
-          delta={{ text: `${data.daysOfStock.delta < 0 ? "↓" : "↑"} ${fmtNumber(Math.abs(data.daysOfStock.delta), 1)}`, tone: deltaTone(data.daysOfStock.delta, false) }}
-          foot={t("overstock.kpi.target", { count: data.daysOfStock.target })}
+          label={t("overstock.kpi.share")}
+          info={t("overstock.kpi.shareInfo")}
+          value={fmtPercent(share)}
+          sub={t("overstock.kpi.shareSub", { extra: fmtAmd(extra), stock: fmtAmd(stock) })}
+          delta={{ text: fmtDeltaPp(shareDelta), tone: deltaTone(shareDelta, false) }}
+          foot={t("today.vs.week")}
         />
-        <KpiCard icon={PackagePlus} iconTone="primary" label={t("overstock.kpi.count")} value={fmtNumber(data.rows.length)} delta={{ text: `${data.countDelta < 0 ? "↓" : "↑"} ${Math.abs(data.countDelta)}`, tone: deltaTone(data.countDelta, false) }} foot={t("today.vs.week")} />
+        <KpiCard
+          icon={PackageCheck}
+          iconTone="good"
+          label={t("overstock.kpi.cleared")}
+          info={t("overstock.kpi.clearedInfo")}
+          value={fmtAmd(cleared, { thousands: true })}
+          delta={{ text: fmtDeltaPct(clearedDelta), tone: deltaTone(clearedDelta, true) }}
+          foot={t("today.vs.week")}
+        />
         <KpiCard
           icon={CalendarClock}
           iconTone="bad"
           label={t("overstock.kpi.expiring")}
           info={t("overstock.kpi.expiringInfo")}
-          value={fmtAmd(expiring)}
+          value={fmtAmd(expiring, { thousands: true })}
           foot={
             <Link to="/write-offs" className="font-semibold text-primary hover:underline">
               {t("overstock.kpi.seeExpiry")}
@@ -131,21 +177,96 @@ export function OverstockPage() {
 
       <section className="grid grid-cols-1 items-start gap-4 xl:grid-cols-[1fr_1.3fr]">
         <Card>
-          <div className="px-5 pt-[18px]">
-            <div className="text-base font-semibold">{t("overstock.cats.title")}</div>
-            <div className="mt-0.5 text-[13px] text-muted">{t("overstock.cats.subtitle")}</div>
+          <div className="flex items-start justify-between gap-3 px-5 pt-[18px]">
+            <div>
+              <div className="text-base font-semibold">{t("overstock.cats.title")}</div>
+              <div className="mt-0.5 text-[13px] text-muted">{t("overstock.cats.subtitle")}</div>
+            </div>
+            {filter !== "all" && (
+              <button className="shrink-0 text-[13px] font-semibold text-primary hover:underline" onClick={() => pickFilter("all")}>
+                {t("overstock.cats.showAll")}
+              </button>
+            )}
           </div>
-          <div className="px-5 pb-4 pt-2">
-            {data.categories.map((c) => (
-              <HBar key={c.key} label={t(`overstock.cat.${c.key as Product["category"]}`)} value={c.days} max={catMax} target={c.target} color={CAT_COLOR(c.days, c.target)} right={t("overstock.days", { count: c.days })} />
-            ))}
-          </div>
+          <ul className="px-3 pb-3 pt-2">
+            {cats.map((c) => {
+              const on = filter === c.key;
+              const dim = filter !== "all" && !on;
+              return (
+                <li key={c.key}>
+                  <button
+                    onClick={() => pickFilter(on ? "all" : c.key)}
+                    aria-pressed={on}
+                    className={`grid w-full grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1.5 rounded-lg px-2 py-2.5 text-left transition-colors ${on ? "bg-primary-50" : "hover:bg-subtle"} ${dim ? "opacity-50" : ""}`}
+                  >
+                    <span className="font-medium">{t(`overstock.cat.${c.key}`)}</span>
+                    <span className="whitespace-nowrap text-right font-semibold tabular-nums">
+                      {fmtAmd(c.extra, { thousands: true })} <span className="font-normal text-muted">· {t("overstock.cats.products", { count: c.rows.length })}</span>
+                    </span>
+                    <span className="col-span-2 h-2.5 rounded-full bg-[#eeeef4]">
+                      <span className="block h-full rounded-full bg-[#e09b2d]" style={{ width: `${(c.extra / cats[0].extra) * 100}%` }} />
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
         </Card>
-        <BeforeAfterChart title={t("overstock.trend.title")} subtitle={t("overstock.trend.subtitle")} values={trend} before={data.trend.before} firstWeek={new Date(2026, 7, 17)} format={(v) => fmtNumber(v / 1e6, 2)} />
+        <BeforeAfterChart
+          title={t("overstock.trend.title")}
+          subtitle={t("overstock.trend.subtitle")}
+          values={trend}
+          before={data.trend.before}
+          firstWeek={new Date(2026, 7, 17)}
+          format={(v) => fmtNumber(v / 1e6, 2)}
+          footer={<SameSales storeId={store.id} />}
+        />
       </section>
 
       <OverstockDrawer row={data.rows.find((r) => r.productId === open)} onClose={() => setOpen(undefined)} />
     </>
+  );
+}
+
+/** "Less stock, same sales": extra stock went down while availability and sales held up (whole store). */
+function SameSales({ storeId }: { storeId: string }) {
+  const { t } = useTranslation();
+  const im = getImpact(storeId);
+  const pct = (b: number, n: number) => Math.round(((n - b) / b) * 100);
+  const rows: { label: string; before: string; now: string; change: string; good: boolean }[] = [
+    { label: t("overstock.same.extra"), before: fmtAmd(im.excess.before), now: fmtAmd(im.excess.now), change: fmtSignedPct(pct(im.excess.before, im.excess.now)), good: im.excess.now <= im.excess.before },
+    { label: t("overstock.same.oos"), before: fmtPercent(im.oosRate.before), now: fmtPercent(im.oosRate.now), change: fmtPp(im.oosRate.now - im.oosRate.before), good: im.oosRate.now <= im.oosRate.before },
+    { label: t("overstock.same.sales"), before: fmtAmd(im.netSales.before), now: fmtAmd(im.netSales.now), change: fmtSignedPct(pct(im.netSales.before, im.netSales.now)), good: im.netSales.now >= im.netSales.before },
+  ];
+  return (
+    <div className="border-t border-line px-5 pb-4 pt-3.5">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+        <div className="font-semibold">{t("overstock.same.title")}</div>
+        <div className="text-xs text-muted">{t("overstock.same.subtitle")}</div>
+      </div>
+      <table className="mt-2 w-full text-[13px]">
+        <thead>
+          <tr className="text-xs text-muted">
+            <th className="py-1 text-left font-medium" />
+            <th className="px-2 py-1 text-right font-medium">{t("today.results.before")}</th>
+            <th className="px-2 py-1 text-right font-medium">{t("today.results.now")}</th>
+            <th className="py-1 text-right font-medium" />
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.label} className="border-t border-line">
+              <td className="py-2 font-medium">{r.label}</td>
+              <td className="whitespace-nowrap px-2 py-2 text-right tabular-nums text-muted">{r.before}</td>
+              <td className="whitespace-nowrap px-2 py-2 text-right font-semibold tabular-nums">{r.now}</td>
+              <td className="py-2 text-right">
+                <Pill tone={r.good ? "good" : "bad"}>{r.change}</Pill>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

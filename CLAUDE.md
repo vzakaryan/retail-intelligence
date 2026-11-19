@@ -508,3 +508,22 @@ top nav was replaced by a sidebar).
     **Why items go missing** (causes, share, lost sales, links to Stockout risk /
     Suppliers / Order suggestions / Expiry) and a **before vs with the product trend**
     of % orders with missing items (`StoreOnline.reasons`, `.trend`).
+- **Step 18 (2026-11-19): UX pass — Overstock.**
+  - Category tabs → **dropdown** ("All categories (10)", only categories with extra
+    stock, with counts). It filters the key numbers, table and category chart; the
+    trend stays store-wide.
+  - Key numbers: Extra stock value · **Share of stock that's extra** (9.0% = AMD 0.41M of
+    AMD 4.6M; `StoreOverstock.stockValue` per category) · **Extra stock cleared this
+    week** (AMD 45K before the demo + live: rows with a completed step add the moved
+    units' value, or all extra) · Expiring extra stock. Removed days of stock and
+    products overstocked (`daysOfStock`, `countDelta`, `categories` dropped).
+  - "Days of stock by category" → **Extra stock by category** (AMD + product count,
+    largest first; clicking a bar sets the dropdown). Per-product days vs target stay
+    in the table and the product panel.
+  - My store today's Excess inventory card now shows "9.0% of all stock" instead of
+    days of stock.
+  - **"Less stock, same sales"** strip under the extra-stock trend (user's idea): whole
+    store, before you started vs this week — extra stock (−33%), out-of-stock rate
+    (−2.6 pp), weekly net sales (+4%). Proves less stock didn't cost sales. Uses
+    `getImpact` (+ new `results.netSalesBefore` in `today.ts`); `BeforeAfterChart` got a
+    `footer` slot.

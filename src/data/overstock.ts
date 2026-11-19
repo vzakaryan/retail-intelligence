@@ -30,10 +30,11 @@ export interface OverRow {
 
 export interface StoreOverstock {
   rows: OverRow[];
-  daysOfStock: { value: number; delta: number; target: number };
   extraDeltaPct: number;
-  countDelta: number;
-  categories: { key: Product["category"]; days: number; target: number }[];
+  /** Value of all stock in the store per category, AMD (for "share of stock that's extra") */
+  stockValue: Record<Product["category"], number>;
+  /** Extra stock cleared this week before the demo starts (moved, promoted, ordered less), AMD; and last week */
+  cleared: { week: number; lastWeek: number };
   /** Weekly extra stock value in AMD, oldest first; first `before` weeks are before the product */
   trend: { values: number[]; before: number };
 }
@@ -124,16 +125,10 @@ const S03_ROWS: OverRow[] = [
 
 const S03: StoreOverstock = {
   rows: S03_ROWS,
-  daysOfStock: { value: 11.2, delta: -1.4, target: 9 },
   extraDeltaPct: -9,
-  countDelta: -4,
-  categories: [
-    { key: "frozen", days: 21, target: 10 },
-    { key: "dry", days: 16, target: 14 },
-    { key: "beverages", days: 9.8, target: 7 },
-    { key: "dairy", days: 4.1, target: 3 },
-    { key: "bakery", days: 1.2, target: 1.5 },
-  ],
+  // 4.6M in stock → AMD 0.41M extra is 9%
+  stockValue: { dry: 1_600_000, dairy: 1_100_000, beverages: 900_000, frozen: 550_000, eggs: 300_000, bakery: 150_000 },
+  cleared: { week: 45_000, lastWeek: 31_000 },
   trend: { values: [0.62, 0.6, 0.63, 0.6, 0.57, 0.54, 0.52, 0.49, 0.47, 0.48, 0.45, 0.41].map((m) => m * 1e6), before: 4 },
 };
 
@@ -157,7 +152,8 @@ function derive(storeId: string): StoreOverstock {
       action: { ...r.action, params: fix(r.action.params) },
       steps: r.steps.map((s) => (s.kind === "add" ? { ...s, task: { ...s.task, params: fix(s.task.params)! } } : s)),
     })),
-    daysOfStock: { ...S03.daysOfStock, value: Math.round(S03.daysOfStock.value * (0.85 + scale * 0.2) * 10) / 10 },
+    stockValue: Object.fromEntries(Object.entries(S03.stockValue).map(([k, v]) => [k, Math.round((v * scale) / 10_000) * 10_000])) as StoreOverstock["stockValue"],
+    cleared: { week: Math.round((45_000 * scale) / 1000) * 1000, lastWeek: Math.round((31_000 * scale) / 1000) * 1000 },
     trend: { ...S03.trend, values: S03.trend.values.map((v) => Math.round(v * scale)), before: trendWeeksBefore(getStore(storeId).goLive) },
   };
 }

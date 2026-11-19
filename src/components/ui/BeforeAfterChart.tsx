@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Bar, BarChart, Cell, LabelList, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { Card } from "./Card";
@@ -13,10 +14,12 @@ interface Props {
   /** Monday of the first week */
   firstWeek: Date;
   format: (v: number) => string;
+  /** Extra content under the chart, e.g. a "less stock, same sales" strip */
+  footer?: ReactNode;
 }
 
 /** Weekly bars: grey before Retail Intelligence, purple with it, this week highlighted. */
-export function BeforeAfterChart({ title, subtitle, values, before, firstWeek, format }: Props) {
+export function BeforeAfterChart({ title, subtitle, values, before, firstWeek, format, footer }: Props) {
   const { t } = useTranslation();
   const last = values.length - 1;
   const max = Math.max(...values) * 1.18;
@@ -67,6 +70,7 @@ export function BeforeAfterChart({ title, subtitle, values, before, firstWeek, f
           </BarChart>
         </ResponsiveContainer>
       </div>
+      {footer}
     </Card>
   );
 }
