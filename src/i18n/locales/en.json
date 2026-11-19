@@ -856,15 +856,13 @@
     "subtitle": "Products you have too much of — free up shelf space and cash",
     "filter": "Category",
     "cat": {
-      "all": "All categories",
+      "all": "All",
       "dairy": "Dairy",
       "frozen": "Frozen",
       "dry": "Dry goods",
       "beverages": "Beverages",
       "bakery": "Bakery",
-      "eggs": "Eggs",
-      "allCount": "All categories ({{count}})",
-      "withCount": "{{name}} ({{count}})"
+      "eggs": "Eggs"
     },
     "days_one": "{{count}} day",
     "days_other": "{{count}} days",

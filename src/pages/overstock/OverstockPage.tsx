@@ -8,6 +8,7 @@ import { daysOfStock, extraValue, getOverstock, type OverRow } from "@/data/over
 import { getProduct, type Product } from "@/data/products";
 import { BeforeAfterChart } from "@/components/ui/BeforeAfterChart";
 import { Card } from "@/components/ui/Card";
+import { Dropdown } from "@/components/ui/Dropdown";
 import { KpiCard, deltaTone } from "@/components/ui/KpiCard";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Pill } from "@/components/ui/Pill";
@@ -84,21 +85,13 @@ export function OverstockPage() {
         title={t("pages.overstock.title")}
         subtitle={t("overstock.subtitle")}
         actions={
-          <label className="flex items-center gap-2 text-[13px] font-semibold text-ink-2">
-            {t("overstock.filter")}
-            <select
-              value={filter}
-              onChange={(e) => pickFilter(e.target.value as Filter)}
-              className="rounded-ctl border border-line bg-white py-2 pl-3 pr-8 text-[13px] font-semibold text-ink hover:border-primary/40"
-            >
-              <option value="all">{t("overstock.cat.allCount", { count: data.rows.length })}</option>
-              {cats.map((c) => (
-                <option key={c.key} value={c.key}>
-                  {t("overstock.cat.withCount", { name: t(`overstock.cat.${c.key}`), count: c.rows.length })}
-                </option>
-              ))}
-            </select>
-          </label>
+          <Dropdown
+            label={t("overstock.filter")}
+            value={filter}
+            onChange={pickFilter}
+            separateFirst
+            options={[{ value: "all" as Filter, label: t("overstock.cat.all") }, ...cats.map((c) => ({ value: c.key as Filter, label: t(`overstock.cat.${c.key}`) }))]}
+          />
         }
       />
 
