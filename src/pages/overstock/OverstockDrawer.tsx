@@ -7,7 +7,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { Pill } from "@/components/ui/Pill";
 import { ProductThumb } from "@/components/ui/ProductThumb";
 import { TONE } from "@/components/ui/tone";
-import { fmtAmd, fmtDate, fmtNumber } from "@/lib/format";
+import { fmtAmd, fmtChartDate, fmtNumber } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
 import { useParamText } from "@/pages/stockouts/shared";
 import { StepList, StepsFooter } from "@/pages/stockouts/StepList";
@@ -50,7 +50,7 @@ export function OverstockDrawer({ row, onClose }: { row?: OverRow; onClose: () =
 function Body({ row }: { row: OverRow }) {
   const { t } = useTranslation();
   const params = useParamText();
-  const weeks = row.sold.map((_, i) => fmtDate(new Date(2026, 8, 21 + i * 7), { month: "short", day: "numeric" }));
+  const weeks = row.sold.map((_, i) => fmtChartDate(new Date(2026, 8, 21 + i * 7)));
   const data = row.sold.map((s, i) => ({ label: weeks[i], sold: s, delivered: row.delivered[i] }));
   return (
     <div className="flex flex-col gap-5">

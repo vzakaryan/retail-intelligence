@@ -241,7 +241,7 @@ function SameSales({ storeId }: { storeId: string }) {
         <thead>
           <tr className="text-xs text-muted">
             <th className="py-1 text-left font-medium" />
-            <th className="px-2 py-1 text-right font-medium">{t("today.results.before")}</th>
+            <th className="hidden px-2 py-1 text-right font-medium sm:table-cell">{t("today.results.before")}</th>
             <th className="px-2 py-1 text-right font-medium">{t("today.results.now")}</th>
             <th className="py-1 text-right font-medium" />
           </tr>
@@ -250,7 +250,7 @@ function SameSales({ storeId }: { storeId: string }) {
           {rows.map((r) => (
             <tr key={r.label} className="border-t border-line">
               <td className="py-2 font-medium">{r.label}</td>
-              <td className="whitespace-nowrap px-2 py-2 text-right tabular-nums text-muted">{r.before}</td>
+              <td className="hidden whitespace-nowrap px-2 py-2 text-right tabular-nums text-muted sm:table-cell">{r.before}</td>
               <td className="whitespace-nowrap px-2 py-2 text-right font-semibold tabular-nums">{r.now}</td>
               <td className="py-2 text-right">
                 <Pill tone={r.good ? "good" : "bad"}>{r.change}</Pill>

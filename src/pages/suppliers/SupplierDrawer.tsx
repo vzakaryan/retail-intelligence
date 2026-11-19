@@ -14,7 +14,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { IconTile } from "@/components/ui/IconTile";
 import { Pill } from "@/components/ui/Pill";
 import { TONE } from "@/components/ui/tone";
-import { fmtAmd, fmtDate, fmtNumber } from "@/lib/format";
+import { fmtAmd, fmtChartDate, fmtDate, fmtNumber } from "@/lib/format";
 import { useStoreLabel } from "@/lib/useStoreLabel";
 import { useTaskText } from "@/pages/today/taskText";
 import { STATUS_TONE, useDelayText } from "./shared";
@@ -58,7 +58,7 @@ function Body({ stats }: { stats: SupplierStats }) {
   const delay = useDelayText();
   const status = statusOf(stats);
   const sup = SUPPLIERS.find((s) => s.id === stats.supplierId)!;
-  const data = stats.last8.map((x) => ({ label: fmtDate(x.date, { month: "short", day: "numeric" }), v: x.daysLate || 0.06, late: x.daysLate > 0 }));
+  const data = stats.last8.map((x) => ({ label: fmtChartDate(x.date), v: x.daysLate || 0.06, late: x.daysLate > 0 }));
   const lateUnits = stats.last8.some((x) => x.daysLate >= 0.5);
 
   return (

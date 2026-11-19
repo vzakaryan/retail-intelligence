@@ -9,7 +9,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { Pill } from "@/components/ui/Pill";
 import { ProductThumb } from "@/components/ui/ProductThumb";
 import { QtyInput } from "@/components/ui/QtyInput";
-import { fmtDate, fmtNumber } from "@/lib/format";
+import { fmtChartDate, fmtDate, fmtNumber } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
 import { pick } from "@/lib/names";
 
@@ -91,7 +91,7 @@ function WhyBody({ view, line }: { view: OrderView; line: LineView }) {
   const data = [
     ...insight.sold.map((v, i) => ({ date: addDays(firstSold, i), value: v, kind: i === insight.stockoutDay ? "empty" : "sold" })),
     ...insight.expectedDaily.map((v, i) => ({ date: addDays(start, i), value: v, kind: "expected" })),
-  ].map((x) => ({ ...x, label: md(x.date) }));
+  ].map((x) => ({ ...x, label: fmtChartDate(x.date) }));
   // Label a few days only; skip the first expected day when it would collide with the last one.
   const last = data.length - 1;
   const tickIdx = new Set([0, 4, 8, insight.stockoutDay ?? 11, last, ...(last - insight.sold.length >= 3 ? [insight.sold.length] : [])]);

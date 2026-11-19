@@ -11,7 +11,8 @@ import { KpiCard, deltaTone } from "@/components/ui/KpiCard";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Pill } from "@/components/ui/Pill";
 import { TONE } from "@/components/ui/tone";
-import { fmtAmd, fmtDate, fmtDeltaPp, fmtNumber, fmtPercent } from "@/lib/format";
+import { TwoLineTick } from "@/components/ui/ChartTick";
+import { fmtAmd, fmtChartDate, fmtDate, fmtDeltaPp, fmtNumber, fmtPercent } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
 import { SupplierDrawer } from "./SupplierDrawer";
 import { STATUS_TONE, onTimeColor, useDelayText } from "./shared";
@@ -37,7 +38,7 @@ export function SuppliersPage() {
   const lost = data.stats.reduce((s, x) => s + x.lostSales, 0);
   const worst = supplierName(rows[0].supplierId);
   const trend = data.trend.weeks.map((w, i) => ({
-    label: i === data.trend.weeks.length - 1 ? t("stockouts.trend.thisWeek") : fmtDate(w, { month: "short", day: "numeric" }),
+    label: i === data.trend.weeks.length - 1 ? t("stockouts.trend.thisWeek") : fmtChartDate(w),
     worst: data.trend.worst[i],
     others: data.trend.others[i],
   }));
@@ -154,7 +155,7 @@ export function SuppliersPage() {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={trend} margin={{ top: 6, right: 12, left: -6, bottom: 0 }}>
                 <CartesianGrid vertical={false} stroke="#f0f0f5" />
-                <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "#7a7f93" }} />
+                <XAxis dataKey="label" tickLine={false} axisLine={false} interval={0} height={34} tick={<TwoLineTick highlight={t("stockouts.trend.thisWeek")} />} />
                 <YAxis domain={[50, 100]} ticks={[50, 60, 70, 80, 90, 100]} tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "#7a7f93" }} tickFormatter={(v: number) => `${v}%`} />
                 <Line dataKey="worst" stroke="#d63b3b" strokeWidth={2.5} dot={{ r: 3, fill: "#d63b3b" }} isAnimationActive={false} />
                 <Line dataKey="others" stroke="#5b3fe0" strokeWidth={2.5} dot={{ r: 3, fill: "#5b3fe0" }} isAnimationActive={false} />

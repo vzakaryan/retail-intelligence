@@ -86,6 +86,15 @@ export function fmtDate(date: Date, options: Intl.DateTimeFormatOptions): string
   return parts.join(", ");
 }
 
+/**
+ * Short date for chart axes: "Aug 17" in English, "17.08" in Armenian
+ * (Armenian month names are long and overlap under narrow bars).
+ */
+export function fmtChartDate(date: Date): string {
+  if (!isHy()) return fmtDate(date, { month: "short", day: "numeric" });
+  return `${pad(date.getDate())}.${pad(date.getMonth() + 1)}`;
+}
+
 /** Signed percent change: -18 → "−18%", 4.2 → "+4.2%" */
 export function fmtSignedPct(delta: number, digits = 0): string {
   const sign = delta > 0 ? "+" : delta < 0 ? "−" : "";
