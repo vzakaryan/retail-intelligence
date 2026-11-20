@@ -1,4 +1,4 @@
-import { getStore, trendWeeksBefore } from "./world";
+import { getStore, trendWeeksBefore, wasteFactor } from "./world";
 import { getProduct, type Product } from "./products";
 import { helperStoreId, type StockStep } from "./stockouts";
 import type { TaskParam } from "./today";
@@ -152,7 +152,8 @@ function derive(storeId: string): StoreOverstock {
       action: { ...r.action, params: fix(r.action.params) },
       steps: r.steps.map((s) => (s.kind === "add" ? { ...s, task: { ...s.task, params: fix(s.task.params)! } } : s)),
     })),
-    stockValue: Object.fromEntries(Object.entries(S03.stockValue).map(([k, v]) => [k, Math.round((v * scale) / 10_000) * 10_000])) as StoreOverstock["stockValue"],
+    // Stores that act on fewer suggestions carry a bigger share of extra stock
+    stockValue: Object.fromEntries(Object.entries(S03.stockValue).map(([k, v]) => [k, Math.round((v * scale) / wasteFactor(storeId) / 10_000) * 10_000])) as StoreOverstock["stockValue"],
     cleared: { week: Math.round((45_000 * scale) / 1000) * 1000, lastWeek: Math.round((31_000 * scale) / 1000) * 1000 },
     trend: { ...S03.trend, values: S03.trend.values.map((v) => Math.round(v * scale)), before: trendWeeksBefore(getStore(storeId).goLive) },
   };

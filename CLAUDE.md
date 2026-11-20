@@ -195,7 +195,7 @@ tokens: colors, radii, type sizes) — reuse it when building the real app.
 | `03-order-review.png` | One order, step 1: Review quantities | Store manager | Breadcrumb, stepper (Review → Place → Done), needs-review list with quantity box, Why?, Accept / Accept all; reviewed items collapsed; Next disabled until all reviewed |
 | `04-order-why-suggestion.png` | "Why?" drawer | Store manager | Transparent math (expected sales + safety stock − in store − on the way), daily sales chart with stockout day, past suggestions vs outcome, Accept / change |
 | `05-order-place.png` | One order, step 2: Place the order | Store manager | Final order list; Download Excel / Copy as text / Print; "I've placed the order with <supplier>" + what happens next |
-| `06-all-stores-yerevan.png` | All stores · Yerevan | Head office | Chain KPIs incl. "suggestions acted on", schematic Yerevan district tile map, stores ranked by availability, insight "stores that act on suggestions do better" |
+| `06-all-stores-yerevan.png` | All stores · Yerevan | Head office | **Superseded in step 21:** compare stores / managers (sales growth, out-of-stock, write-offs %, extra stock %, acted on, impact), map by measure, adoption vs impact chart, what the platform brought |
 | `07-stockout-risk.png` | Stockout risk | Store manager | KPIs (OOS rate, lost sales, sales at risk today, recovered sales — changed in step 15), full-width "products that may run out" grouped Today / Tomorrow with one next step each, OOS-rate trend before vs. with the product, biggest misses last week |
 | `08-stockout-product-drawer.png` | Stockout product panel | Store manager | Why it may run out (plain sentence), on shelf / backroom / expected, what-if stock chart, manual steps (refill, call supplier, ask nearby store) → add to today's tasks |
 | `09-online-orders.png` | Online orders | Store manager | KPIs, full-width "prepare before picking" checklist, today's delivery slots with at-risk counts, often-missing products with fixes |
@@ -556,3 +556,19 @@ top nav was replaced by a sidebar).
     they're decided) · Extra sales this week (running promos found in till data) · Paid
     off (4 of 6, last 3 months). Removed: coming up / running now / readiness.
   - Expiry markdowns stay on Expiry & write-offs (store-level), not here.
+- **Step 21 (2026-11-20): All stores (head office) redesigned** to compare store managers
+  and show the platform's value. Stays at 12 stores (user dropped the 30-store idea).
+  - Key numbers (value last, as asked): Net sales (4 weeks) · Out-of-stock rate (vs before
+    go-live) · Suggestions acted on (+ stores below 70%) · **Value the platform brought**
+    (sum of every store's "Your results so far", AMD 40.8M since Aug 24).
+  - **Compare stores** table: sales growth, out-of-stock, write-offs % of sales, extra stock
+    %, acted on, impact since start (+ per week); cells coloured vs chain average with
+    fixed margins (`compareTone` in `src/data/storeCompare.ts`); sortable, default impact
+    per week; chain average row; Export CSV; click opens the store.
+  - District map coloured by a chosen measure (impact / sales growth / out-of-stock);
+    **"Acting on suggestions pays off"** scatter (acted on vs impact per week, ≈1.4× for
+    85%+ stores); **"What the platform brought"** chain before → now.
+  - Mock data: derived stores' improvement now scales with adoption
+    (`adoptionFactor`, `wasteFactor` in `world.ts`), so stores that act on more
+    suggestions show bigger drops in out-of-stock / write-offs and less extra stock.
+    Store 03 unchanged. Availability ranking, `chainKpis`, `CHAIN_DELTAS` removed.

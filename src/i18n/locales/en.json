@@ -575,54 +575,90 @@
   "stores": {
     "period": "Last 4 weeks · vs. prior 4 weeks",
     "kpi": {
-      "availability": "Shelf availability",
-      "online": "Online orders complete",
-      "lostSales": "Lost sales (est.)",
+      "netSales": "Net sales",
+      "netSalesInfo": "Net sales of all stores, last 4 weeks.",
+      "oos": "Out-of-stock rate",
+      "oosInfo": "Average share of the time products were missing from the shelf, all stores, this week.",
+      "oosSub": "was {{before}} before the stores started",
+      "vsBefore": "vs. before go-live",
       "actedOn": "Suggestions acted on",
-      "actedOnInfo": "Share of suggestions (tasks and order quantities) that store managers accepted or acted on."
+      "actedOnInfo": "Share of suggestions (tasks and order quantities) that store managers accepted or acted on.",
+      "lowAdoption_one": "{{count}} store below 70%",
+      "lowAdoption_other": "{{count}} stores below 70%",
+      "value": "Value the platform brought",
+      "valueInfo": "Recovered sales plus write-offs avoided in all stores, since each store started (the same estimate as \"Your results so far\" on each store's page).",
+      "valueSub_one": "since {{date}} · {{count}} store",
+      "valueSub_other": "since {{date}} · {{count}} stores"
     },
     "map": {
-      "title": "Availability by district",
+      "title": "Stores by district",
       "subtitle": "{{stores}} stores in {{districts}} districts · schematic map",
       "noStores": "No stores",
       "stores_one": "{{count}} store",
       "stores_other": "{{count}} stores",
-      "legend": {
-        "good": "≥ 96%",
-        "warn": "94–96%",
-        "bad": "< 94%"
+      "colourBy": "Colour by",
+      "measure": {
+        "impactPerWeek": "Impact per week",
+        "salesGrowth": "Sales growth",
+        "oos": "Out-of-stock rate"
+      },
+      "vsAvg": {
+        "good": "Better than average",
+        "neutral": "About average",
+        "bad": "Worse than average"
       },
       "hint": "Click a district to see only its stores",
       "clear": "Show all"
     },
-    "insight": {
-      "title": "Stores that act on suggestions do better",
-      "high_one": "Acting on {{pct}}% or more ({{count}} store)",
-      "high_other": "Acting on {{pct}}% or more ({{count}} stores)",
-      "rest_one": "All other stores ({{count}} store)",
-      "rest_other": "All other stores ({{count}} stores)",
-      "note": "Average shelf availability, last 4 weeks"
-    },
     "table": {
-      "title": "Stores ranked by availability",
       "titleDistrict": "Stores in {{district}}",
-      "subtitle": "Lowest first · click a store to open its \"today\" view",
       "export": "Export",
       "store": "Store",
       "district": "District",
       "manager": "Manager",
-      "availability": "Availability",
-      "online": "Online orders",
-      "lostSales": "Lost sales",
-      "actedOn": "Suggestions acted on",
       "open": "Open store",
-      "actedOnShort": "Acted on",
       "number": "Store no."
     },
-    "status": {
-      "onTrack": "On track",
-      "watch": "Watch",
-      "attention": "Needs attention"
+    "subtitleCompare": "Compare stores and their managers, and see the value the platform brought",
+    "compare": {
+      "title": "Compare stores",
+      "subtitle": "Last 4 weeks · colours compare each store with the chain average · click a column to sort, a store to open it",
+      "store": "Store · manager",
+      "average": "Chain average",
+      "perWeek": "{{amount}} / week",
+      "perWeekWeeks_one": "{{amount}} / week · {{count}} week",
+      "perWeekWeeks_other": "{{amount}} / week · {{count}} weeks",
+      "legendGood": "Better than average",
+      "legendBad": "Worse than average",
+      "legendNote": "Close to the average: no colour"
+    },
+    "col": {
+      "salesGrowth": "Sales growth",
+      "oos": "Out-of-stock",
+      "writeOffsPct": "Write-offs, % of sales",
+      "extraPct": "Extra stock",
+      "actedOn": "Acted on",
+      "impactPerWeek": "Impact per week",
+      "impact": "Impact since start"
+    },
+    "adoption": {
+      "title": "Acting on suggestions pays off",
+      "subtitle": "One dot per store · suggestions acted on vs. platform impact per week · click a dot to open the store",
+      "x": "Suggestions acted on",
+      "tip": "Acted on {{acted}}% · {{amount}} / week",
+      "insight": "Stores that act on most suggestions gain {{ratio}}× more per week.",
+      "detail_one": "Acting on {{pct}}%+: {{high}} / week ({{highCount}} stores) · the rest: {{rest}} / week ({{restCount}} store).",
+      "detail_other": "Acting on {{pct}}%+: {{high}} / week ({{highCount}} stores) · the rest: {{rest}} / week ({{restCount}} stores)."
+    },
+    "brought": {
+      "title": "What the platform brought",
+      "subtitle": "All stores · weekly, before each store started vs. this week",
+      "oos": "Out-of-stock rate",
+      "lostSales": "Lost sales / week",
+      "writeOffs": "Write-offs / week",
+      "excess": "Extra stock",
+      "netSales": "Net sales / week",
+      "was": "before: {{value}}"
     }
   },
   "stockouts": {

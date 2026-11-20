@@ -18,6 +18,20 @@ export function weeksSinceGoLive(goLive: Date): number {
   return Math.floor((DEMO_NOW.getTime() - goLive.getTime()) / WEEK_MS);
 }
 
+/**
+ * How much a store's results improved compared with Komitas Ave (store 03), based on
+ * how much of the suggestions it acts on (86% = 1). Stores that act on more get a
+ * bigger drop in out-of-stock rate and write-offs since go-live.
+ */
+export function adoptionFactor(storeId: string): number {
+  return (getStore(storeId).kpis.suggestionsActedOn / 86) ** 2;
+}
+
+/** Write-offs and extra stock are higher in stores that act on fewer suggestions (store 03 = 1). */
+export function wasteFactor(storeId: string): number {
+  return 1.35 - 0.35 * adoptionFactor(storeId);
+}
+
 /** How many of the 12 trend-chart weeks were before the store's go-live. */
 export function trendWeeksBefore(goLive: Date): number {
   return Math.round((goLive.getTime() - TREND_START.getTime()) / WEEK_MS);
@@ -110,39 +124,5 @@ export function getDistrict(id: string): District {
 
 // ------------------------------------------------------------- Chain view
 
-/** Change vs. the prior 4 weeks for the chain-level KPIs (head-office screen). */
-export const CHAIN_DELTAS = {
-  availabilityPp: 1.3,
-  onlineFulfillmentPp: 1.4,
-  lostSalesPct: -14,
-  actedOnPp: 6,
-};
-
 /** Stores acting on at least this share of suggestions count as "high adoption". */
 export const HIGH_ADOPTION_PCT = 85;
-
-const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / (xs.length || 1);
-
-export function chainKpis(stores: Store[] = STORES) {
-  return {
-    availability: avg(stores.map((s) => s.kpis.availability)),
-    onlineFulfillment: avg(stores.map((s) => s.kpis.onlineFulfillment)),
-    lostSales4w: stores.reduce((a, s) => a + s.kpis.lostSales4w, 0),
-    suggestionsActedOn: avg(stores.map((s) => s.kpis.suggestionsActedOn)),
-  };
-}
-
-/** Average availability of stores that act on most suggestions vs. the rest. */
-export function adoptionInsight(stores: Store[] = STORES) {
-  const high = stores.filter((s) => s.kpis.suggestionsActedOn >= HIGH_ADOPTION_PCT);
-  const rest = stores.filter((s) => s.kpis.suggestionsActedOn < HIGH_ADOPTION_PCT);
-  return {
-    high: { count: high.length, availability: avg(high.map((s) => s.kpis.availability)) },
-    rest: { count: rest.length, availability: avg(rest.map((s) => s.kpis.availability)) },
-  };
-}
-
-export function districtStats(districtId: string) {
-  const stores = STORES.filter((s) => s.districtId === districtId);
-  return { count: stores.length, availability: stores.length ? avg(stores.map((s) => s.kpis.availability)) : undefined };
-}

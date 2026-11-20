@@ -1,4 +1,4 @@
-import { getStore } from "./world";
+import { getStore, wasteFactor } from "./world";
 
 /**
  * "My store today" data per store.
@@ -183,7 +183,7 @@ function deriveDay(storeId: string): StoreDay {
   const weekLost = Math.round((k.lostSales4w / 4) * r(0.9, 1.1, 2));
   // Same size factor as the derived Expiry / Overstock data, so the numbers match those pages
   const scale = 0.75 + ((Number(storeId.slice(1)) * 37) % 50) / 100;
-  const weekWriteOffs = Math.round((610_000 * scale) / 10_000) * 10_000;
+  const weekWriteOffs = Math.round((610_000 * scale * wasteFactor(storeId)) / 10_000) * 10_000;
   // Weekly till totals; 4 weeks ≈ 3.9 × this week (this week is a little busier)
   const onlineShare = r(1.8, 3.2);
   const baseNet = 89_650_000 * scale * r(0.9, 1.1, 2);

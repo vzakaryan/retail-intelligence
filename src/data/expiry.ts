@@ -1,4 +1,4 @@
-import { getStore, trendWeeksBefore } from "./world";
+import { adoptionFactor, getStore, trendWeeksBefore, wasteFactor } from "./world";
 import { getProduct } from "./products";
 import { helperStoreId, type StockStep } from "./stockouts";
 import type { TaskParam } from "./today";
@@ -135,7 +135,15 @@ function derive(storeId: string): StoreExpiry {
     }),
     savedByMarkdowns: Math.round((S03.savedByMarkdowns * scale) / 10000) * 10000,
     reasons: S03.reasons.map((x) => ({ ...x, value: Math.round((x.value * scale) / 10000) * 10000 })),
-    trend: { ...S03.trend, values: S03.trend.values.map((v) => Math.round(v * scale)), before: trendWeeksBefore(getStore(storeId).goLive) },
+    // Ends at this week's write-offs; the drop since go-live is bigger when the store acts on more suggestions
+    trend: {
+      ...S03.trend,
+      values: S03.trend.values.map((v) => {
+        const last = S03.trend.values[S03.trend.values.length - 1];
+        return Math.round((last + (v - last) * adoptionFactor(storeId)) * scale * wasteFactor(storeId));
+      }),
+      before: trendWeeksBefore(getStore(storeId).goLive),
+    },
   };
 }
 

@@ -34,6 +34,7 @@ write your own wording, and the app will be updated everywhere the term appears.
 | 57 | Cost of late and short deliveries | Ուշացած և թերի առաքումների պատճառով կորուստներ | Replaces the approved «Ուշացումների պատճառով կորուստներ», which only covered late deliveries | Մատակարարների խնդիրների պատճառով կորուստներ |
 | 58 | Send to head office (button) | Ուղարկել գրասենյակ | Shortened to fit the table; full form is too long | Ուղարկել գլխամասային գրասենյակ |
 | 59 | Extra stock promotions could clear | Ավելցուկ, որը ակցիաները կարող են կրճատել | New (Promotions) | keep |
+| 60 | Value the platform brought | Հարթակի բերած արժեքը | New (All stores) | Հարթակի ստեղծած արժեքը |
 | 10 | Suggestions acted on | Կիրառված առաջարկներ | «Կիրառված» may sound technical | Կատարված առաջարկներ |
 | 12 | Out-of-stock rate | Բացակայության տոկոս | May need «դարակից» for clarity | Դարակից բացակայության տոկոս |
 | 13 | Forecast accuracy | Կանխատեսման ճշգրտություն | Probably fine | keep |
