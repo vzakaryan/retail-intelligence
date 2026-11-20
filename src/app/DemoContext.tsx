@@ -42,10 +42,17 @@ interface DemoState {
   addTask: (id: string, storeId: string, task: NewTask) => void;
 
 
+  /** What happened to each suggested promotion during the demo, keyed by `${storeId}:${ideaId}` */
+  promoDecisions: Record<string, PromoDecision>;
+  setPromoDecision: (key: string, decision: PromoDecision | null) => void;
+
   /** Suppliers for which order suggestions keep 1 extra day of safety stock */
   extraSafety: Record<string, true>;
   toggleExtraSafety: (supplierId: string) => void;
 }
+
+export type RejectReason = "headOffice" | "margin" | "timing" | "other";
+export type PromoDecision = { status: "sent" } | { status: "approved" } | { status: "rejected"; reason?: RejectReason };
 
 export interface Snooze {
   count: number;
@@ -75,6 +82,15 @@ export function DemoProvider({ children }: { children: ReactNode }) {
   const [snoozes, setSnoozes] = useState<Record<string, Snooze>>({});
   const [addedTasks, setAdded] = useState<Record<string, AddedTask>>({});
   const [extraSafety, setExtraSafety] = useState<Record<string, true>>({});
+  const [promoDecisions, setPromoDecisions] = useState<Record<string, PromoDecision>>({});
+  const setPromoDecision = useCallback((key: string, decision: PromoDecision | null) => {
+    setPromoDecisions((prev) => {
+      const next = { ...prev };
+      if (decision) next[key] = decision;
+      else delete next[key];
+      return next;
+    });
+  }, []);
 
   const setTaskDone = useCallback((taskId: string, done: boolean, via: TaskOverride["via"] = "done") => {
     setOverrides((prev) => ({ ...prev, [taskId]: { done, via } }));
@@ -146,8 +162,10 @@ export function DemoProvider({ children }: { children: ReactNode }) {
       addTask,
       extraSafety,
       toggleExtraSafety,
+      promoDecisions,
+      setPromoDecision,
     }),
-    [extraSafety, toggleExtraSafety, storeId, taskOverrides, setTaskDone, lineReviews, setLineReview, setLineReviews, placedOrders, markPlaced, receipts, setReceipt, snoozes, snooze, addedTasks, addTask]
+    [extraSafety, toggleExtraSafety, promoDecisions, setPromoDecision, storeId, taskOverrides, setTaskDone, lineReviews, setLineReview, setLineReviews, placedOrders, markPlaced, receipts, setReceipt, snoozes, snooze, addedTasks, addTask]
   );
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>;
 }

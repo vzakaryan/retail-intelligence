@@ -206,8 +206,8 @@ tokens: colors, radii, type sizes) — reuse it when building the real app.
 | `14-expiry-product-drawer.png` | Expiry product panel | Store manager | Units likely thrown away, normal vs markdown sales chart, steps: markdown (existing task), move to another store, order 0 |
 | `15-suppliers.png` | Suppliers | Store manager | KPIs (on time, in full, late deliveries, cost of late deliveries), supplier table least reliable first, recent deliveries, AgriEggs vs others on-time trend |
 | `16-supplier-drawer.png` | Supplier panel | Store manager | Late/short summary + cost, last 8 deliveries chart, steps: log call, keep extra safety stock (order-suggestion setting), copy summary for head office |
-| `17-promotions.png` | Promotions | Store manager | Promotions set by head office; KPIs, coming-up table with readiness, running now, did past promotions pay off |
-| `18-promotion-drawer.png` | Promotion panel | Store manager | Expected uplift, normal vs promotion chart, get-ready steps (order extra in supplier order, price tags task, clear space) |
+| `17-promotions.png` | Promotions | Store manager | **Superseded in step 20:** suggested promotions (send to head office / approve / reject) + past promotions found in till data |
+| `18-promotion-drawer.png` | Promotion panel | Store manager | **Superseded in step 20:** suggestion panel with the math (normal vs promo units, discount cost, net) + past-promotion panel |
 
 Shell (all screens): **left sidebar** with grouped modules (My store today ·
 Stock & demand · Inventory health · Partners & sales · Head office), top bar
@@ -538,3 +538,21 @@ top nav was replaced by a sidebar).
     supplier problems, by supplier** (AMD bars split late / short, `lateShare` per
     supplier, click opens the supplier panel). Arevi Farm stays the unreliable supplier
     (user decided not to swap with Katnashkharh Dairy).
+- **Step 20 (2026-11-20): Promotions redesigned.** The client has **no digital promotion
+  setup**, so nothing is typed in:
+  - **Suggested promotions** are generated from extra stock (Overstock), slow sellers and
+    demand peaks (e.g. New Year juice). Flow: **Send to head office** (copies a summary
+    for email / Viber) → **Approved / Rejected** (reason dialog); a store that decides
+    itself just clicks Approve. Approving adds the store's task (same task as on
+    Overstock, so olive oil / ice cream stay in sync). Head office is "most likely" the
+    decider — unconfirmed. State: `DemoContext.promoDecisions`.
+  - The weekend dairy promotion is a suggestion **already approved by head office on
+    Nov 6**, which keeps the price-tag task and the +160 milk order line meaningful.
+  - **Past promotions** are **found in the till data** (sold below the regular price):
+    lift, extra sales, discount cost, paid off or not; panel with normal vs promo chart.
+    Needs the client's **regular price list per product** (to add to the client data
+    requirements docs).
+  - Key numbers: **Extra stock promotions could clear** (AMD 165K, 4 suggestions; drops as
+    they're decided) · Extra sales this week (running promos found in till data) · Paid
+    off (4 of 6, last 3 months). Removed: coming up / running now / readiness.
+  - Expiry markdowns stay on Expiry & write-offs (store-level), not here.

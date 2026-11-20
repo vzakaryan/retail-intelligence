@@ -1109,100 +1109,121 @@
     }
   },
   "promotions": {
-    "subtitle": "Get ready for upcoming promotions and see which ones paid off",
-    "name": {
-      "weekendDairy": "Weekend dairy −{{cut}}%",
-      "bakeryHour": "Bakery happy hour −{{cut}}%",
-      "blackFriday": "Black Friday snacks & drinks",
-      "matsun2for1": "Matsun 2 for 1",
-      "coffeeCut": "Coffee −{{cut}}%",
-      "breadCut": "Weekday bread −{{cut}}%",
-      "cola3for2": "Cola 3 for 2",
-      "iceCreamCut": "Ice cream −{{cut}}%",
-      "oliveCut": "Olive oil −{{cut}}%",
-      "yogurtCut": "Yogurt −{{cut}}%"
-    },
-    "dates": {
-      "daily": "Every day {{hours}} from {{from}}"
-    },
-    "unit": {
-      "l": "liters",
-      "lShort": "L",
-      "pcs": "units",
-      "pcsShort": "units"
-    },
-    "note": {
-      "cutsWriteOffs": "Also cuts bakery write-offs",
-      "remindLater": "We'll remind you a week before it starts"
-    },
+    "subtitleNew": "Promotions the data suggests, and whether past ones paid off",
     "kpi": {
-      "running": "Running now",
-      "promotions_one": "promotion",
-      "promotions_other": "promotions",
-      "startThisWeek_one": "{{count}} more starts this week",
-      "startThisWeek_other": "{{count}} more start this week",
+      "couldClear": "Extra stock promotions could clear",
+      "couldClearInfo": "Value of extra stock the suggested promotions would sell off. Goes down as suggestions are approved or rejected.",
+      "couldClearSub_one": "with {{count}} suggested promotion",
+      "couldClearSub_other": "with {{count}} suggested promotions",
       "extra": "Extra sales this week",
-      "extraInfo": "Sales on promoted products above a normal week.",
+      "extraInfoTill": "Sales above a normal week on products that are on promotion now. Found in the till data: products selling below their regular price.",
       "extraFoot": "on promoted products",
-      "ready": "Next promotion ready",
-      "ofSteps": "of {{total}} steps",
-      "readyFoot": "{{name}} starts {{date}}",
       "paidOff": "Paid off",
-      "paidOffInfo": "Promotions where extra sales were bigger than the discount cost.",
-      "of": "of {{total}}",
+      "paidOffInfo": "Past promotions where the extra sales were bigger than the discount cost.",
+      "ofTotal": "{{count}} of {{total}}",
       "paidOffFoot": "promotions, last 3 months"
     },
-    "upcoming": {
-      "title": "Coming up — get ready",
-      "subtitle": "Promotions set by head office · click one to see what to prepare",
-      "promotion": "Promotion",
-      "dates": "Dates",
-      "products": "Products",
-      "extra": "Expected extra sales",
-      "ready": "Ready?",
-      "byHeadOffice": "set by head office",
-      "productCount_one": "{{count}} product",
-      "productCount_other": "{{count}} products",
-      "steps": "{{done}} of {{total}} steps",
-      "stepsLeft_one": "{{count}} step still to do",
-      "stepsLeft_other": "{{count}} steps still to do",
-      "allReady": "Ready",
-      "allDoneMeta": "all steps done",
-      "startsIn": "Starts in {{count}} days",
-      "nothing": "Nothing to prepare"
+    "ideas": {
+      "title": "Suggested promotions",
+      "subtitle": "From extra stock, slow sellers and coming demand peaks · send to head office or approve if you decide · click for the math",
+      "col": {
+        "product": "Product",
+        "why": "Why",
+        "suggested": "Suggested",
+        "expected": "Expected effect",
+        "status": "Decision"
+      },
+      "andMore_one": "{{product}} + {{count}} more",
+      "andMore_other": "{{product}} + {{count}} more",
+      "clears": "Clears {{amount}} extra stock",
+      "extraSales": "+{{amount}} sales",
+      "expectedMeta": "+{{units}} units · discount {{cost}}"
     },
-    "running": {
-      "title": "Running now",
-      "subtitle": "Sales compared with a normal week",
-      "until": "until {{date}}",
-      "uplift": "+{{pct}}% sales",
-      "note": {
-        "runningLow": "Running low — may run out tomorrow",
-        "clearingExtra": "Also clearing extra stock"
-      }
+    "reason": {
+      "extraStock": "Extra stock",
+      "slowSeller": "Slow seller",
+      "demandPeak": "Demand peak"
     },
-    "past": {
-      "title": "Did past promotions pay off?",
-      "subtitle": "Extra sales compared with the cost of the discount",
-      "extra": "Extra sales",
-      "cost": "Discount cost",
-      "result": "Result",
-      "yes": "Paid off",
-      "no": "Didn't pay off",
-      "leftover": "Left extra stock"
+    "why": {
+      "lastTimeTooSmall": "{{units}} units more than needed · last time −{{last}}% wasn't enough",
+      "seasonDown": "Sales down {{pct}}% since October (season)",
+      "salesFell": "Sales fell from {{from}} to {{to}} a week",
+      "newYear": "New Year weeks: juice sells +{{pct}}% · order extra and promote",
+      "weekendDairy": "Weekend demand for dairy · also clears {{units}} extra yogurts"
+    },
+    "deal": {
+      "cut": "−{{cut}}%",
+      "threeForTwo": "3 for 2",
+      "twoForOne": "2 for 1"
+    },
+    "action": {
+      "send": "Send to head office",
+      "approve": "Approve",
+      "reject": "Reject",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "status": {
+      "suggested": "Suggested",
+      "sent": "Sent · waiting",
+      "approved": "Approved",
+      "approvedBy": "by head office, {{date}}",
+      "onTasks": "on today's tasks",
+      "rejected": "Rejected"
+    },
+    "rejectReason": {
+      "headOffice": "Head office said no",
+      "margin": "Margin too low",
+      "timing": "Not the right time",
+      "other": "Other reason"
+    },
+    "rejectDialog": {
+      "title": "Why not this promotion?",
+      "text": "{{product}}: your answer helps us suggest better promotions next time.",
+      "save": "Save"
+    },
+    "send": {
+      "text": "Promotion suggestion: {{product}} −{{cut}}%, {{from}} – {{to}}. Why: {{why}}. Expected: +{{units}} units, +{{sales}} sales, discount cost {{cost}}."
     },
     "drawer": {
-      "meta": "{{dates}} · {{count}} products · set by head office",
-      "ready": "{{done}} of {{total}} ready",
-      "title": "Expect about {{pct}}% more sales",
-      "text": "Based on the last similar promotions at your store. {{product}} sells out first — about {{extra}} extra {{unit}} over the {{days}} days.",
-      "products": "Products",
+      "ideaTitle": "{{product}} · −{{cut}}%",
+      "products_count_one": "{{count}} product",
+      "products_count_other": "{{count}} products",
+      "mathTitle": "Expected effect",
+      "normalUnits": "{{product}} sold at the normal price",
+      "promoUnits": "Sold with −{{cut}}%",
+      "extraUnits": "Extra units",
+      "clears": "Extra stock cleared",
       "extraSales": "Extra sales",
-      "extraNeeded": "Extra {{product}} needed",
-      "uplift": "Expected uplift",
-      "chartTitle": "{{product}}: expected daily sales",
+      "discountCost": "Cost of the discount",
+      "net": "Net result",
+      "chartTitleExpected": "{{product}}: expected daily sales",
+      "chartTitlePast": "{{product}}: daily sales",
       "normal": "Normal",
-      "withPromo": "With promotion"
+      "withPromo": "With promotion",
+      "howItWorks": "Send it to head office (we copy a short summary for email or Viber), then mark their answer. If you can decide yourself, just approve it: the steps go on today's tasks."
+    },
+    "past": {
+      "title": "Past promotions: did they pay off?",
+      "subtitleTill": "Last 3 months · found in the till data (sold below the regular price) · click for details",
+      "col": {
+        "promo": "Promotion",
+        "dates": "Dates",
+        "lift": "Sales lift",
+        "extra": "Extra sales",
+        "cost": "Discount cost",
+        "result": "Result"
+      },
+      "paid": "Paid off",
+      "notPaid": "Didn't pay off",
+      "foundInTill": "found in till data",
+      "paidText": "Extra sales {{extra}} were more than the discount cost {{cost}}.",
+      "notPaidText": "Extra sales {{extra}} were less than the discount cost {{cost}}.",
+      "note": {
+        "tooSmall": "The discount was too small to move the extra stock: that's why the new suggestion is −15%.",
+        "leftover": "Some stock was still left after it ended.",
+        "dipAfter": "Sales dropped below normal for a week afterwards: shoppers had stocked up."
+      }
     }
   }
 }
