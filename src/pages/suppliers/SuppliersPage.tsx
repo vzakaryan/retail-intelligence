@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Banknote, ChevronRight, Clock, PackageCheck, Truck } from "lucide-react";
+import { Banknote, ChevronRight, Clock, PackageCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { useDemo } from "@/app/DemoContext";
 import { getProduct } from "@/data/products";
 import { getSuppliers, onTimePct, statusOf, type Delivery } from "@/data/suppliers";
@@ -11,8 +10,7 @@ import { KpiCard, deltaTone } from "@/components/ui/KpiCard";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Pill } from "@/components/ui/Pill";
 import { TONE } from "@/components/ui/tone";
-import { TwoLineTick } from "@/components/ui/ChartTick";
-import { fmtAmd, fmtChartDate, fmtDate, fmtDeltaPp, fmtNumber, fmtPercent } from "@/lib/format";
+import { fmtAmd, fmtDate, fmtDeltaPp, fmtPercent } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
 import { SupplierDrawer } from "./SupplierDrawer";
 import { STATUS_TONE, onTimeColor, useDelayText } from "./shared";
@@ -36,32 +34,15 @@ export function SuppliersPage() {
   const onTime = ((deliveries - late) / deliveries) * 100;
   const inFull = data.stats.reduce((s, x) => s + x.inFull * x.deliveries, 0) / deliveries;
   const lost = data.stats.reduce((s, x) => s + x.lostSales, 0);
-  const worst = supplierName(rows[0].supplierId);
-  const trend = data.trend.weeks.map((w, i) => ({
-    label: i === data.trend.weeks.length - 1 ? t("stockouts.trend.thisWeek") : fmtChartDate(w),
-    worst: data.trend.worst[i],
-    others: data.trend.others[i],
-  }));
+  const byCost = [...data.stats].filter((x) => x.lostSales > 0).sort((a, b) => b.lostSales - a.lostSales);
 
   return (
     <>
       <PageHeader title={t("pages.suppliers.title")} subtitle={t("suppliers.subtitle")} actions={<span className="rounded-ctl border border-line bg-white px-3 py-2 font-medium text-ink-2">{t("suppliers.period")}</span>} />
 
-      <section className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <KpiCard icon={Clock} iconTone="good" label={t("suppliers.kpi.onTime")} info={t("suppliers.kpi.onTimeInfo")} value={fmtPercent(onTime, 0)} delta={{ text: fmtDeltaPp(data.onTimeDeltaPp, 0), tone: deltaTone(data.onTimeDeltaPp, true) }} foot={t("today.vs.4w")} />
+      <section className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <KpiCard icon={Clock} iconTone="good" label={t("suppliers.kpi.onTime")} info={t("suppliers.kpi.onTimeInfo")} value={fmtPercent(onTime, 0)} sub={t("suppliers.kpi.onTimeSub", { late, total: deliveries })} delta={{ text: fmtDeltaPp(data.onTimeDeltaPp, 0), tone: deltaTone(data.onTimeDeltaPp, true) }} foot={t("today.vs.4w")} />
         <KpiCard icon={PackageCheck} iconTone="info" label={t("suppliers.kpi.inFull")} info={t("suppliers.kpi.inFullInfo")} value={fmtPercent(inFull)} delta={{ text: fmtDeltaPp(data.inFullDeltaPp), tone: deltaTone(data.inFullDeltaPp, true) }} foot={t("suppliers.kpi.inFullFoot")} />
-        <KpiCard
-          icon={Truck}
-          iconTone="warn"
-          label={t("suppliers.kpi.late")}
-          value={
-            <>
-              {fmtNumber(late)} <small className="ml-0.5 text-base font-semibold text-ink-2">{t("suppliers.kpi.of", { total: deliveries })}</small>
-            </>
-          }
-          delta={{ text: `${data.lateDelta < 0 ? "↓" : "↑"} ${Math.abs(data.lateDelta)}`, tone: deltaTone(data.lateDelta, false) }}
-          foot={t("today.vs.4w")}
-        />
         <KpiCard icon={Banknote} iconTone="bad" label={t("suppliers.kpi.cost")} info={t("suppliers.kpi.costInfo")} value={fmtAmd(lost)} foot={t("suppliers.kpi.costFoot")} />
       </section>
 
@@ -143,25 +124,36 @@ export function SuppliersPage() {
         <Card>
           <div className="flex flex-wrap items-start justify-between gap-3 px-5 pt-[18px]">
             <div>
-              <div className="text-base font-semibold">{t("suppliers.trend.title")}</div>
-              <div className="mt-0.5 text-[13px] text-muted">{t("suppliers.trend.subtitle", { supplier: worst })}</div>
+              <div className="text-base font-semibold">{t("suppliers.cost.title")}</div>
+              <div className="mt-0.5 text-[13px] text-muted">{t("suppliers.cost.subtitle", { total: fmtAmd(lost) })}</div>
             </div>
             <div className="flex gap-4 whitespace-nowrap text-[12.5px] text-ink-2">
-              <span className="flex items-center gap-1.5"><i className="h-[3px] w-4 rounded bg-bad" />{worst}</span>
-              <span className="flex items-center gap-1.5"><i className="h-[3px] w-4 rounded bg-primary" />{t("suppliers.trend.others")}</span>
+              <span className="flex items-center gap-1.5"><i className="size-2.5 rounded-[3px] bg-bad" />{t("suppliers.cost.late")}</span>
+              <span className="flex items-center gap-1.5"><i className="size-2.5 rounded-[3px] bg-[#e8a23a]" />{t("suppliers.cost.short")}</span>
             </div>
           </div>
-          <div className="h-[250px] px-3 pb-3 pt-3">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={trend} margin={{ top: 6, right: 12, left: -6, bottom: 0 }}>
-                <CartesianGrid vertical={false} stroke="#f0f0f5" />
-                <XAxis dataKey="label" tickLine={false} axisLine={false} interval={0} height={34} tick={<TwoLineTick highlight={t("stockouts.trend.thisWeek")} />} />
-                <YAxis domain={[50, 100]} ticks={[50, 60, 70, 80, 90, 100]} tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "#7a7f93" }} tickFormatter={(v: number) => `${v}%`} />
-                <Line dataKey="worst" stroke="#d63b3b" strokeWidth={2.5} dot={{ r: 3, fill: "#d63b3b" }} isAnimationActive={false} />
-                <Line dataKey="others" stroke="#5b3fe0" strokeWidth={2.5} dot={{ r: 3, fill: "#5b3fe0" }} isAnimationActive={false} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+          <ul className="px-3 pb-3 pt-2">
+            {byCost.map((x) => {
+              const lateV = Math.round((x.lostSales * x.lateShare) / 1000) * 1000;
+              const shortV = x.lostSales - lateV;
+              const main = x.lateShare === 0 ? "onlyShort" : x.lateShare >= 0.6 ? "mostlyLate" : x.lateShare <= 0.4 ? "mostlyShort" : "both";
+              return (
+                <li key={x.supplierId}>
+                  <button onClick={() => setOpen(x.supplierId)} className="grid w-full grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1.5 rounded-lg px-2 py-2.5 text-left hover:bg-subtle">
+                    <span className="font-medium">{supplierName(x.supplierId)}</span>
+                    <span className="whitespace-nowrap text-right font-semibold tabular-nums">{fmtAmd(x.lostSales, { thousands: true })}</span>
+                    <span className="col-span-2 flex h-2.5 overflow-hidden rounded-full bg-[#eeeef4]">
+                      <span className="block h-full bg-bad" style={{ width: `${(lateV / byCost[0].lostSales) * 100}%` }} />
+                      <span className="block h-full bg-[#e8a23a]" style={{ width: `${(shortV / byCost[0].lostSales) * 100}%` }} />
+                    </span>
+                    <span className="col-span-2 text-xs text-muted">
+                      {t(`suppliers.cost.${main}`, { late: fmtAmd(lateV, { thousands: true }), short: fmtAmd(shortV, { thousands: true }) })}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
         </Card>
       </section>
 

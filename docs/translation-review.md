@@ -31,6 +31,7 @@ write your own wording, and the app will be updated everywhere the term appears.
 | 54 | Lost online sales | Չիրացված առցանց վաճառք | New | keep |
 | 55 | Share of stock that's extra | Ավելցուկի մասնաբաժինը պաշարում | New (Overstock) | Ավելցուկային պաշարի տեսակարար կշիռը |
 | 56 | Extra stock cleared this week | Այս շաբաթ կրճատված ավելցուկ | New | keep |
+| 57 | Cost of late and short deliveries | Ուշացած և թերի առաքումների պատճառով կորուստներ | Replaces the approved «Ուշացումների պատճառով կորուստներ», which only covered late deliveries | Մատակարարների խնդիրների պատճառով կորուստներ |
 | 10 | Suggestions acted on | Կիրառված առաջարկներ | «Կիրառված» may sound technical | Կատարված առաջարկներ |
 | 12 | Out-of-stock rate | Բացակայության տոկոս | May need «դարակից» for clarity | Դարակից բացակայության տոկոս |
 | 13 | Forecast accuracy | Կանխատեսման ճշգրտություն | Probably fine | keep |

@@ -527,3 +527,14 @@ top nav was replaced by a sidebar).
     (−2.6 pp), weekly net sales (+4%). Proves less stock didn't cost sales. Uses
     `getImpact` (+ new `results.netSalesBefore` in `today.ts`); `BeforeAfterChart` got a
     `footer` slot.
+- **Step 19 (2026-11-20): Chart labels + Suppliers.**
+  - Chart x-axis dates: `fmtChartDate` (Armenian "17.08", English "Aug 17"),
+    `TwoLineTick` breaks labels in two ("This / week"); narrow trend charts show every
+    other date and value. Checked on all pages and panels at desktop / tablet / phone.
+  - Overstock category filter is a shared `Dropdown` ("Category: All", no counts).
+  - Suppliers: 3 key numbers (On time with "9 of 68 deliveries late", In full, **Cost of
+    late and short deliveries** — renamed because it always included short ones);
+    "Late deliveries" card removed. "On-time deliveries, by week" replaced by **Cost of
+    supplier problems, by supplier** (AMD bars split late / short, `lateShare` per
+    supplier, click opens the supplier panel). Arevi Farm stays the unreliable supplier
+    (user decided not to swap with Katnashkharh Dairy).

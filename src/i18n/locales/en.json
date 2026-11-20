@@ -1026,11 +1026,10 @@
       "inFull": "Delivered in full",
       "inFullInfo": "Share of ordered units that actually arrived.",
       "inFullFoot": "of ordered units",
-      "late": "Late deliveries",
-      "of": "of {{total}}",
-      "cost": "Cost of late deliveries",
+      "cost": "Cost of late and short deliveries",
       "costInfo": "Estimated lost sales while shelves were empty because a delivery was late or short.",
-      "costFoot": "lost sales from empty shelves"
+      "costFoot": "lost sales from empty shelves",
+      "onTimeSub": "{{late}} of {{total}} deliveries late"
     },
     "table": {
       "title": "Your suppliers",
@@ -1072,11 +1071,6 @@
       "notArrived": "Not arrived yet · {{days}} day late · {{qty}} packs",
       "short": "On time · {{missing}} of {{ordered}} {{product}} missing"
     },
-    "trend": {
-      "title": "On-time deliveries, by week",
-      "subtitle": "{{supplier}} compared with your other suppliers",
-      "others": "Other suppliers"
-    },
     "drawer": {
       "meta": "{{categories}} · {{days}} · {{rep}}, sales rep",
       "title": "Late on {{late}} of the last {{total}} deliveries",
@@ -1102,6 +1096,16 @@
     },
     "summary": {
       "text": "{{supplier}} — delivery performance at {{store}}, last 4 weeks\n• Late on {{late}} of {{total}} deliveries ({{onTime}}% on time)\n• Delivered in full: {{inFull}}%\n• Usual delay when late: {{delay}}\n• Estimated lost sales from empty shelves: {{lost}}"
+    },
+    "cost": {
+      "title": "Cost of supplier problems, by supplier",
+      "subtitle": "Last 4 weeks · {{total}} of sales lost · click a supplier for details",
+      "late": "Late",
+      "short": "Short",
+      "mostlyLate": "Mostly late deliveries · late {{late}} · short {{short}}",
+      "mostlyShort": "Mostly short deliveries · short {{short}} · late {{late}}",
+      "both": "Late {{late}} · short {{short}}",
+      "onlyShort": "Only short deliveries · {{short}}"
     }
   },
   "promotions": {
