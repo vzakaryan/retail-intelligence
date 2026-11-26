@@ -5,6 +5,7 @@ import { useDemo } from "@/app/DemoContext";
 import { useScope } from "@/app/useScope";
 import { HEAD_OFFICE, storeManager } from "@/data/world";
 import { ScopeSelector } from "./ScopeSelector";
+import { sectionOn } from "@/app/features";
 import { pick, initials } from "@/lib/names";
 
 export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
@@ -21,10 +22,10 @@ export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
 
       <ScopeSelector />
 
-      <label className="hidden max-w-[320px] flex-1 items-center gap-2 rounded-ctl bg-canvas px-3 py-[9px] text-muted md:flex">
+      {sectionOn("topbarExtras") && <label className="hidden max-w-[320px] flex-1 items-center gap-2 rounded-ctl bg-canvas px-3 py-[9px] text-muted md:flex">
         <Search className="size-4 shrink-0" />
         <input className="w-full bg-transparent text-ink outline-none placeholder:text-muted" placeholder={t("topbar.searchPlaceholder")} />
-      </label>
+      </label>}
 
       <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
         <div className="flex overflow-hidden rounded-ctl border border-line text-[13px] font-semibold" role="group" aria-label={t("topbar.language")}>
@@ -44,10 +45,12 @@ export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
           })}
         </div>
 
-        <button className="relative hidden size-[38px] place-items-center rounded-ctl border sm:grid border-line text-ink-2 hover:bg-canvas" aria-label={t("topbar.notifications")}>
-          <Bell className="size-[18px]" />
-          <span className="absolute right-2 top-[7px] size-[9px] rounded-full border-2 border-white bg-bad" />
-        </button>
+        {sectionOn("topbarExtras") && (
+          <button className="relative hidden size-[38px] place-items-center rounded-ctl border sm:grid border-line text-ink-2 hover:bg-canvas" aria-label={t("topbar.notifications")}>
+            <Bell className="size-[18px]" />
+            <span className="absolute right-2 top-[7px] size-[9px] rounded-full border-2 border-white bg-bad" />
+          </button>
+        )}
 
         <div className="hidden items-center gap-2.5 sm:flex">
           <div className="grid size-[38px] place-items-center rounded-full bg-primary-100 text-[13px] font-bold text-primary">{initials(persona.name)}</div>

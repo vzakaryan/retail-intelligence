@@ -14,6 +14,7 @@ import { TasksCard } from "./TasksCard";
 import { TodayKpis } from "./TodayKpis";
 import { useRefilled } from "./useRefilled";
 import { pick } from "@/lib/names";
+import { sectionOn } from "@/app/features";
 
 /** Home screen for the store manager — docs/design-references/approved/01-my-store-today.png */
 export function TodayPage() {
@@ -49,7 +50,7 @@ export function TodayPage() {
         <TasksCard />
         <div className="flex flex-col gap-4">
           <OnlineOrdersCard storeId={store.id} kpis={day.kpis[period]} period={period} />
-          <ResultsCard storeId={store.id} />
+          {sectionOn("todayResults") && <ResultsCard storeId={store.id} />}
         </div>
       </section>
 

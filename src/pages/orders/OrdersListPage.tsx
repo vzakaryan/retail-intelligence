@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { ArrowRight, ChevronDown, ChevronUp, CircleHelp, Phone, Undo2, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useDemo } from "@/app/DemoContext";
-import { useOrders, type OrderView } from "@/app/useOrders";
+import { daysBetween, useOrders, type OrderView } from "@/app/useOrders";
 import { useTaskActions } from "@/app/useTaskActions";
 import { DEMO_NOW } from "@/data/world";
 import { Button } from "@/components/ui/Button";
@@ -15,6 +15,7 @@ import { useLocalized } from "@/lib/useLocalized";
 import { ReceiveDialog, orderedLines } from "./ReceiveDialog";
 import { SupplierTile, callRef, hoursUntil, shortDate, useDayLabel } from "./shared";
 import { pick } from "@/lib/names";
+import { sectionOn } from "@/app/features";
 
 /** docs/design-references/approved/02-orders-to-place.png (+ delivery check, step 16) */
 export function OrdersListPage() {
@@ -32,6 +33,7 @@ export function OrdersListPage() {
   const needsCheck = orders.filter((o) => o.needsCheck).sort(byCheck);
   const waiting = orders.filter((o) => o.stage === "placed" && !o.needsCheck).sort(byCheck);
   const received = orders.filter((o) => o.stage === "received");
+  const receiving = sectionOn("orderReceiving");
 
   return (
     <>
@@ -52,12 +54,21 @@ export function OrdersListPage() {
         {dueToday.map((o) => <OrderRow key={o.order.id} view={o} />)}
       </Section>
       <Section label={t("orders.list.comingUp")}>{comingUp.map((o) => <OrderRow key={o.order.id} view={o} />)}</Section>
-      <Section label={t("orders.list.needsCheck", { count: needsCheck.length })} tone="warn">
-        {needsCheck.map((o) => <PlacedRow key={o.order.id} view={o} />)}
-      </Section>
-      <Section label={t("orders.list.waiting")}>{waiting.map((o) => <PlacedRow key={o.order.id} view={o} />)}</Section>
+      {receiving ? (
+        <>
+          <Section label={t("orders.list.needsCheck", { count: needsCheck.length })} tone="warn">
+            {needsCheck.map((o) => <PlacedRow key={o.order.id} view={o} />)}
+          </Section>
+          <Section label={t("orders.list.waiting")}>{waiting.map((o) => <PlacedRow key={o.order.id} view={o} />)}</Section>
+        </>
+      ) : (
+        // MVP: placed orders just wait for delivery — no check or receiving
+        <Section label={t("orders.list.waiting")}>
+          {[...needsCheck, ...waiting].map((o) => <PlacedSimpleRow key={o.order.id} view={o} />)}
+        </Section>
+      )}
 
-      {received.length > 0 && (
+      {receiving && received.length > 0 && (
         <section className="mb-6">
           <button
             className="mb-2.5 ml-0.5 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-[0.06em] text-muted hover:text-ink-2"
@@ -77,6 +88,8 @@ export function OrdersListPage() {
 /** The steps, behind the "How it works" button (was a strip at the top of the page). */
 function HowItWorks({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();
+  const receiving = sectionOn("orderReceiving");
+  const steps = receiving ? [1, 2, 3] : [1, 2];
   return (
     <Card className="mb-6 px-5 py-4">
       <div className="mb-3 flex items-center justify-between gap-3">
@@ -85,18 +98,18 @@ function HowItWorks({ onClose }: { onClose: () => void }) {
           <X className="size-4" />
         </button>
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {[1, 2, 3].map((n) => (
+      <div className={`grid grid-cols-1 gap-4 ${receiving ? "md:grid-cols-3" : "md:grid-cols-2"}`}>
+        {steps.map((n) => (
           <div key={n} className="flex items-start gap-3">
             <span className="grid size-7 shrink-0 place-items-center rounded-full bg-primary-50 text-[13px] font-bold text-primary">{n}</span>
             <div>
               <div className="font-semibold">{t(`orders.how.${n}.title`)}</div>
-              <div className="text-[13px] text-muted">{t(`orders.how.${n}.text`)}</div>
+              <div className="text-[13px] text-muted">{t(!receiving && n === 2 ? "orders.how.2.textMvp" : `orders.how.${n}.text`)}</div>
             </div>
           </div>
         ))}
       </div>
-      <p className="mt-3.5 border-t border-line pt-3 text-[13px] text-muted">{t("orders.how.autoClose")}</p>
+      {receiving && <p className="mt-3.5 border-t border-line pt-3 text-[13px] text-muted">{t("orders.how.autoClose")}</p>}
     </Card>
   );
 }
@@ -255,6 +268,34 @@ function PlacedRow({ view }: { view: OrderView }) {
         )}
       </div>
       <ReceiveDialog view={view} open={receiving} onClose={() => setReceiving(false)} />
+    </div>
+  );
+}
+
+/** MVP: a placed order waiting for its delivery (no check / receiving). */
+function PlacedSimpleRow({ view }: { view: OrderView }) {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const dayLabel = useDayLabel();
+  const { order } = view;
+  // Delivery day already passed (e.g. Arevi Farm): show it as late
+  const lateDays = Math.max(0, daysBetween(order.delivery, DEMO_NOW));
+
+  return (
+    <div className={`grid grid-cols-1 items-center gap-x-5 gap-y-3 px-5 py-4 ${PLACED_COLS}`}>
+      <SupplierCell view={view} meta={t("orders.list.placedMeta", { date: shortDate(order.placedOn ?? DEMO_NOW), count: orderedLines(view).length || order.lines.length })} />
+      <div>
+        <div className="text-xs text-muted">{t("orders.list.col.delivery")}</div>
+        <div className="font-semibold">{dayLabel(order.delivery, order.deliveryTime)}</div>
+      </div>
+      {lateDays > 0 ? (
+        <Pill tone="bad">{t("orders.list.daysLate", { count: lateDays })}</Pill>
+      ) : (
+        <Pill tone={view.placedNow ? "good" : "neutral"}>{t(view.placedNow ? "orders.list.placedNow" : "orders.list.onTheWay")}</Pill>
+      )}
+      <div className="flex flex-wrap gap-2 md:justify-end">
+        <Button onClick={() => navigate(`/orders/${order.id}/done`)}>{t("orders.list.viewOrder")}</Button>
+      </div>
     </div>
   );
 }

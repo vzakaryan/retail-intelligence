@@ -19,6 +19,7 @@ import { useLocalized } from "@/lib/useLocalized";
 import { MissesCard } from "./MissesCard";
 import { ProductDrawer } from "./ProductDrawer";
 import { TrendCard } from "./TrendCard";
+import { sectionOn } from "@/app/features";
 import { stepRef, useParamText, useRunsOutText } from "./shared";
 import { supplierName } from "@/lib/names";
 
@@ -140,10 +141,16 @@ export function StockoutsPage() {
         )}
       </Card>
 
-      <section className="grid grid-cols-1 items-start gap-4 xl:grid-cols-[2fr_1fr]">
-        <TrendCard trend={data.trend} />
-        <MissesCard data={data} />
-      </section>
+      {sectionOn("adoptionTrends") ? (
+        <section className="grid grid-cols-1 items-start gap-4 xl:grid-cols-[2fr_1fr]">
+          <TrendCard trend={data.trend} />
+          <MissesCard data={data} />
+        </section>
+      ) : (
+        <section className="grid grid-cols-1 items-start gap-4 xl:grid-cols-2">
+          <MissesCard data={data} />
+        </section>
+      )}
 
       <ProductDrawer row={data.rows.find((r) => r.productId === open)} onClose={() => setOpen(undefined)} />
     </>

@@ -8,6 +8,7 @@ import { fmtDate } from "@/lib/format";
 import type { OrderView } from "@/app/useOrders";
 import type { TaskRef } from "@/app/useTaskActions";
 import { pick, initials } from "@/lib/names";
+import { sectionOn } from "@/app/features";
 
 export function SupplierTile({ supplier }: { supplier: Supplier }) {
   return <div className={`grid size-10 shrink-0 place-items-center rounded-ctl text-[13px] font-bold ${TONE[supplier.tone]}`}>{initials(supplier.name)}</div>;
@@ -45,7 +46,9 @@ export function OrderHeader({ view, step }: { view: OrderView; step: 1 | 2 | 3 |
   const { t } = useTranslation();
   const dayLabel = useDayLabel();
   const o = view.order;
-  const steps = [t("orders.steps.review"), t("orders.steps.place"), t("orders.steps.placed"), t("orders.steps.received")];
+  const receiving = sectionOn("orderReceiving");
+  // MVP: Review · Place · Placed (no "Received" step)
+  const steps = [t("orders.steps.review"), t("orders.steps.place"), t("orders.steps.placed"), t("orders.steps.received")].slice(0, receiving ? 4 : 3);
 
   return (
     <>
@@ -61,7 +64,7 @@ export function OrderHeader({ view, step }: { view: OrderView; step: 1 | 2 | 3 |
         {view.receipt ? (
           t("orders.order.subtitleReceived", { date: shortDate(view.receipt.on) })
         ) : view.stage === "placed" ? (
-          t("orders.order.subtitleCheck", { date: shortDate(view.checkOn!) })
+          receiving ? t("orders.order.subtitleCheck", { date: shortDate(view.checkOn!) }) : t("orders.order.subtitleDelivery", { date: dayLabel(o.delivery, o.deliveryTime, true) })
         ) : (
           <>
             {t("orders.order.orderBy")} <b className={hoursUntil(o.deadline) < 6 ? "text-bad" : "text-ink"}>{dayLabel(o.deadline, undefined, true)}</b>

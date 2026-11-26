@@ -1,6 +1,7 @@
 import { createHashRouter, Navigate, RouterProvider } from "react-router";
 import { DemoProvider } from "@/app/DemoContext";
 import { ALL_NAV_ITEMS } from "@/app/navigation";
+import { pageOn } from "@/app/features";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { PlaceholderPage } from "@/pages/PlaceholderPage";
 import { TodayPage } from "@/pages/today/TodayPage";
@@ -37,7 +38,7 @@ const router = createHashRouter([
     element: <AppLayout />,
     children: [
       { index: true, element: <Navigate to="/today" replace /> },
-      ...ALL_NAV_ITEMS.map((item) => ({ path: item.path, element: PAGES[item.id]?.() ?? <PlaceholderPage item={item} /> })),
+      ...ALL_NAV_ITEMS.filter((item) => pageOn(item.id)).map((item) => ({ path: item.path, element: PAGES[item.id]?.() ?? <PlaceholderPage item={item} /> })),
       { path: "/orders/:orderId", element: <OrderReviewPage /> },
       { path: "/orders/:orderId/place", element: <OrderPlacePage /> },
       { path: "/orders/:orderId/done", element: <OrderDonePage /> },

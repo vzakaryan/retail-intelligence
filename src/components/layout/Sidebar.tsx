@@ -2,6 +2,7 @@ import { NavLink } from "react-router";
 import { ShoppingCart, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { FOOTER_NAV, NAV, type NavItem } from "@/app/navigation";
+import { SHOW_MVP_LABEL, pageOn } from "@/app/features";
 import { useDemo } from "@/app/DemoContext";
 import { useTasks } from "@/app/useTasks";
 import { useOrders } from "@/app/useOrders";
@@ -14,6 +15,7 @@ interface Props {
 
 export function Sidebar({ open, onClose }: Props) {
   const { t } = useTranslation();
+  const footer = FOOTER_NAV.filter((i) => pageOn(i.id));
 
   return (
     <>
@@ -41,27 +43,32 @@ export function Sidebar({ open, onClose }: Props) {
           </div>
           <div className="min-w-0">
             <div className="text-[15px] font-bold leading-tight">{t("app.name")}</div>
-            <div className="text-xs text-muted">{t("app.tagline")}</div>
+            <div className="flex flex-wrap items-center gap-x-1.5 text-xs text-muted">
+              {t("app.tagline")}
+              {SHOW_MVP_LABEL && <span className="rounded bg-primary-50 px-1.5 text-[10.5px] font-semibold leading-[16px] tracking-wide text-primary">{t("app.mvp")}</span>}
+            </div>
           </div>
         </div>
 
         <nav className="flex-1 overflow-y-auto">
-          {NAV.map((group) => (
-            <div key={group.groupKey ?? "top"}>
-              {group.groupKey && (
-                <div className="px-2.5 pb-1.5 pt-4 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted">
-                  {t(`nav.groups.${group.groupKey}`)}
-                </div>
-              )}
-              {group.items.map((item) => (
-                <SidebarLink key={item.id} item={item} onNavigate={onClose} />
-              ))}
-            </div>
-          ))}
+          {NAV.map((group) => ({ ...group, items: group.items.filter((i) => pageOn(i.id)) }))
+            .filter((group) => group.items.length > 0)
+            .map((group) => (
+              <div key={group.groupKey ?? "top"}>
+                {group.groupKey && (
+                  <div className="px-2.5 pb-1.5 pt-4 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted">
+                    {t(`nav.groups.${group.groupKey}`)}
+                  </div>
+                )}
+                {group.items.map((item) => (
+                  <SidebarLink key={item.id} item={item} onNavigate={onClose} />
+                ))}
+              </div>
+            ))}
         </nav>
 
-        <div className="border-t border-line pt-2.5">
-          {FOOTER_NAV.map((item) => (
+        <div className={footer.length ? "border-t border-line pt-2.5" : ""}>
+          {footer.map((item) => (
             <SidebarLink key={item.id} item={item} onNavigate={onClose} />
           ))}
           <div className="flex items-center gap-1.5 px-2.5 pt-2 text-xs text-muted">

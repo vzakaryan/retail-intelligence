@@ -11,7 +11,8 @@ import { IconTile } from "@/components/ui/IconTile";
 import { Pill } from "@/components/ui/Pill";
 import { fmtNumber } from "@/lib/format";
 import { useLocalized } from "@/lib/useLocalized";
-import { OrderHeader, callRef, shortDate } from "./shared";
+import { OrderHeader, callRef, shortDate, useDayLabel } from "./shared";
+import { sectionOn } from "@/app/features";
 import { OrderLinesCard } from "./OrderLinesCard";
 import { OrderNotFound } from "./OrderNotFound";
 import { ReceiveDialog, orderedLines } from "./ReceiveDialog";
@@ -26,6 +27,8 @@ export function OrderDonePage() {
   const { store, snooze, setReceipt } = useDemo();
   const view = useOrder(store.id, orderId);
   const actions = useTaskActions(store.id);
+  const dayLabel = useDayLabel();
+  const receivingOn = sectionOn("orderReceiving");
   // "Some items short?" from today's task opens the dialog straight on the lines
   const [receiving, setReceiving] = useState<false | "ask" | "short">(params.get("receive") === "short" ? "short" : false);
   if (!view) return <OrderNotFound />;
@@ -57,13 +60,15 @@ export function OrderDonePage() {
           </>
         ) : (
           <>
-            <IconTile icon={view.checkOverdue ? Clock : view.placedNow ? CircleCheck : CalendarCheck} tone={view.checkOverdue ? "bad" : "good"} size="lg" />
+            <IconTile icon={!receivingOn ? CircleCheck : view.checkOverdue ? Clock : view.placedNow ? CircleCheck : CalendarCheck} tone={receivingOn && view.checkOverdue ? "bad" : "good"} size="lg" />
             <div className="min-w-0 flex-1">
               <div className="text-base font-semibold">
                 {view.placedNow ? t("orders.done.placedTitle", { supplier }) : t("orders.done.placedBefore", { date: shortDate(o.placedOn!) })}
               </div>
               <div className="text-muted">
-                {view.needsCheck
+                {!receivingOn
+                  ? t("orders.done.deliveryOn", { date: dayLabel(o.delivery, o.deliveryTime, true) })
+                  : view.needsCheck
                   ? view.checkOverdue
                     ? o.late
                       ? t("orders.done.checkOverdueStock", { date: shortDate(view.checkOn!), count: o.late.daysOfStockLeft })
@@ -72,7 +77,7 @@ export function OrderDonePage() {
                   : t("orders.done.checkOn", { date: shortDate(view.checkOn!) })}
               </div>
             </div>
-            <div className="flex flex-wrap gap-2">
+            {receivingOn && <div className="flex flex-wrap gap-2">
               {view.needsCheck && (view.checkOverdue > 0 || view.snoozed >= 2) &&
                 (callDone ? (
                   <Pill tone="good" className="self-center">
@@ -88,7 +93,7 @@ export function OrderDonePage() {
               <Button variant={view.needsCheck ? "primary" : "soft"} onClick={() => setReceiving("ask")}>
                 {t("orders.list.receivedBtn")}
               </Button>
-            </div>
+            </div>}
           </>
         )}
       </Card>
@@ -108,7 +113,7 @@ export function OrderDonePage() {
         )}
       </div>
 
-      {receiving && <ReceiveDialog key={receiving} view={view} open startShort={receiving === "short"} onClose={() => setReceiving(false)} />}
+      {receiving && receivingOn && <ReceiveDialog key={receiving} view={view} open startShort={receiving === "short"} onClose={() => setReceiving(false)} />}
     </>
   );
 }

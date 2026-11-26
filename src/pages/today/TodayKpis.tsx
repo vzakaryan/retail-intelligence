@@ -3,6 +3,7 @@ import { Banknote, Boxes, PackageX, Receipt, ShoppingBag, ShoppingBasket, Trash2
 import { useTranslation } from "react-i18next";
 import type { DayKpis, Period } from "@/data/today";
 import { excessKpi } from "@/data/impact";
+import { pageOn, sectionOn } from "@/app/features";
 import { KpiCard, deltaTone } from "@/components/ui/KpiCard";
 import { fmtAmd, fmtAmdFull, fmtDeltaPct, fmtDeltaPp, fmtNumber, fmtPercent } from "@/lib/format";
 
@@ -26,10 +27,59 @@ export function TodayKpis({ storeId, kpis, period }: { storeId: string; kpis: Da
     return { text: fmtDeltaPct(d), tone: deltaTone(d, true) };
   };
 
+  const netSales = <KpiCard icon={Banknote} iconTone="primary" label={t("today.kpi.netSales")} info={t("today.kpi.netSalesInfo")} value={fmtAmd(now.netSales)} delta={pct(now.netSales, prev.netSales)} foot={vs} />;
+  const oosCard = (
+    <KpiCard
+      icon={PackageX}
+      iconTone="bad"
+      label={t("today.kpi.oosRate")}
+      info={t("today.kpi.oosRateInfo")}
+      value={fmtPercent(oos)}
+      delta={{ text: fmtDeltaPp(-kpis.availability.delta), tone: deltaTone(-kpis.availability.delta, false) }}
+      foot={vs}
+      to="/stockouts"
+    />
+  );
+  const lostCard = (
+    <KpiCard
+      icon={TrendingDown}
+      iconTone="bad"
+      label={t("today.kpi.lostSales")}
+      info={t("today.kpi.lostSalesInfo")}
+      value={fmtAmd(kpis.lostSales.value)}
+      delta={{ text: fmtDeltaPct(kpis.lostSales.delta), tone: deltaTone(kpis.lostSales.delta, false) }}
+      foot={vs}
+      to="/stockouts"
+    />
+  );
+  const writeOffsCard = (
+    <KpiCard
+      icon={Trash2}
+      iconTone="warn"
+      label={t("today.kpi.writeOffs")}
+      info={t("today.kpi.writeOffsInfo")}
+      value={fmtAmd(kpis.writeOffs.value)}
+      delta={{ text: fmtDeltaPct(kpis.writeOffs.delta), tone: deltaTone(kpis.writeOffs.delta, false) }}
+      foot={vs}
+      to="/write-offs"
+    />
+  );
+
+  // MVP: one row of 4 — the sales number they already know, then three new ones.
+  if (!sectionOn("todayAllKpis"))
+    return (
+      <section className="mb-6 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+        {netSales}
+        {oosCard}
+        {lostCard}
+        {writeOffsCard}
+      </section>
+    );
+
   return (
     <>
       <KpiGroup title={t("today.kpi.group.sales")}>
-        <KpiCard icon={Banknote} iconTone="primary" label={t("today.kpi.netSales")} info={t("today.kpi.netSalesInfo")} value={fmtAmd(now.netSales)} delta={pct(now.netSales, prev.netSales)} foot={vs} />
+        {netSales}
         <KpiCard icon={ShoppingBasket} iconTone="primary" label={t("today.kpi.basket")} info={t("today.kpi.basketInfo")} value={fmtAmdFull(Math.round(basket / 10) * 10)} delta={pct(basket, basketPrev)} foot={vs} />
         <KpiCard icon={Receipt} iconTone="primary" label={t("today.kpi.receipts")} info={t("today.kpi.receiptsInfo")} value={fmtNumber(now.receipts)} delta={pct(now.receipts, prev.receipts)} foot={vs} />
         <KpiCard
@@ -46,26 +96,8 @@ export function TodayKpis({ storeId, kpis, period }: { storeId: string; kpis: Da
       </KpiGroup>
 
       <KpiGroup title={t("today.kpi.group.stock")}>
-        <KpiCard
-          icon={PackageX}
-          iconTone="bad"
-          label={t("today.kpi.oosRate")}
-          info={t("today.kpi.oosRateInfo")}
-          value={fmtPercent(oos)}
-          delta={{ text: fmtDeltaPp(-kpis.availability.delta), tone: deltaTone(-kpis.availability.delta, false) }}
-          foot={vs}
-          to="/stockouts"
-        />
-        <KpiCard
-          icon={TrendingDown}
-          iconTone="bad"
-          label={t("today.kpi.lostSales")}
-          info={t("today.kpi.lostSalesInfo")}
-          value={fmtAmd(kpis.lostSales.value)}
-          delta={{ text: fmtDeltaPct(kpis.lostSales.delta), tone: deltaTone(kpis.lostSales.delta, false) }}
-          foot={vs}
-          to="/stockouts"
-        />
+        {oosCard}
+        {lostCard}
         <KpiCard
           icon={Boxes}
           iconTone="warn"
@@ -75,18 +107,9 @@ export function TodayKpis({ storeId, kpis, period }: { storeId: string; kpis: Da
           sub={t("today.kpi.excessSub", { share: fmtPercent(excess.share) })}
           delta={{ text: fmtDeltaPct(excess.delta), tone: deltaTone(excess.delta, false) }}
           foot={t(`today.vsAgo.${period}`)}
-          to="/overstock"
+          to={pageOn("overstock") ? "/overstock" : undefined}
         />
-        <KpiCard
-          icon={Trash2}
-          iconTone="warn"
-          label={t("today.kpi.writeOffs")}
-          info={t("today.kpi.writeOffsInfo")}
-          value={fmtAmd(kpis.writeOffs.value)}
-          delta={{ text: fmtDeltaPct(kpis.writeOffs.delta), tone: deltaTone(kpis.writeOffs.delta, false) }}
-          foot={vs}
-          to="/write-offs"
-        />
+        {writeOffsCard}
       </KpiGroup>
     </>
   );

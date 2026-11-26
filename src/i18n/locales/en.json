@@ -2,7 +2,8 @@
   "app": {
     "name": "Retail Intelligence",
     "tagline": "for Supermarket Chains",
-    "dataFreshness": "Data updated today, {{time}}"
+    "dataFreshness": "Data updated today, {{time}}",
+    "mvp": "MVP"
   },
   "nav": {
     "groups": {
@@ -332,20 +333,21 @@
       "tomorrow": "Tomorrow"
     },
     "how": {
-      "link": "How it works",
-      "title": "How order suggestions work",
       "1": {
         "title": "Review the quantities",
         "text": "We suggest how much to order. Accept or change each one."
       },
       "2": {
         "title": "Order as you do today",
-        "text": "Phone, email or Excel. Then tell us it's placed and when to check the delivery."
+        "text": "Phone, email or Excel. Then tell us it's placed and when to check the delivery.",
+        "textMvp": "Phone, email or Excel. Then tell us it's placed."
       },
       "3": {
         "title": "Confirm the delivery",
         "text": "On that day we remind you in today's tasks: received, some items short, or not yet."
       },
+      "link": "How it works",
+      "title": "How order suggestions work",
       "autoClose": "Orders not confirmed within 7 days of their check date close automatically, so this list never piles up."
     },
     "list": {
@@ -408,7 +410,8 @@
       "orderBy": "Order by",
       "subtitle": "delivery {{delivery}} · should last until the next delivery on {{until}}",
       "subtitleCheck": "Check delivery on {{date}}",
-      "subtitleReceived": "Received {{date}}"
+      "subtitleReceived": "Received {{date}}",
+      "subtitleDelivery": "Placed · delivery {{date}}"
     },
     "reason": {
       "weekend": "Weekend demand +{{pct}}%",
@@ -544,7 +547,8 @@
       "receivedLines_other": "Ordered vs. received · {{count}} products",
       "colProduct": "Product",
       "colOrdered": "Ordered",
-      "colReceived": "Received"
+      "colReceived": "Received",
+      "deliveryOn": "Expected delivery: {{date}}."
     },
     "notFound": {
       "title": "Order not found",

@@ -6,6 +6,7 @@ import { atRiskValue, getExpiry, stockValue, type ExpiryGroup, type ExpiryRow } 
 import { getProduct } from "@/data/products";
 import { getStoreDay } from "@/data/today";
 import { BeforeAfterChart } from "@/components/ui/BeforeAfterChart";
+import { sectionOn } from "@/app/features";
 import { Card } from "@/components/ui/Card";
 import { HBar } from "@/components/ui/HBar";
 import { KpiCard, deltaTone } from "@/components/ui/KpiCard";
@@ -119,7 +120,7 @@ export function ExpiryPage() {
         )}
       </Card>
 
-      <section className="grid grid-cols-1 items-start gap-4 xl:grid-cols-[1fr_1.3fr]">
+      <section className={`grid grid-cols-1 items-start gap-4 ${sectionOn("adoptionTrends") ? "xl:grid-cols-[1fr_1.3fr]" : "xl:grid-cols-2"}`}>
         <Card>
           <div className="px-5 pt-[18px]">
             <div className="text-base font-semibold">{t("expiry.reasons.title")}</div>
@@ -134,7 +135,9 @@ export function ExpiryPage() {
             {t("expiry.reasons.top", { names: data.topExpired.map((id) => loc(getProduct(id).name)).join(", ") })}
           </div>
         </Card>
-        <BeforeAfterChart title={t("expiry.trend.title")} subtitle={t("expiry.trend.subtitle")} values={trend} before={data.trend.before} firstWeek={new Date(2026, 7, 17)} format={(v) => fmtNumber(v / 1e6, 2)} />
+        {sectionOn("adoptionTrends") && (
+          <BeforeAfterChart title={t("expiry.trend.title")} subtitle={t("expiry.trend.subtitle")} values={trend} before={data.trend.before} firstWeek={new Date(2026, 7, 17)} format={(v) => fmtNumber(v / 1e6, 2)} />
+        )}
       </section>
 
       <ExpiryDrawer row={data.rows.find((r) => r.productId === open)} onClose={() => setOpen(undefined)} />

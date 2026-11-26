@@ -18,6 +18,7 @@ import { OrderLinesCard } from "./OrderLinesCard";
 import { OrderNotFound } from "./OrderNotFound";
 import { downloadOrderSheet, orderAsText } from "./orderSheet";
 import { pick } from "@/lib/names";
+import { sectionOn } from "@/app/features";
 
 /** Step 2 of an order — docs/design-references/approved/05-order-place.png */
 export function OrderPlacePage() {
@@ -28,6 +29,7 @@ export function OrderPlacePage() {
   const { store, markPlaced } = useDemo();
   const view = useOrder(store.id, orderId);
   const [copied, setCopied] = useState(false);
+  const receiving = sectionOn("orderReceiving");
   // "Check delivery on": filled in from the supplier's usual delivery day for this order
   const usual = view ? Math.max(1, daysBetween(DEMO_NOW, view.order.delivery)) : 1;
   const [checkIn, setCheckIn] = useState<"1" | "2" | "pick">(usual === 1 ? "1" : usual === 2 ? "2" : "pick");
@@ -90,14 +92,14 @@ export function OrderPlacePage() {
             <div className="text-base font-semibold">{t("orders.place.confirmTitle")}</div>
             <div className="mt-0.5 text-[13px] text-muted">{t("orders.place.confirmSub")}</div>
             <ul className="mt-2.5 space-y-1.5 text-ink-2">
-              {["tasks", "late", "learn"].map((k) => (
+              {(receiving ? ["tasks", "late", "learn"] : ["tasks", "learn"]).map((k) => (
                 <li key={k} className="flex items-start gap-2.5">
                   <CircleCheck className="mt-0.5 size-[18px] shrink-0 text-good" />
                   {t(`orders.place.benefit.${k}`)}
                 </li>
               ))}
             </ul>
-            <div className="mt-4 rounded-ctl border border-line bg-subtle px-3.5 py-3">
+            {receiving && <div className="mt-4 rounded-ctl border border-line bg-subtle px-3.5 py-3">
               <div className="font-semibold">{t("orders.place.checkOn")}</div>
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <Segmented
@@ -122,7 +124,7 @@ export function OrderPlacePage() {
                 )}
               </div>
               <p className="mt-2 text-xs text-muted">{t("orders.place.checkOnHint", { date: shortDate(checkOn) })}</p>
-            </div>
+            </div>}
             <Button variant="primary" className="mt-4 w-full justify-center py-[11px] text-sm" onClick={place}>
               <Check />
               {t("orders.place.confirm", { supplier: pick(view.supplier.name) })}

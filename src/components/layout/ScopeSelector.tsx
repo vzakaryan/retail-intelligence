@@ -4,6 +4,7 @@ import { Check, ChevronDown, Map, Store as StoreIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useDemo } from "@/app/DemoContext";
 import { useScope } from "@/app/useScope";
+import { pageOn } from "@/app/features";
 import { STORES } from "@/data/world";
 import { StoreBadge } from "@/components/ui/StoreBadge";
 import { useStoreLabel } from "@/lib/useStoreLabel";
@@ -65,8 +66,12 @@ export function ScopeSelector() {
 
       {open && (
         <div className="absolute left-0 top-full z-50 mt-2 max-h-[70vh] w-[min(20rem,calc(100vw-2rem))] overflow-y-auto rounded-card border border-line bg-white p-1.5 shadow-xl shadow-ink/10" role="listbox">
-          <MenuLabel>{t("topbar.headOffice")}</MenuLabel>
-          <MenuRow active={scope === "chain"} onClick={chooseChain} title={t("topbar.allStores")} meta={t("topbar.storeCount", { count: STORES.length })} />
+          {pageOn("stores") && (
+            <>
+              <MenuLabel>{t("topbar.headOffice")}</MenuLabel>
+              <MenuRow active={scope === "chain"} onClick={chooseChain} title={t("topbar.allStores")} meta={t("topbar.storeCount", { count: STORES.length })} />
+            </>
+          )}
           <MenuLabel>{t("topbar.stores")}</MenuLabel>
           {STORES.map((s) => (
             <MenuRow

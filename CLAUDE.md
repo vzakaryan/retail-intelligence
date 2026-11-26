@@ -123,6 +123,11 @@ assumes automation they don't have.
   `.github/workflows/deploy.yml` → GitHub Pages (`base: /retail-intelligence/`).
 - Pinned to stable majors on purpose (Vite 7, React Router 7, TS 5.9, i18next 25,
   lucide-react 0.x) — newer majors exist but are avoided for demo stability.
+- **`src/app/features.ts` — MVP switches.** The deployed demo shows only the MVP
+  (see Step 22). Hidden modules and sections stay in the code; flip a flag there to
+  bring one back, or open the demo with `?full=1` (`?full=0` to leave) to see
+  everything for that browser tab. Use `pageOn(id)` / `sectionOn(id)` when adding links
+  or cards that point at a module. Full pre-MVP version: git tag `full-version-v1`.
 - `src/app/navigation.ts` — single source for sidebar items, routes, badges, and
   whether a screen's design is `approved` or `planned`. Add new screens here.
 - `src/app/DemoContext.tsx` — selected store. `src/app/useScope.ts` — "chain"
@@ -572,3 +577,21 @@ top nav was replaced by a sidebar).
     (`adoptionFactor`, `wasteFactor` in `world.ts`), so stores that act on more
     suggestions show bigger drops in out-of-stock / write-offs and less extra stock.
     Store 03 unchanged. Availability ranking, `chainKpis`, `CHAIN_DELTAS` removed.
+- **Step 22 (2026-11-26): MVP cut for the first client meeting.** The client is far from
+  technology (they track only daily / average sales), and the full demo was too much
+  and looked too finished for "built in 2 weeks". Agreed with the user:
+  - **Shown:** My store today, Stockout risk, Order suggestions, Online orders (client
+    cares about it), Expiry & write-offs. **Hidden:** Overstock, Suppliers, Promotions,
+    All stores / head office (incl. the store-selector entry), Settings, Help, top-bar
+    search and notifications.
+  - **Inside kept pages:** My store today shows one row of 4 numbers (Net sales,
+    Out-of-stock rate, Lost sales, Write-offs) and no "Your results so far"; the
+    "before vs with the product" trend charts are hidden (Stockout risk, Online orders,
+    Expiry); orders stop at Review → Place → Placed (no delivery check / receiving,
+    no "Did the order arrive?" task; a placed order whose delivery day passed shows
+    "N days late"); links to hidden pages are removed. Small "MVP" label under the logo.
+  - All switches in `src/app/features.ts`; `?full=1` shows the full version; git tag
+    `full-version-v1` = state before the cut. New i18n keys (en + hy): `app.mvp`,
+    `orders.how.2.textMvp`, `orders.order.subtitleDelivery`, `orders.done.deliveryOn`.
+  - Client presentation (Slides artifact, English, 10 slides) rebuilt around the MVP,
+    with a "What comes next" slide listing the hidden modules.

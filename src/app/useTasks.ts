@@ -5,6 +5,7 @@ import { newTaskId } from "@/data/stockouts";
 import { getStoreDay, type Task } from "@/data/today";
 import { useDemo, type TaskOverride } from "./DemoContext";
 import { useOrders } from "./useOrders";
+import { sectionOn } from "./features";
 
 export interface TaskState extends Task {
   done: boolean;
@@ -54,6 +55,8 @@ export function useTasks(storeId: string) {
     const tasks: TaskState[] = [];
     for (const t of all) {
       if (t.kind === "checkDelivery") {
+        // MVP: no delivery check / receiving
+        if (!sectionOn("orderReceiving")) continue;
         const o = orders.find((x) => x.order.supplierId === t.supplierId && x.stage !== "notStarted" && x.stage !== "inReview" && x.stage !== "ready");
         if (!o) continue;
         if (o.receipt) {

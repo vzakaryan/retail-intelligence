@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
+import { pageOn, sectionOn } from "@/app/features";
+import type { PageId } from "@/app/navigation";
 import { Banknote, Check, ChevronRight, PackageMinus, ShoppingBag, TriangleAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useDemo } from "@/app/DemoContext";
@@ -26,6 +28,19 @@ const td = "border-b border-line px-4 py-3 align-middle first:pl-5 last:pr-5";
 
 /** Where each cause of missing items is dealt with */
 const REASON_LINK: Record<MissReason, string> = { shelfEmpty: "/stockouts", lateDelivery: "/suppliers", outOfStock: "/orders", damaged: "/write-offs" };
+const REASON_PAGE: Record<MissReason, PageId> = { shelfEmpty: "stockouts", lateDelivery: "suppliers", outOfStock: "orders", damaged: "writeOffs" };
+
+/** A cause row: a link to the page that deals with it, or plain when that page is hidden (MVP). */
+function ReasonLink({ to, children }: { to?: string; children: ReactNode }) {
+  const cls = "group grid grid-cols-[1fr_auto_auto] items-center gap-x-3 gap-y-1.5 rounded-lg px-2 py-2.5";
+  return to ? (
+    <Link to={to} className={`${cls} hover:bg-subtle`}>
+      {children}
+    </Link>
+  ) : (
+    <div className={cls}>{children}</div>
+  );
+}
 const REASON_COLOR: Record<MissReason, string> = { shelfEmpty: "#d63b3b", lateDelivery: "#e8a23a", outOfStock: "#8b7cf0", damaged: "#9aa0b4" };
 
 /** docs/design-references/approved/09-online-orders.png, reworked in step 17 */
@@ -137,14 +152,16 @@ export function OnlinePage() {
 
       <section className="grid grid-cols-1 items-start gap-4 xl:grid-cols-2">
         <Reasons />
-        <BeforeAfterChart
-          title={t("online.trend.title")}
-          subtitle={t("online.trend.subtitle")}
-          values={st.data.trend.values}
-          before={st.data.trend.before}
-          firstWeek={new Date(2026, 7, 17)}
-          format={(v) => fmtNumber(v, 1)}
-        />
+        {sectionOn("adoptionTrends") && (
+          <BeforeAfterChart
+            title={t("online.trend.title")}
+            subtitle={t("online.trend.subtitle")}
+            values={st.data.trend.values}
+            before={st.data.trend.before}
+            firstWeek={new Date(2026, 7, 17)}
+            format={(v) => fmtNumber(v, 1)}
+          />
+        )}
       </section>
     </>
   );
@@ -304,17 +321,17 @@ function Reasons() {
       <ul className="px-3 pb-3 pt-2">
         {reasons.map((r) => (
           <li key={r.key}>
-            <Link to={REASON_LINK[r.key]} className="group grid grid-cols-[1fr_auto_auto] items-center gap-x-3 gap-y-1.5 rounded-lg px-2 py-2.5 hover:bg-subtle">
+            <ReasonLink to={pageOn(REASON_PAGE[r.key]) ? REASON_LINK[r.key] : undefined}>
               <span className="font-medium">{t(`online.reasons.${r.key}`)}</span>
               <span className="whitespace-nowrap text-right font-semibold tabular-nums">
                 {fmtPercent((r.lost / total) * 100, 0)} <span className="font-normal text-muted">· {fmtAmd(r.lost, { thousands: true })}</span>
               </span>
-              <ChevronRight className="size-4 text-faint group-hover:text-primary" />
+              {pageOn(REASON_PAGE[r.key]) ? <ChevronRight className="size-4 text-faint group-hover:text-primary" /> : <span />}
               <span className="col-span-3 h-2 rounded-full bg-[#eeeef4]">
                 <span className="block h-full rounded-full" style={{ width: `${(r.lost / max) * 100}%`, background: REASON_COLOR[r.key] }} />
               </span>
-              <span className="col-span-3 text-xs text-muted">{t(`online.reasons.link.${r.key}`)}</span>
-            </Link>
+              {pageOn(REASON_PAGE[r.key]) && <span className="col-span-3 text-xs text-muted">{t(`online.reasons.link.${r.key}`)}</span>}
+            </ReasonLink>
           </li>
         ))}
       </ul>
