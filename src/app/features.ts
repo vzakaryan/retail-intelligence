@@ -60,4 +60,4 @@ export type SectionId = keyof typeof SECTION_SWITCHES;
 export const pageOn = (id: PageId): boolean => FULL_MODE || PAGE_SWITCHES[id];
 export const sectionOn = (id: SectionId): boolean => FULL_MODE || SECTION_SWITCHES[id];
 /** Show the small "MVP" label next to the logo. */
-export const SHOW_MVP_LABEL = !FULL_MODE;
+export const SHOW_MVP_LABEL = false;
