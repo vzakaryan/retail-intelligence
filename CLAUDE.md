@@ -595,3 +595,9 @@ top nav was replaced by a sidebar).
     `orders.how.2.textMvp`, `orders.order.subtitleDelivery`, `orders.done.deliveryOn`.
   - Client presentation (Slides artifact, English, 10 slides) rebuilt around the MVP,
     with a "What comes next" slide listing the hidden modules.
+  - Online orders: "Orders at risk today" key number hidden (`onlineAtRisk`) — both of
+    its numbers are estimates; replaced there by **Online orders yesterday** (store 03:
+    41, "3 had missing items"; `StoreOnline.yesterday`) — facts only. Yesterday, not today,
+    because the demo clock is 11:00 and picking starts at 12:00. My store today's online
+    card is unchanged. Needs the client's delivered online orders with missing items
+    (add to data requirements).

@@ -49,6 +49,8 @@ const SECTION_SWITCHES = {
   adoptionTrends: false,
   /** Order suggestions: delivery check and receiving (steps 3–4, "Did everything arrive?"). */
   orderReceiving: false,
+  /** Online orders: "Orders at risk today" key number (both of its numbers are estimates). Off = "Orders today" instead. */
+  onlineAtRisk: false,
   /** Top bar: product search and notifications (not functional in the demo). */
   topbarExtras: false,
 };

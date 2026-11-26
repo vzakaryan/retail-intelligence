@@ -809,7 +809,11 @@
       "ofOrders": "{{count}} of {{total}}",
       "atRiskSub": "fix before picking at {{time}}",
       "sales": "Online sales this week",
-      "salesInfo": "Net sales from online orders this week."
+      "salesInfo": "Net sales from online orders this week.",
+      "yesterday": "Online orders yesterday",
+      "yesterdaySub_one": "{{count}} had missing items",
+      "yesterdaySub_other": "{{count}} had missing items",
+      "yesterdayInfo": "Online orders delivered yesterday, and how many of them had at least one missing item."
     },
     "prep": {
       "title": {

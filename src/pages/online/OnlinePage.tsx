@@ -2,7 +2,7 @@ import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import { pageOn, sectionOn } from "@/app/features";
 import type { PageId } from "@/app/navigation";
-import { Banknote, Check, ChevronRight, PackageMinus, ShoppingBag, TriangleAlert } from "lucide-react";
+import { Banknote, Check, ChevronRight, ClipboardList, PackageMinus, ShoppingBag, TriangleAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useDemo } from "@/app/DemoContext";
 import type { MissReason, OnlineDay, PrepItem } from "@/data/online";
@@ -84,14 +84,26 @@ export function OnlinePage() {
           delta={{ text: fmtDeltaPct(mw.lostDelta), tone: deltaTone(mw.lostDelta, false) }}
           foot={t("today.vs.week")}
         />
-        <KpiCard
-          icon={TriangleAlert}
-          iconTone={today.atRiskTotal ? "warn" : "good"}
-          label={t("online.kpi.atRiskToday")}
-          info={t("online.kpi.atRiskInfo")}
-          value={t("online.kpi.ofOrders", { count: today.atRiskTotal, total: today.day.orders })}
-          sub={today.atRiskTotal ? t("online.kpi.atRiskSub", { time: today.day.pickingStarts }) : t("online.kpi.allReady")}
-        />
+        {!sectionOn("onlineAtRisk") ? (
+          // MVP: yesterday's facts (delivered orders, how many had missing items) instead of an at-risk estimate
+          <KpiCard
+            icon={ClipboardList}
+            iconTone="info"
+            label={t("online.kpi.yesterday")}
+            info={t("online.kpi.yesterdayInfo")}
+            value={fmtNumber(st.data.yesterday.orders)}
+            sub={t("online.kpi.yesterdaySub", { count: st.data.yesterday.incomplete })}
+          />
+        ) : (
+          <KpiCard
+            icon={TriangleAlert}
+            iconTone={today.atRiskTotal ? "warn" : "good"}
+            label={t("online.kpi.atRiskToday")}
+            info={t("online.kpi.atRiskInfo")}
+            value={t("online.kpi.ofOrders", { count: today.atRiskTotal, total: today.day.orders })}
+            sub={today.atRiskTotal ? t("online.kpi.atRiskSub", { time: today.day.pickingStarts }) : t("online.kpi.allReady")}
+          />
+        )}
         <KpiCard
           icon={ShoppingBag}
           iconTone="info"

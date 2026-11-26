@@ -76,6 +76,8 @@ export interface StoreOnline {
   days: Record<OnlineDay, OnlineDayData>;
   /** Items missing from online orders this week, and change vs. last week (%) */
   missingWeek: { items: number; lost: number; lostDelta: number };
+  /** Yesterday's delivered online orders and how many had missing items (facts, not estimates) */
+  yesterday: { orders: number; incomplete: number };
   often: OftenMissing[];
   /** Why items went missing, last 4 weeks: share of lost online sales */
   reasons: { key: MissReason; lost: number }[];
@@ -161,6 +163,7 @@ const S03_TOMORROW: OnlineDayData = {
 const S03: StoreOnline = {
   days: { today: S03_TODAY, tomorrow: S03_TOMORROW },
   missingWeek: { items: 23, lost: 27_400, lostDelta: -31 },
+  yesterday: { orders: 41, incomplete: 3 },
   reasons: [
     { key: "shelfEmpty", lost: 65_000 },
     { key: "lateDelivery", lost: 24_600 },
@@ -198,6 +201,7 @@ function derive(storeId: string): StoreOnline {
     ...S03,
     days: { today: { ...scaleDay(S03.days.today), orders: getStoreDay(storeId).online.orders }, tomorrow: scaleDay(S03.days.tomorrow) },
     missingWeek: { items: sc(23), lost: Math.round((27_400 * scale) / 100) * 100, lostDelta: -Math.round(15 + ((n * 7) % 25)) },
+    yesterday: { orders: sc(41), incomplete: Math.max(1, Math.round(3 * scale)) },
     often: S03.often.map((o) => ({ ...o, orders: sc(o.orders), lost: Math.round((o.lost * scale) / 100) * 100 })),
     reasons: S03.reasons.map((r) => ({ ...r, lost: Math.round((r.lost * scale) / 100) * 100 })),
     trend: deriveTrend(storeId),
